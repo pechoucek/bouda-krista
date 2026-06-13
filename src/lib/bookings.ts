@@ -43,6 +43,18 @@ export async function saveBooking(booking: Booking): Promise<void> {
  * - Any individual apartment is also blocked when "whole" is booked.
  * - "whole" is blocked when any individual apartment is booked.
  */
+/** Only bookings directly made for this apartment — no cross-blocking. Used for iCal export. */
+export async function getDirectBookings(apartment: string): Promise<Booking[]> {
+  try {
+    const redis = getRedis();
+    const raw = await redis.lrange(KEY(apartment), 0, -1);
+    return raw.map((r) => JSON.parse(r) as Booking);
+  } catch {
+    return [];
+  }
+}
+
+/** Bookings with cross-blocking logic — used for website availability. */
 export async function getBookings(apartment: string): Promise<Booking[]> {
   try {
     const redis = getRedis();

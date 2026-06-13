@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getBookings } from "@/lib/bookings";
+import { getDirectBookings } from "@/lib/bookings";
 
 function formatDate(dateStr: string): string {
   // Convert YYYY-MM-DD → YYYYMMDD
@@ -10,7 +10,10 @@ function escapeText(text: string): string {
   return text.replace(/[\\;,]/g, (c) => `\\${c}`).replace(/\n/g, "\\n");
 }
 
-const VALID_APARTMENTS = ["tiny", "timber", "topfloor", "whole"];
+// "whole-only" is a special variant that contains ONLY explicit whole-house bookings
+// (not cross-blocks from individual apartments). Import this into Airbnb's apartment
+// listings so they get blocked only when the whole house is actually booked.
+const VALID_APARTMENTS = ["tiny", "timber", "topfloor", "whole", "whole-only"];
 
 export async function GET(
   _req: NextRequest,
@@ -22,7 +25,9 @@ export async function GET(
     return new NextResponse("Not found", { status: 404 });
   }
 
-  const bookings = await getBookings(apartment);
+  // "whole-only" reads only explicit whole-house bookings (never cross-blocks)
+  const redisKey = apartment === "whole-only" ? "whole" : apartment;
+  const bookings = await getDirectBookings(redisKey);
 
   const now = new Date()
     .toISOString()
