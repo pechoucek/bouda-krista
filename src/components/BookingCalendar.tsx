@@ -18,23 +18,28 @@ type Props = {
   checkIn: Date | null;
   checkOut: Date | null;
   onRangeChange: (checkIn: Date | null, checkOut: Date | null) => void;
+  apartment: string;
 };
 
-export default function BookingCalendar({ checkIn, checkOut, onRangeChange }: Props) {
+export default function BookingCalendar({ checkIn, checkOut, onRangeChange, apartment }: Props) {
   const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
   const [blockedRanges, setBlockedRanges] = useState<{ start: Date; end: Date }[]>([]);
   const [hoverDate, setHoverDate] = useState<Date | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/availability")
+    setLoading(true);
+    fetch(`/api/availability?apartment=${apartment}`)
       .then((r) => r.json())
       .then((data: { start: string; end: string }[]) => {
         setBlockedRanges(data.map((r) => ({ start: new Date(r.start), end: new Date(r.end) })));
       })
       .catch(() => setBlockedRanges([]))
       .finally(() => setLoading(false));
-  }, []);
+    // Reset selection when apartment changes
+    onRangeChange(null, null);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apartment]);
 
   const isBlocked = useCallback(
     (date: Date) => {
@@ -66,14 +71,12 @@ export default function BookingCalendar({ checkIn, checkOut, onRangeChange }: Pr
 
   const handleClick = (date: Date) => {
     if (isPast(date) || isBlocked(date)) return;
-
     if (!checkIn || (checkIn && checkOut)) {
       onRangeChange(date, null);
     } else {
       if (isBefore(date, checkIn)) {
         onRangeChange(date, null);
       } else {
-        // check no blocked days in range
         const days = eachDayOfInterval({ start: checkIn, end: date });
         const hasBlocked = days.some((d) => isBlocked(d));
         if (hasBlocked) {
@@ -87,7 +90,7 @@ export default function BookingCalendar({ checkIn, checkOut, onRangeChange }: Pr
 
   const renderMonth = (monthStart: Date) => {
     const days = eachDayOfInterval({ start: startOfMonth(monthStart), end: endOfMonth(monthStart) });
-    const startWeekday = (startOfMonth(monthStart).getDay() + 6) % 7; // Mon=0
+    const startWeekday = (startOfMonth(monthStart).getDay() + 6) % 7;
 
     return (
       <div className="flex-1">
@@ -96,22 +99,16 @@ export default function BookingCalendar({ checkIn, checkOut, onRangeChange }: Pr
         </div>
         <div className="grid grid-cols-7 mb-2">
           {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d) => (
-            <div key={d} className="text-center text-xs font-sans text-forest-400 py-1 tracking-wider">
-              {d}
-            </div>
+            <div key={d} className="text-center text-xs font-sans text-forest-400 py-1 tracking-wider">{d}</div>
           ))}
         </div>
         <div className="grid grid-cols-7">
-          {Array.from({ length: startWeekday }).map((_, i) => (
-            <div key={`empty-${i}`} />
-          ))}
+          {Array.from({ length: startWeekday }).map((_, i) => <div key={`empty-${i}`} />)}
           {days.map((day) => {
-            const past = isPast(day);
-            const blocked = isBlocked(day);
+            const past     = isPast(day);
+            const blocked  = isBlocked(day);
             const selected = isSelected(day);
-            const inRange = isInRange(day);
-            const isStart = checkIn && isSameDay(day, checkIn);
-            const isEnd = checkOut && isSameDay(day, checkOut);
+            const inRange  = isInRange(day);
             const disabled = past || blocked;
 
             return (
@@ -124,12 +121,10 @@ export default function BookingCalendar({ checkIn, checkOut, onRangeChange }: Pr
                 onMouseLeave={() => setHoverDate(null)}
                 className={[
                   "relative h-10 text-sm font-sans transition-colors",
-                  disabled ? "text-forest-300 cursor-not-allowed" : "hover:bg-forest-100 cursor-pointer",
-                  selected ? "bg-forest-700 text-stone-warm hover:bg-forest-700 z-10" : "",
+                  disabled   ? "text-forest-300 cursor-not-allowed" : "hover:bg-forest-100 cursor-pointer",
+                  selected   ? "bg-forest-700 text-stone-warm hover:bg-forest-700 z-10" : "",
                   inRange && !selected ? "bg-forest-100 text-forest-900" : "",
-                  isStart ? "rounded-l-none" : "",
-                  isEnd ? "rounded-r-none" : "",
-                  blocked ? "line-through" : "",
+                  blocked    ? "line-through" : "",
                 ].join(" ")}
               >
                 {format(day, "d")}
@@ -180,16 +175,9 @@ export default function BookingCalendar({ checkIn, checkOut, onRangeChange }: Pr
       </div>
 
       <div className="flex gap-6 mt-4 text-xs font-sans text-forest-500">
-        <span className="flex items-center gap-2">
-          <span className="w-3 h-3 bg-forest-700 inline-block" /> Selected
-        </span>
-        <span className="flex items-center gap-2">
-          <span className="w-3 h-3 bg-forest-100 inline-block" /> Your stay
-        </span>
-        <span className="flex items-center gap-2">
-          <span className="w-3 h-3 bg-forest-50 border border-forest-200 inline-block" />
-          <span className="line-through">Unavailable</span>
-        </span>
+        <span className="flex items-center gap-2"><span className="w-3 h-3 bg-forest-700 inline-block" /> Selected</span>
+        <span className="flex items-center gap-2"><span className="w-3 h-3 bg-forest-100 inline-block" /> Your stay</span>
+        <span className="flex items-center gap-2"><span className="w-3 h-3 bg-forest-50 border border-forest-200 inline-block" /><span className="line-through">Unavailable</span></span>
       </div>
     </div>
   );

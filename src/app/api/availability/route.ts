@@ -1,10 +1,18 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import ical from "node-ical";
 
-export const revalidate = 3600; // re-fetch iCal every hour
+export const revalidate = 3600;
 
-export async function GET() {
-  const icalUrl = process.env.AIRBNB_ICAL_URL;
+const ICAL_URLS: Record<string, string | undefined> = {
+  tiny:     process.env.AIRBNB_ICAL_TINY,
+  timber:   process.env.AIRBNB_ICAL_TIMBER,
+  topfloor: process.env.AIRBNB_ICAL_TOPFLOOR,
+  whole:    process.env.AIRBNB_ICAL_WHOLE,
+};
+
+export async function GET(req: NextRequest) {
+  const apartment = req.nextUrl.searchParams.get("apartment") ?? "whole";
+  const icalUrl = ICAL_URLS[apartment] ?? ICAL_URLS["whole"];
 
   if (!icalUrl) {
     return NextResponse.json([], { status: 200 });
@@ -19,7 +27,7 @@ export async function GET() {
       if (!event.start || !event.end) continue;
       blocked.push({
         start: new Date(event.start).toISOString(),
-        end: new Date(event.end).toISOString(),
+        end:   new Date(event.end).toISOString(),
       });
     }
 
