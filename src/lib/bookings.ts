@@ -1,10 +1,10 @@
 /**
  * Booking storage using Redis (ioredis).
- * Each apartment has a list key: bookings:{apartment} → array of JSON strings
+ * Each apartment has its own list: bookings:{apartment} → JSON strings
+ * Cross-blocking is handled at query time, not at write time.
  */
 import Redis from "ioredis";
 
-// Reuse connection across serverless invocations
 let client: Redis | null = null;
 
 function getRedis(): Redis {
@@ -25,47 +25,49 @@ export type Booking = {
   guestName: string;
   guestEmail: string;
   totalCzk: number;
-  createdAt: string;      // ISO timestamp
+  createdAt: string;
 };
 
 const KEY = (apartment: string) => `bookings:${apartment}`;
 
+const ALL_APARTMENTS = ["tiny", "timber", "topfloor", "whole"];
+
+/** Save a booking only to its own apartment key — no cross-blocking in Redis. */
 export async function saveBooking(booking: Booking): Promise<void> {
   const redis = getRedis();
-
-  // Save to apartment-specific list
   await redis.lpush(KEY(booking.apartment), JSON.stringify(booking));
-
-  // If it's an apartment (not whole house), also block the whole house calendar
-  if (booking.apartment !== "whole") {
-    const wholeBooking: Booking = {
-      ...booking,
-      id: `${booking.id}-whole`,
-      apartment: "whole",
-      apartmentName: `Whole House (${booking.apartmentName} booked)`,
-    };
-    await redis.lpush(KEY("whole"), JSON.stringify(wholeBooking));
-  }
-
-  // If whole house is booked, block all apartments
-  if (booking.apartment === "whole") {
-    for (const apt of ["tiny", "timber", "topfloor"]) {
-      const aptBooking: Booking = {
-        ...booking,
-        id: `${booking.id}-${apt}`,
-        apartment: apt,
-        apartmentName: `${apt} (Whole House booked)`,
-      };
-      await redis.lpush(KEY(apt), JSON.stringify(aptBooking));
-    }
-  }
 }
 
+/**
+ * Get bookings for an apartment, including cross-block logic:
+ * - Any individual apartment is also blocked when "whole" is booked.
+ * - "whole" is blocked when any individual apartment is booked.
+ */
 export async function getBookings(apartment: string): Promise<Booking[]> {
   try {
     const redis = getRedis();
-    const raw = await redis.lrange(KEY(apartment), 0, -1);
-    return raw.map((r) => JSON.parse(r) as Booking);
+
+    if (apartment === "whole") {
+      // Whole house is blocked if any apartment (including itself) has a booking
+      const all = await Promise.all(
+        ALL_APARTMENTS.map((apt) =>
+          redis.lrange(KEY(apt), 0, -1).then((rows) =>
+            rows.map((r) => JSON.parse(r) as Booking)
+          )
+        )
+      );
+      return all.flat();
+    } else {
+      // Individual apartment is blocked by its own bookings + any whole-house bookings
+      const [own, whole] = await Promise.all([
+        redis.lrange(KEY(apartment), 0, -1),
+        redis.lrange(KEY("whole"), 0, -1),
+      ]);
+      return [
+        ...own.map((r) => JSON.parse(r) as Booking),
+        ...whole.map((r) => JSON.parse(r) as Booking),
+      ];
+    }
   } catch {
     return [];
   }
@@ -74,12 +76,4 @@ export async function getBookings(apartment: string): Promise<Booking[]> {
 export async function clearBookings(apartment: string): Promise<void> {
   const redis = getRedis();
   await redis.del(KEY(apartment));
-  // Also clear cross-blocked keys
-  if (apartment !== "whole") {
-    await redis.del(KEY("whole"));
-  } else {
-    for (const apt of ["tiny", "timber", "topfloor"]) {
-      await redis.del(KEY(apt));
-    }
-  }
 }
