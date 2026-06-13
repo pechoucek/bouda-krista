@@ -18,8 +18,11 @@ export async function GET(req: NextRequest) {
   };
 
   if (shouldClear) {
-    await clearBookings(apartment);
-    return NextResponse.json({ ok: true, message: `Cleared all bookings for ${apartment}` });
+    // Clear all apartment keys to wipe any cross-blocked leftovers
+    await Promise.all(
+      ["tiny", "timber", "topfloor", "whole"].map((apt) => clearBookings(apt))
+    );
+    return NextResponse.json({ ok: true, message: "Cleared all bookings for all apartments" });
   }
 
   const checkIn  = req.nextUrl.searchParams.get("checkIn")  ?? "2026-06-16";
