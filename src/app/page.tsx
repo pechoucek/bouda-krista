@@ -63,7 +63,7 @@ export default function Home() {
               A Hilltop Retreat in the Heart of Krkonoše
             </h2>
             <p className="font-sans text-forest-700 leading-relaxed mb-6">
-              On a Krkonoše hilltop stands the newly renovated Lodge Krista — a property with an impressive history and
+              On a Krkonoše hilltop stands the newly renovated Bouda Krista — a property with an impressive history and
               three designer apartments intelligently interconnected: the <em>Tiny</em> apartment for two, the{" "}
               <em>Timber</em> apartment for 2–4 guests, and the <em>Top Floor</em> apartment for up to five.
             </p>
@@ -138,7 +138,7 @@ export default function Home() {
             <p className="section-subtitle mb-5">Getting Here</p>
             <h2 className="section-title mb-8">Rokytnice nad Jizerou, Krkonoše</h2>
             <p className="font-sans text-forest-700 leading-relaxed mb-6">
-              Lodge Krista sits inside <strong>Krkonoše National Park</strong> — the largest national park in
+              Bouda Krista sits inside <strong>Krkonoše National Park</strong> — the largest national park in
               the Czech Republic. The nearest town is Rokytnice nad Jizerou, a well-known ski and hiking resort in
               the Giant Mountains (Krkonoše).
             </p>
@@ -171,7 +171,7 @@ export default function Home() {
           {/* Map embed placeholder */}
           <div className="relative h-96 bg-forest-100 overflow-hidden">
             <iframe
-              title="Lodge Krista location"
+              title="Bouda Krista location"
               src="https://www.openstreetmap.org/export/embed.html?bbox=15.40,50.70,15.55,50.80&layer=mapnik&marker=50.737,15.459"
               className="w-full h-full border-0"
               loading="lazy"
@@ -184,7 +184,7 @@ export default function Home() {
       <section className="relative py-32 overflow-hidden">
         <Image
           src={photos.find((p) => p.category === "outdoor")?.url ?? photos[21].url}
-          alt="Lodge Krista balcony view"
+          alt="Bouda Krista balcony view"
           fill
           className="object-cover object-center"
         />
@@ -207,7 +207,7 @@ export default function Home() {
       <footer className="bg-forest-950 text-stone-warm/60 py-12 px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <p className="font-serif text-xl text-stone-warm mb-1">Lodge Krista</p>
+            <p className="font-serif text-xl text-stone-warm mb-1">Bouda Krista</p>
             <p className="font-sans text-xs tracking-wider">Rokytnice nad Jizerou · Krkonoše · Czech Republic</p>
           </div>
           <nav className="flex gap-8 font-sans text-xs tracking-widest uppercase">
@@ -217,7 +217,7 @@ export default function Home() {
             <a href="#location"  className="hover:text-stone-warm transition-colors">Location</a>
             <Link href="/book"   className="hover:text-stone-warm transition-colors">Book</Link>
           </nav>
-          <p className="font-sans text-xs">© {new Date().getFullYear()} Lodge Krista</p>
+          <p className="font-sans text-xs">© {new Date().getFullYear()} Bouda Krista</p>
         </div>
       </footer>
     </>

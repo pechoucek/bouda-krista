@@ -24,7 +24,7 @@ export default function Hero() {
           Krkonoše National Park · Czech Republic
         </p>
         <h1 className="font-serif text-6xl md:text-8xl text-stone-warm font-light leading-none mb-6">
-          Lodge Krista
+          Bouda Krista
         </h1>
         <p className="font-sans text-stone-warm/80 text-lg md:text-xl font-light max-w-xl mx-auto mb-12 leading-relaxed">
           A hilltop retreat with three designer apartments, private sauna, and breathtaking mountain views.

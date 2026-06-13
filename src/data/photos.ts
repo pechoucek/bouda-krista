@@ -7,8 +7,8 @@ export type Photo = {
 const BASE = "https://a0.muscache.com/im/pictures/hosting/Hosting-1681755602554370759/original";
 
 export const photos: Photo[] = [
-  { url: `${BASE}/daa6a02b-06de-4b6d-8abb-cfbd6ab77c33.jpeg?im_w=1440`, category: "exterior",  alt: "Lodge Krista exterior with cherry blossom tree" },
-  { url: `${BASE}/f4479755-64b2-438b-a292-e86357b994dd.jpeg?im_w=1440`, category: "exterior",  alt: "Lodge Krista from the meadow" },
+  { url: `${BASE}/daa6a02b-06de-4b6d-8abb-cfbd6ab77c33.jpeg?im_w=1440`, category: "exterior",  alt: "Bouda Krista exterior with cherry blossom tree" },
+  { url: `${BASE}/f4479755-64b2-438b-a292-e86357b994dd.jpeg?im_w=1440`, category: "exterior",  alt: "Bouda Krista from the meadow" },
   { url: `${BASE}/81364994-282d-4e04-8b8a-7969c942ff54.jpeg?im_w=1440`, category: "exterior",  alt: "Lodge exterior evening view" },
   { url: `${BASE}/7c002b6b-0732-4dc5-a9db-b9138467ffc8.jpeg?im_w=1440`, category: "exterior",  alt: "Lodge terrace overlooking mountains" },
   { url: `${BASE}/44b4b68c-4979-43e8-9d6c-70b37aa20b56.png?im_w=1440`,  category: "exterior",  alt: "Lodge grounds and garden" },

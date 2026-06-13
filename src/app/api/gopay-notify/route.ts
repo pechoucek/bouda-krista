@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
   const totalKc    = (payment.amount / 100).toLocaleString("cs-CZ") + " Kč";
 
   // Parse check-in/check-out from order_description
-  // Format: "Lodge Krista · 2025-07-01 – 2025-07-07 · 6 nocí · 4 osob"
+  // Format: "Bouda Krista · 2025-07-01 – 2025-07-07 · 6 nocí · 4 osob"
   const descMatch  = payment.order_description.match(/(\d{4}-\d{2}-\d{2}) – (\d{4}-\d{2}-\d{2})/);
   const checkIn    = descMatch?.[1] ?? "—";
   const checkOut   = descMatch?.[2] ?? "—";
@@ -49,12 +49,12 @@ export async function POST(req: NextRequest) {
   await resend.emails.send({
     from,
     to: guestEmail,
-    subject: "Rezervace potvrzena — Lodge Krista",
+    subject: "Rezervace potvrzena — Bouda Krista",
     html: `
       <div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#1a311a">
         <h1 style="font-size:2rem;margin-bottom:0.5rem">Vaše rezervace je potvrzena</h1>
         <p style="color:#5e975e;font-family:sans-serif;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase">
-          Lodge Krista · Rokytnice nad Jizerou
+          Bouda Krista · Rokytnice nad Jizerou
         </p>
         <hr style="border:none;border-top:1px solid #c2dbc2;margin:1.5rem 0"/>
         <table style="width:100%;font-family:sans-serif;font-size:0.9rem;border-collapse:collapse">

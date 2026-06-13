@@ -21,7 +21,7 @@ export default function Gallery() {
     <section id="gallery" className="py-24 px-6 max-w-7xl mx-auto">
       <div className="text-center mb-14">
         <p className="section-subtitle mb-4">Photo Tour</p>
-        <h2 className="section-title">Inside Lodge Krista</h2>
+        <h2 className="section-title">Inside Bouda Krista</h2>
       </div>
 
       {/* Category filter */}

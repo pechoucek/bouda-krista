@@ -21,7 +21,7 @@ export default function Nav() {
     >
       <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
         <Link href="/" className="font-serif text-xl text-stone-warm tracking-wider">
-          Lodge Krista
+          Bouda Krista
         </Link>
 
         {/* Desktop nav */}

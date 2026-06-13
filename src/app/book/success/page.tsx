@@ -9,7 +9,7 @@ export default function SuccessPage() {
         </svg>
       </div>
       <p className="section-subtitle mb-4">Booking Confirmed</p>
-      <h1 className="section-title mb-6">See you at Lodge Krista!</h1>
+      <h1 className="section-title mb-6">See you at Bouda Krista!</h1>
       <p className="font-sans text-forest-600 max-w-md mb-10 leading-relaxed">
         A confirmation email is on its way. Access instructions for the lockbox will arrive 24 hours before your check-in.
       </p>
