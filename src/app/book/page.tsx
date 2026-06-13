@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format, differenceInCalendarDays } from "date-fns";
 import BookingCalendar from "@/components/BookingCalendar";
 import Link from "next/link";
-
-const NIGHTLY_RATE = parseInt(process.env.NEXT_PUBLIC_NIGHTLY_RATE_CZK ?? "8000", 10); // fallback display; real rate enforced server-side
 
 export default function BookPage() {
   const [checkIn, setCheckIn]   = useState<Date | null>(null);
@@ -15,9 +13,28 @@ export default function BookPage() {
   const [email, setEmail]       = useState("");
   const [loading, setLoading]   = useState(false);
   const [error, setError]       = useState("");
+  const [total, setTotal]       = useState<number | null>(null);
+  const [loadingPrice, setLoadingPrice] = useState(false);
 
   const nights = checkIn && checkOut ? differenceInCalendarDays(checkOut, checkIn) : 0;
-  const total  = nights * NIGHTLY_RATE;
+
+  // Fetch real price from server whenever dates change
+  useEffect(() => {
+    if (!checkIn || !checkOut) { setTotal(null); return; }
+    setLoadingPrice(true);
+    fetch("/api/price", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        checkIn:  format(checkIn, "yyyy-MM-dd"),
+        checkOut: format(checkOut, "yyyy-MM-dd"),
+      }),
+    })
+      .then((r) => r.json())
+      .then((d) => setTotal(d.total))
+      .catch(() => setTotal(null))
+      .finally(() => setLoadingPrice(false));
+  }, [checkIn, checkOut]);
 
   const handleRangeChange = (ci: Date | null, co: Date | null) => {
     setCheckIn(ci);
@@ -60,7 +77,7 @@ export default function BookPage() {
       <div className="bg-forest-950 px-6 py-5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/" className="font-serif text-xl text-stone-warm tracking-wider">
-            Lodge Krista
+            Bouda Krista
           </Link>
           <Link href="/" className="text-stone-warm/60 hover:text-stone-warm text-sm font-sans tracking-wider">
             ← Back
@@ -71,7 +88,7 @@ export default function BookPage() {
       <div className="max-w-6xl mx-auto px-6 py-16">
         <div className="mb-12">
           <p className="section-subtitle mb-3">Reserve Your Stay</p>
-          <h1 className="section-title">Book Lodge Krista</h1>
+          <h1 className="section-title">Book Bouda Krista</h1>
         </div>
 
         <div className="grid lg:grid-cols-5 gap-12">
@@ -142,20 +159,22 @@ export default function BookPage() {
                       <span>{format(checkIn!, "MMM d")} – {format(checkOut!, "MMM d, yyyy")}</span>
                       <span>{nights} night{nights > 1 ? "s" : ""}</span>
                     </div>
-                    <div className="flex justify-between font-sans text-sm text-forest-500">
-                      <span>{NIGHTLY_RATE.toLocaleString("cs-CZ")} Kč × {nights}</span>
-                      <span>{total.toLocaleString("cs-CZ")} Kč</span>
-                    </div>
                     <div className="flex justify-between font-serif text-lg text-forest-900 pt-2 border-t border-forest-100">
                       <span>Total</span>
-                      <span>{total.toLocaleString("cs-CZ")} Kč</span>
+                      <span>
+                        {loadingPrice ? (
+                          <span className="text-forest-400 text-sm">Calculating…</span>
+                        ) : total ? (
+                          `${total.toLocaleString("cs-CZ")} Kč`
+                        ) : "—"}
+                      </span>
                     </div>
                   </div>
                 )}
 
                 <button
                   type="submit"
-                  disabled={loading || !checkIn || !checkOut}
+                  disabled={loading || !checkIn || !checkOut || loadingPrice}
                   className="btn-primary text-center disabled:opacity-50 disabled:cursor-not-allowed mt-2"
                 >
                   {loading ? "Redirecting…" : "Proceed to Payment"}

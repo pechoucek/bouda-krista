@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { differenceInCalendarDays, format } from "date-fns";
 import { createPayment } from "@/lib/gopay";
+import { calculateTotal } from "@/lib/pricing";
 
 export async function POST(req: NextRequest) {
   const { checkIn, checkOut, guests, guestName, guestEmail } = await req.json();
@@ -9,37 +9,35 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
-  const nights = differenceInCalendarDays(new Date(checkOut), new Date(checkIn));
-  if (nights < 1) {
+  const checkInDate  = new Date(checkIn);
+  const checkOutDate = new Date(checkOut);
+
+  if (checkOutDate <= checkInDate) {
     return NextResponse.json({ error: "Invalid dates" }, { status: 400 });
   }
 
-  const nightlyRate = parseInt(process.env.NIGHTLY_RATE_CZK ?? "8000", 10);
-  const totalCzk    = nights * nightlyRate;
-  const baseUrl     = process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000";
-
-  // Unique order number: timestamp + first 4 chars of email
+  const { total, breakdown } = calculateTotal(checkInDate, checkOutDate);
+  const nights = breakdown.length;
+  const baseUrl = process.env.NEXT_PUBLIC_URL ?? "http://localhost:3000";
   const orderNumber = `LK-${Date.now()}-${guestEmail.slice(0, 4).toUpperCase()}`;
 
   try {
     const payment = await createPayment({
-      amountCzk:        totalCzk,
+      amountCzk:        total,
       orderNumber,
-      orderDescription: `Lodge Krista · ${checkIn} – ${checkOut} · ${nights} nocí · ${guests} osob`,
+      orderDescription: `Bouda Krista · ${checkIn} – ${checkOut} · ${nights} nocí · ${guests} osob`,
       guestName,
       guestEmail,
       returnUrl:  `${baseUrl}/book/success?order=${orderNumber}`,
       notifyUrl:  `${baseUrl}/api/gopay-notify`,
-      items: [
-        {
-          name:   `Lodge Krista – ${nights} noc${nights > 1 ? "í" : ""}`,
-          amount: nightlyRate,
-          count:  nights,
-        },
-      ],
+      items: breakdown.map((d) => ({
+        name:   d.date,
+        amount: d.rate,
+        count:  1,
+      })),
     });
 
-    return NextResponse.json({ url: payment.gw_url });
+    return NextResponse.json({ url: payment.gw_url, total, nights });
   } catch (err) {
     console.error("GoPay checkout error:", err);
     return NextResponse.json({ error: "Payment gateway error. Please try again." }, { status: 500 });
