@@ -4,30 +4,10 @@ import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Gallery from "@/components/Gallery";
 import Amenities from "@/components/Amenities";
+import ApartmentsSection from "@/components/ApartmentsSection";
 import { photos } from "@/data/photos";
 
 const exteriorPhotos = photos.filter((p) => p.category === "exterior");
-
-const apartments = [
-  {
-    name: "Tiny Apartment",
-    capacity: "Up to 2 guests",
-    desc: "A cosy, intimate space perfect for couples seeking a peaceful mountain escape.",
-    beds: "1 bedroom · 1 bed",
-  },
-  {
-    name: "Timber Apartment",
-    capacity: "Up to 4 guests",
-    desc: "Warm timber finishes and designer details make this mid-size apartment a favourite for small families.",
-    beds: "2 bedrooms · 2 beds",
-  },
-  {
-    name: "Top Floor Apartment",
-    capacity: "Up to 5 guests",
-    desc: "The crown of the lodge — sweeping views, the largest living space, and access to the panoramic terrace.",
-    beds: "2 bedrooms · 3 beds",
-  },
-];
 
 export default function Home() {
   return (
@@ -100,30 +80,7 @@ export default function Home() {
       </section>
 
       {/* Apartments */}
-      <section className="py-24 bg-forest-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <p className="section-subtitle mb-4">Three Spaces, One Lodge</p>
-            <h2 className="section-title">The Apartments</h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {apartments.map((apt, i) => (
-              <div key={apt.name} className="bg-white p-10 border-t-2 border-gold hover:shadow-lg transition-shadow">
-                <div className="font-serif text-5xl text-forest-200 mb-4 select-none">0{i + 1}</div>
-                <h3 className="font-serif text-2xl text-forest-900 mb-2">{apt.name}</h3>
-                <p className="font-sans text-xs tracking-widest uppercase text-gold mb-4">{apt.capacity}</p>
-                <p className="font-sans text-sm text-forest-600 leading-relaxed mb-6">{apt.desc}</p>
-                <p className="font-sans text-xs text-forest-400 tracking-wide">{apt.beds}</p>
-              </div>
-            ))}
-          </div>
-
-          <p className="text-center font-sans text-sm text-forest-500 mt-10">
-            Book the entire lodge for your group — all three apartments are available together.
-          </p>
-        </div>
-      </section>
+      <ApartmentsSection />
 
       {/* Gallery */}
       <Gallery />

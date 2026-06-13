@@ -3,11 +3,9 @@
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import BookingCalendar from "@/components/BookingCalendar";
-import ApartmentModal from "@/components/ApartmentModal";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import { apartments } from "@/lib/pricing";
-import { apartmentDetails, ApartmentDetail } from "@/data/apartments";
 
 export default function BookPage() {
   const [apartment, setApartment]   = useState(apartments[3].id); // default: whole house
@@ -19,7 +17,6 @@ export default function BookPage() {
   const [error, setError]               = useState("");
   const [priceInfo, setPriceInfo]       = useState<{ total: number; nights: number; nightlyRate: number } | null>(null);
   const [loadingPrice, setLoadingPrice] = useState(false);
-  const [modalApt, setModalApt]         = useState<ApartmentDetail | null>(null);
 
   const selectedApt = apartments.find((a) => a.id === apartment) ?? apartments[3];
 
@@ -80,11 +77,6 @@ export default function BookPage() {
 
   return (
     <div className="min-h-screen bg-stone-warm">
-      <ApartmentModal
-        apartment={modalApt}
-        onClose={() => setModalApt(null)}
-        onBook={(id) => setApartment(id)}
-      />
       {/* Header */}
       <div className="bg-forest-950 px-6 py-5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -107,51 +99,28 @@ export default function BookPage() {
             Step 1 — Choose your accommodation
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {apartmentDetails.map((apt) => {
-              const isSelected = apartment === apt.id;
-              return (
-                <div key={apt.id} className={`border-2 transition-all overflow-hidden ${isSelected ? "border-forest-700" : "border-forest-200 hover:border-forest-400"}`}>
-                  {/* Photo + info overlay */}
-                  <button
-                    type="button"
-                    className="relative w-full aspect-[4/3] overflow-hidden block group"
-                    onClick={() => setModalApt(apt)}
-                    title="View details"
-                  >
-                    <img
-                      src={apt.photos[0].url}
-                      alt={apt.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors flex items-end">
-                      <span className="w-full text-center text-white font-sans text-xs tracking-widest uppercase py-2 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
-                        View details
-                      </span>
-                    </div>
-                  </button>
-
-                  {/* Select button */}
-                  <button
-                    type="button"
-                    onClick={() => setApartment(apt.id)}
-                    className={`w-full p-3 text-left transition-colors ${isSelected ? "bg-forest-700" : "bg-white hover:bg-forest-50"}`}
-                  >
-                    <div className={`font-serif text-base mb-0.5 ${isSelected ? "text-stone-warm" : "text-forest-900"}`}>
-                      {apt.name}
-                    </div>
-                    <div className={`font-sans text-xs mb-1 ${isSelected ? "text-stone-warm/70" : "text-forest-500"}`}>
-                      Up to {apt.guests} guests
-                    </div>
-                    <div className={`font-sans text-sm font-medium ${isSelected ? "text-gold" : "text-forest-700"}`}>
-                      {apt.defaultNightlyRate.toLocaleString("cs-CZ")} Kč / noc
-                    </div>
-                    {isSelected && (
-                      <div className="font-sans text-xs text-stone-warm/60 mt-1">✓ Selected</div>
-                    )}
-                  </button>
+            {apartments.map((apt) => (
+              <button
+                key={apt.id}
+                type="button"
+                onClick={() => setApartment(apt.id)}
+                className={`p-5 text-left border-2 transition-all ${
+                  apartment === apt.id
+                    ? "border-forest-700 bg-forest-700 text-stone-warm"
+                    : "border-forest-200 bg-white hover:border-forest-400"
+                }`}
+              >
+                <div className={`font-serif text-lg mb-1 ${apartment === apt.id ? "text-stone-warm" : "text-forest-900"}`}>
+                  {apt.name}
                 </div>
-              );
-            })}
+                <div className={`font-sans text-xs mb-3 ${apartment === apt.id ? "text-stone-warm/70" : "text-forest-500"}`}>
+                  {apt.guests}
+                </div>
+                <div className={`font-sans text-sm font-medium ${apartment === apt.id ? "text-gold" : "text-forest-700"}`}>
+                  {apt.defaultNightlyRate.toLocaleString("cs-CZ")} Kč / noc
+                </div>
+              </button>
+            ))}
           </div>
         </div>
 
