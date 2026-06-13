@@ -16,6 +16,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
   title: "Bouda Krista — Luxury Mountain Retreat in Krkonoše",
   description:
     "A newly renovated luxury lodge on a Krkonoše hilltop. Three designer apartments for up to 11 guests, private sauna, mountain views, inside Krkonoše National Park.",
