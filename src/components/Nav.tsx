@@ -21,7 +21,7 @@ export default function Nav() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-        <Logo variant="light" />
+        <Logo />
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-10">

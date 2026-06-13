@@ -80,7 +80,7 @@ export default function BookPage() {
       {/* Header */}
       <div className="bg-forest-950 px-6 py-5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Logo variant="light" />
+          <Logo />
           <Link href="/" className="text-stone-warm/60 hover:text-stone-warm text-sm font-sans tracking-wider">
             ← Back
           </Link>
