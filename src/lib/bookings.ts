@@ -70,3 +70,16 @@ export async function getBookings(apartment: string): Promise<Booking[]> {
     return [];
   }
 }
+
+export async function clearBookings(apartment: string): Promise<void> {
+  const redis = getRedis();
+  await redis.del(KEY(apartment));
+  // Also clear cross-blocked keys
+  if (apartment !== "whole") {
+    await redis.del(KEY("whole"));
+  } else {
+    for (const apt of ["tiny", "timber", "topfloor"]) {
+      await redis.del(KEY(apt));
+    }
+  }
+}

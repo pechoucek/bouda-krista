@@ -1,15 +1,14 @@
 /**
  * TEST ONLY — remove before going live!
- * Creates a fake booking in Redis so you can verify the iCal export works.
- * Usage: GET /api/test-booking?apartment=timber&checkIn=2026-06-20&checkOut=2026-06-23
+ * GET /api/test-booking?apartment=timber&checkIn=2026-06-16&checkOut=2026-06-18
+ * GET /api/test-booking?clear=true&apartment=timber   ← wipes all bookings for that apartment
  */
 import { NextRequest, NextResponse } from "next/server";
-import { saveBooking } from "@/lib/bookings";
+import { saveBooking, clearBookings } from "@/lib/bookings";
 
 export async function GET(req: NextRequest) {
   const apartment  = req.nextUrl.searchParams.get("apartment")  ?? "timber";
-  const checkIn    = req.nextUrl.searchParams.get("checkIn")    ?? "2026-06-20";
-  const checkOut   = req.nextUrl.searchParams.get("checkOut")   ?? "2026-06-23";
+  const shouldClear = req.nextUrl.searchParams.get("clear") === "true";
 
   const aptNames: Record<string, string> = {
     tiny:     "Tiny Apartment",
@@ -17,6 +16,14 @@ export async function GET(req: NextRequest) {
     topfloor: "Top Floor Apartment",
     whole:    "Whole House",
   };
+
+  if (shouldClear) {
+    await clearBookings(apartment);
+    return NextResponse.json({ ok: true, message: `Cleared all bookings for ${apartment}` });
+  }
+
+  const checkIn  = req.nextUrl.searchParams.get("checkIn")  ?? "2026-06-16";
+  const checkOut = req.nextUrl.searchParams.get("checkOut") ?? "2026-06-18";
 
   await saveBooking({
     id:            `test-${Date.now()}`,
