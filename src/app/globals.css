@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-stone-warm text-forest-900 font-sans;
+    background-color: #f5f0e8;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-block bg-forest-700 text-stone-warm px-8 py-4 font-sans text-sm tracking-widest uppercase
+           hover:bg-forest-800 transition-colors duration-300 cursor-pointer;
+  }
+
+  .btn-outline {
+    @apply inline-block border border-forest-700 text-forest-700 px-8 py-4 font-sans text-sm tracking-widest uppercase
+           hover:bg-forest-700 hover:text-stone-warm transition-colors duration-300 cursor-pointer;
+  }
+
+  .section-title {
+    @apply font-serif text-4xl md:text-5xl text-forest-900 leading-tight;
+  }
+
+  .section-subtitle {
+    @apply font-sans text-xs tracking-[0.3em] uppercase text-gold;
+  }
+}
