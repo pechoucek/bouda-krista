@@ -18,12 +18,17 @@ export async function GET(req: NextRequest) {
   const blocked: { start: string; end: string }[] = [];
 
   // ── 1. Airbnb iCal ────────────────────────────────────────────────────
+  // We skip "Not available" events — those are Airbnb cross-link auto-blocks
+  // from linked listings. We handle cross-blocking ourselves via Redis,
+  // so importing Airbnb's cross-blocks would cause a loop.
   if (icalUrl) {
     try {
       const data = await ical.fromURL(icalUrl);
       for (const event of Object.values(data)) {
         if (event.type !== "VEVENT") continue;
         if (!event.start || !event.end) continue;
+        const summary = (event.summary ?? "").toLowerCase();
+        if (summary.includes("not available")) continue; // skip cross-link auto-blocks
         blocked.push({
           start: new Date(event.start).toISOString(),
           end:   new Date(event.end).toISOString(),
