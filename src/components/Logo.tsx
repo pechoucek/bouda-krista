@@ -8,109 +8,92 @@ type Props = {
 export default function Logo({ className = "", href = "/" }: Props) {
   const inner = (
     <svg
-      viewBox="0 0 200 75"
+      viewBox="0 0 240 78"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-label="Bouda Krista"
       className={`h-12 w-auto ${className}`}
     >
       <defs>
-        {/* Warm glow for windows */}
-        <filter id="window-glow" x="-80%" y="-80%" width="260%" height="260%">
-          <feGaussianBlur stdDeviation="2.5" result="blur" />
+        <filter id="wglow" x="-120%" y="-120%" width="340%" height="340%">
+          <feGaussianBlur stdDeviation="2" result="blur"/>
           <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-        {/* Subtle ambient glow on the whole house */}
-        <filter id="house-glow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="1" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
           </feMerge>
         </filter>
       </defs>
 
-      {/* ── House silhouette ─────────────────────────────── */}
-      <g filter="url(#house-glow)">
-        {/* Chimney */}
-        <rect x="85" y="4" width="6" height="10" stroke="white" strokeWidth="1.2" fill="none" strokeLinejoin="round" />
+      {/* ── House ───────────────────────────────────────── */}
 
-        {/* Roof */}
-        <polyline
-          points="62,28 100,6 138,28"
-          stroke="white"
-          strokeWidth="1.4"
-          strokeLinejoin="round"
-          strokeLinecap="round"
-        />
+      {/* Chimney (right of peak) */}
+      <rect x="105" y="10" width="5" height="12" stroke="white" strokeWidth="1" fill="none"/>
 
-        {/* Walls */}
-        <rect
-          x="68" y="28" width="64" height="18"
-          stroke="white"
-          strokeWidth="1.4"
-          fill="none"
-          strokeLinejoin="round"
-        />
+      {/* Steep gable / upper triangle */}
+      <polyline
+        points="46,40 93,6 140,40"
+        stroke="white" strokeWidth="1.3"
+        strokeLinejoin="round" strokeLinecap="round"
+      />
+      {/* Gable vertical boarding — 3 faint lines suggesting the siding */}
+      <line x1="80"  y1="22" x2="73"  y2="40" stroke="white" strokeWidth="0.4" opacity="0.25"/>
+      <line x1="93"  y1="15" x2="93"  y2="40" stroke="white" strokeWidth="0.4" opacity="0.25"/>
+      <line x1="106" y1="22" x2="113" y2="40" stroke="white" strokeWidth="0.4" opacity="0.25"/>
 
-        {/* Door (centered, touches bottom) */}
-        <rect
-          x="93" y="34" width="14" height="12"
-          stroke="white"
-          strokeWidth="1.1"
-          fill="none"
-          strokeLinejoin="round"
-        />
+      {/* Lower rectangle (stone base) */}
+      <rect x="46" y="40" width="94" height="22"
+        stroke="white" strokeWidth="1.3" fill="none" strokeLinejoin="round"/>
+      {/* Horizontal line separating gable from base (roof overhang) */}
+      <line x1="42" y1="40" x2="144" y2="40" stroke="white" strokeWidth="0.8"/>
+
+      {/* ── Glowing windows ─────────────────────────────── */}
+
+      {/* Gable: top center */}
+      <g filter="url(#wglow)">
+        <rect x="88" y="16" width="10" height="8" fill="#f5c842" rx="0.5"/>
       </g>
-
-      {/* ── Glowing windows ──────────────────────────────── */}
-      {/* Left window */}
-      <g filter="url(#window-glow)">
-        <rect x="74" y="32" width="11" height="9" fill="#f5c842" opacity="0.95" rx="0.5" />
-        {/* Inner cross */}
-        <line x1="79.5" y1="32" x2="79.5" y2="41" stroke="#e8a020" strokeWidth="0.7" opacity="0.6" />
-        <line x1="74"   y1="36.5" x2="85" y2="36.5" stroke="#e8a020" strokeWidth="0.7" opacity="0.6" />
+      {/* Gable: middle two */}
+      <g filter="url(#wglow)">
+        <rect x="71" y="26" width="9" height="8"  fill="#f5c842" rx="0.5"/>
+        <rect x="106" y="26" width="9" height="8" fill="#f5c842" rx="0.5"/>
       </g>
-
-      {/* Right window */}
-      <g filter="url(#window-glow)">
-        <rect x="115" y="32" width="11" height="9" fill="#f5c842" opacity="0.95" rx="0.5" />
-        {/* Inner cross */}
-        <line x1="120.5" y1="32"   x2="120.5" y2="41"   stroke="#e8a020" strokeWidth="0.7" opacity="0.6" />
-        <line x1="115"   y1="36.5" x2="126"   y2="36.5" stroke="#e8a020" strokeWidth="0.7" opacity="0.6" />
+      {/* Base: two arched windows (simplified as rect with slightly rounded top) */}
+      <g filter="url(#wglow)">
+        <rect x="62" y="44" width="13" height="12" fill="#f5c842" rx="2"/>
+        <rect x="111" y="44" width="13" height="12" fill="#f5c842" rx="2"/>
       </g>
+      {/* Base: door (no glow, just outline) */}
+      <rect x="86" y="48" width="14" height="14"
+        stroke="white" strokeWidth="0.9" fill="none" rx="1"/>
+
+      {/* ── Tree (right side) ───────────────────────────── */}
+      {/* Trunk */}
+      <line x1="168" y1="62" x2="168" y2="40" stroke="white" strokeWidth="1.1" strokeLinecap="round"/>
+      {/* Main branches */}
+      <line x1="168" y1="40" x2="155" y2="28" stroke="white" strokeWidth="0.9" strokeLinecap="round"/>
+      <line x1="168" y1="40" x2="180" y2="26" stroke="white" strokeWidth="0.9" strokeLinecap="round"/>
+      {/* Sub-branches left */}
+      <line x1="155" y1="28" x2="148" y2="20" stroke="white" strokeWidth="0.7" strokeLinecap="round"/>
+      <line x1="155" y1="28" x2="160" y2="19" stroke="white" strokeWidth="0.7" strokeLinecap="round"/>
+      {/* Sub-branches right */}
+      <line x1="180" y1="26" x2="174" y2="17" stroke="white" strokeWidth="0.7" strokeLinecap="round"/>
+      <line x1="180" y1="26" x2="187" y2="18" stroke="white" strokeWidth="0.7" strokeLinecap="round"/>
+      {/* Tiny tip branches */}
+      <line x1="148" y1="20" x2="144" y2="14" stroke="white" strokeWidth="0.5" strokeLinecap="round" opacity="0.7"/>
+      <line x1="160" y1="19" x2="157" y2="13" stroke="white" strokeWidth="0.5" strokeLinecap="round" opacity="0.7"/>
+      <line x1="174" y1="17" x2="171" y2="11" stroke="white" strokeWidth="0.5" strokeLinecap="round" opacity="0.7"/>
+      <line x1="187" y1="18" x2="191" y2="12" stroke="white" strokeWidth="0.5" strokeLinecap="round" opacity="0.7"/>
+      <line x1="168" y1="38" x2="163" y2="30" stroke="white" strokeWidth="0.6" strokeLinecap="round" opacity="0.6"/>
 
       {/* ── Text ─────────────────────────────────────────── */}
       <text
-        x="100"
-        y="57"
+        x="93" y="72"
         textAnchor="middle"
         fontFamily="'Cormorant Garamond', Georgia, serif"
-        fontSize="14"
-        letterSpacing="5"
-        fill="white"
-        fontWeight="400"
+        fontSize="13" letterSpacing="5"
+        fill="white" fontWeight="400"
       >
         BOUDA KRISTA
-      </text>
-
-      {/* Decorative gold rules */}
-      <line x1="24" y1="63" x2="72" y2="63" stroke="#c9a84c" strokeWidth="0.5" opacity="0.7" />
-      <line x1="128" y1="63" x2="176" y2="63" stroke="#c9a84c" strokeWidth="0.5" opacity="0.7" />
-
-      <text
-        x="100"
-        y="72"
-        textAnchor="middle"
-        fontFamily="'Inter', sans-serif"
-        fontSize="6"
-        letterSpacing="3"
-        fill="rgba(245,240,232,0.5)"
-      >
-        ROKYTNICE NAD JIZEROU
       </text>
     </svg>
   );
