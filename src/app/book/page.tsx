@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import BookingCalendar from "@/components/BookingCalendar";
 import ApartmentModal from "@/components/ApartmentModal";
 import Link from "next/link";
+import Logo from "@/components/Logo";
 import { apartments } from "@/lib/pricing";
 import { apartmentDetails, ApartmentDetail } from "@/data/apartments";
 
@@ -87,9 +88,7 @@ export default function BookPage() {
       {/* Header */}
       <div className="bg-forest-950 px-6 py-5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="font-serif text-xl text-stone-warm tracking-wider">
-            Bouda Krista
-          </Link>
+          <Logo variant="light" />
           <Link href="/" className="text-stone-warm/60 hover:text-stone-warm text-sm font-sans tracking-wider">
             ← Back
           </Link>

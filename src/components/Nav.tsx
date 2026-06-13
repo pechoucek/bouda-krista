@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Logo from "@/components/Logo";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -20,9 +21,7 @@ export default function Nav() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-        <Link href="/" className="font-serif text-xl text-stone-warm tracking-wider">
-          Bouda Krista
-        </Link>
+        <Logo variant="light" />
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-10">
