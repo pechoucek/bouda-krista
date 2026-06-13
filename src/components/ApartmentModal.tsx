@@ -2,20 +2,20 @@
 
 import { useState, useEffect } from "react";
 import { ApartmentDetail } from "@/data/apartments";
+import { type Locale } from "@/i18n/translations";
 
 type Props = {
   apartment: ApartmentDetail | null;
+  locale: Locale;
   onClose: () => void;
   onBook: (id: string) => void;
 };
 
-export default function ApartmentModal({ apartment, onClose, onBook }: Props) {
+export default function ApartmentModal({ apartment, locale, onClose, onBook }: Props) {
   const [photoIndex, setPhotoIndex] = useState(0);
 
-  // Reset photo index when apartment changes
   useEffect(() => { setPhotoIndex(0); }, [apartment]);
 
-  // Close on Escape
   useEffect(() => {
     const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handler);
@@ -25,16 +25,12 @@ export default function ApartmentModal({ apartment, onClose, onBook }: Props) {
   if (!apartment) return null;
 
   const photos = apartment.photos;
+  const isCz = locale === "cs";
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      onClick={onClose}
-    >
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
 
-      {/* Panel */}
       <div
         className="relative z-10 bg-white max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
         onClick={(e) => e.stopPropagation()}
@@ -47,32 +43,25 @@ export default function ApartmentModal({ apartment, onClose, onBook }: Props) {
             className="w-full h-full object-cover"
           />
 
-          {/* Prev / Next */}
           {photos.length > 1 && (
             <>
               <button
                 onClick={() => setPhotoIndex((i) => (i - 1 + photos.length) % photos.length)}
                 className="absolute left-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-9 h-9 flex items-center justify-center text-lg transition-colors"
-              >
-                ‹
-              </button>
+              >‹</button>
               <button
                 onClick={() => setPhotoIndex((i) => (i + 1) % photos.length)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white w-9 h-9 flex items-center justify-center text-lg transition-colors"
-              >
-                ›
-              </button>
+              >›</button>
             </>
           )}
 
-          {/* Photo counter */}
           {photos.length > 1 && (
             <div className="absolute bottom-3 right-3 bg-black/50 text-white font-sans text-xs px-2 py-1">
               {photoIndex + 1} / {photos.length}
             </div>
           )}
 
-          {/* Thumbnail dots */}
           {photos.length > 1 && (
             <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5">
               {photos.map((_, i) => (
@@ -85,13 +74,10 @@ export default function ApartmentModal({ apartment, onClose, onBook }: Props) {
             </div>
           )}
 
-          {/* Close */}
           <button
             onClick={onClose}
             className="absolute top-3 right-3 bg-black/40 hover:bg-black/60 text-white w-8 h-8 flex items-center justify-center transition-colors text-lg"
-          >
-            ×
-          </button>
+          >×</button>
         </div>
 
         {/* Content */}
@@ -99,33 +85,34 @@ export default function ApartmentModal({ apartment, onClose, onBook }: Props) {
           <div className="flex items-start justify-between mb-2">
             <div>
               <h2 className="font-serif text-2xl text-forest-900">{apartment.name}</h2>
-              <p className="font-sans text-sm text-forest-500 mt-1">{apartment.tagline}</p>
+              <p className="font-sans text-sm text-forest-500 mt-1">
+                {isCz ? apartment.taglineCs : apartment.tagline}
+              </p>
             </div>
             <div className="text-right">
               <div className="font-serif text-xl text-forest-900">
                 {apartment.defaultNightlyRate.toLocaleString("cs-CZ")} Kč
               </div>
-              <div className="font-sans text-xs text-forest-500">per night</div>
+              <div className="font-sans text-xs text-forest-500">{isCz ? "za noc" : "per night"}</div>
             </div>
           </div>
 
-          {/* Stats */}
-          <div className="flex gap-4 py-4 border-y border-forest-100 mb-5 font-sans text-sm text-forest-700">
-            <span>👤 Up to {apartment.guests} guests</span>
-            <span>🛏 {apartment.beds}</span>
-            <span>🚿 {apartment.bathrooms}</span>
+          <div className="flex gap-4 py-4 border-y border-forest-100 mb-5 font-sans text-sm text-forest-700 flex-wrap">
+            <span>👤 {isCz ? "Až" : "Up to"} {apartment.guests} {isCz ? "hostů" : "guests"}</span>
+            <span>🛏 {isCz ? apartment.bedsCs : apartment.beds}</span>
+            <span>🚿 {isCz ? apartment.bathroomsCs : apartment.bathrooms}</span>
           </div>
 
-          {/* Description */}
           <p className="font-sans text-sm text-forest-700 leading-relaxed mb-6">
-            {apartment.description}
+            {isCz ? apartment.descriptionCs : apartment.description}
           </p>
 
-          {/* Amenities */}
           <div className="mb-8">
-            <p className="font-sans text-xs tracking-widest uppercase text-forest-500 mb-3">What this place offers</p>
+            <p className="font-sans text-xs tracking-widest uppercase text-forest-500 mb-3">
+              {isCz ? "Co je k dispozici" : "What this place offers"}
+            </p>
             <div className="grid grid-cols-2 gap-2">
-              {apartment.amenities.map((a) => (
+              {(isCz ? apartment.amenitiesCs : apartment.amenities).map((a) => (
                 <div key={a} className="flex items-center gap-2 font-sans text-sm text-forest-700">
                   <span className="w-1 h-1 rounded-full bg-gold inline-block flex-shrink-0" />
                   {a}
@@ -134,12 +121,11 @@ export default function ApartmentModal({ apartment, onClose, onBook }: Props) {
             </div>
           </div>
 
-          {/* CTA */}
           <button
             onClick={() => { onBook(apartment.id); onClose(); }}
             className="btn-primary w-full text-center"
           >
-            Book {apartment.name}
+            {isCz ? `Rezervovat ${apartment.name}` : `Book ${apartment.name}`}
           </button>
         </div>
       </div>

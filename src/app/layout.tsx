@@ -3,7 +3,7 @@ import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
+  subsets: ["latin-ext"],
   weight: ["300", "400", "500", "600"],
   variable: "--font-cormorant",
   display: "swap",
@@ -21,10 +21,6 @@ export const metadata: Metadata = {
     shortcut: "/favicon.svg",
     apple: "/favicon.svg",
   },
-  title: "Bouda Krista — Luxury Mountain Retreat in Krkonoše",
-  description:
-    "A newly renovated luxury lodge on a Krkonoše hilltop. Three designer apartments for up to 11 guests, private sauna, mountain views, inside Krkonoše National Park.",
-  keywords: ["Krkonoše", "luxury lodge", "mountain rental", "Rokytnice nad Jizerou", "Czech Republic", "group retreat"],
   metadataBase: new URL("https://bouda-krista.cz"),
   openGraph: {
     title: "Bouda Krista — Luxury Mountain Retreat",
@@ -37,7 +33,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
+    <html suppressHydrationWarning className={`${cormorant.variable} ${inter.variable}`}>
       <body>{children}</body>
     </html>
   );

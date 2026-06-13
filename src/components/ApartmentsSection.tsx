@@ -4,25 +4,29 @@ import { useState } from "react";
 import Link from "next/link";
 import ApartmentModal from "@/components/ApartmentModal";
 import { apartmentDetails, ApartmentDetail } from "@/data/apartments";
+import { useT, type Locale } from "@/i18n/translations";
 
-// Only show the 3 individual apartments (not whole house) in the about section
 const displayApts = apartmentDetails.filter((a) => a.id !== "whole");
 
-export default function ApartmentsSection() {
+type Props = { locale: Locale };
+
+export default function ApartmentsSection({ locale }: Props) {
   const [modalApt, setModalApt] = useState<ApartmentDetail | null>(null);
+  const tr = useT(locale);
 
   return (
     <section className="py-24 bg-forest-50">
       <ApartmentModal
         apartment={modalApt}
+        locale={locale}
         onClose={() => setModalApt(null)}
         onBook={() => {}}
       />
 
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <p className="section-subtitle mb-4">Three Spaces, One Lodge</p>
-          <h2 className="section-title">The Apartments</h2>
+          <p className="section-subtitle mb-4">{tr.apartments.subtitle}</p>
+          <h2 className="section-title">{tr.apartments.title}</h2>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -33,7 +37,6 @@ export default function ApartmentsSection() {
               onClick={() => setModalApt(apt)}
               className="group text-left bg-white border border-forest-100 hover:shadow-xl transition-all duration-300 overflow-hidden"
             >
-              {/* Photo */}
               <div className="relative aspect-[4/3] overflow-hidden">
                 <img
                   src={apt.photos[0].url}
@@ -43,21 +46,22 @@ export default function ApartmentsSection() {
                 <div className="absolute inset-0 bg-gradient-to-t from-forest-950/60 to-transparent" />
                 <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
                   <span className="font-serif text-xl text-stone-warm">{apt.name}</span>
-                  <span className="font-sans text-xs text-stone-warm/70 tracking-wide">Up to {apt.guests} guests</span>
+                  <span className="font-sans text-xs text-stone-warm/70 tracking-wide">
+                    {tr.apartments.upTo} {apt.guests} {tr.apartments.guests}
+                  </span>
                 </div>
               </div>
 
-              {/* Details */}
               <div className="p-6 border-t-2 border-gold">
                 <p className="font-sans text-sm text-forest-600 leading-relaxed mb-4 line-clamp-3">
-                  {apt.description}
+                  {locale === "cs" ? apt.descriptionCs : apt.description}
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="font-sans text-sm font-medium text-forest-700">
-                    {apt.defaultNightlyRate.toLocaleString("cs-CZ")} Kč / noc
+                    {apt.defaultNightlyRate.toLocaleString("cs-CZ")} {tr.apartments.perNight}
                   </span>
                   <span className="font-sans text-xs text-gold tracking-widest uppercase group-hover:underline">
-                    View details →
+                    {tr.apartments.details}
                   </span>
                 </div>
               </div>
@@ -67,10 +71,10 @@ export default function ApartmentsSection() {
 
         <div className="text-center mt-12 space-y-4">
           <p className="font-sans text-sm text-forest-500">
-            Need the whole lodge? Book all three apartments together for up to 11 guests.
+            {tr.apartments.wholeNote}
           </p>
-          <Link href="/book" className="btn-primary inline-block">
-            Book Your Stay
+          <Link href={`/${locale}/book`} className="btn-primary inline-block">
+            {tr.apartments.bookCta}
           </Link>
         </div>
       </div>

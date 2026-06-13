@@ -1,6 +1,12 @@
 import Link from "next/link";
+import { useT, type Locale } from "@/i18n/translations";
 
-export default function SuccessPage() {
+type Props = { params: Promise<{ locale: string }> };
+
+export default async function SuccessPage({ params }: Props) {
+  const { locale } = await params;
+  const tr = useT(locale as Locale);
+
   return (
     <div className="min-h-screen bg-stone-warm flex flex-col items-center justify-center px-6 text-center">
       <div className="w-16 h-16 rounded-full bg-forest-700 flex items-center justify-center mb-8">
@@ -8,13 +14,13 @@ export default function SuccessPage() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
       </div>
-      <p className="section-subtitle mb-4">Booking Confirmed</p>
-      <h1 className="section-title mb-6">See you at Bouda Krista!</h1>
+      <p className="section-subtitle mb-4">{tr.success.badge}</p>
+      <h1 className="section-title mb-6">{tr.success.title}</h1>
       <p className="font-sans text-forest-600 max-w-md mb-10 leading-relaxed">
-        A confirmation email is on its way. Access instructions for the lockbox will arrive 24 hours before your check-in.
+        {tr.success.desc}
       </p>
-      <Link href="/" className="btn-outline">
-        Back to Home
+      <Link href={`/${locale}`} className="btn-outline">
+        {tr.success.backHome}
       </Link>
     </div>
   );

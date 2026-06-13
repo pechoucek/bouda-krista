@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <style>
+    body { background: #1a311a; margin: 0; padding: 60px 40px; font-family: Georgia, serif; display: flex; flex-wrap: wrap; gap: 60px; justify-content: center; align-items: flex-start; }
+    .card { background: #0f1f0f; border: 1px solid #2a4a2a; padding: 50px 40px 36px; display: flex; flex-direction: column; align-items: center; gap: 24px; }
+    .label { color: #c9a84c; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; text-align: center; }
+    .desc { color: rgba(245,240,232,0.4); font-size: 10px; text-align: center; max-width: 220px; line-height: 1.8; font-family: sans-serif; }
+  </style>
+</head>
+<body>
+
+<!-- Single plant - flowers top only, starlike -->
+<div class="card" style="width:240px">
+  <div class="label">Standalone</div>
+  <svg viewBox="0 0 80 230" width="115" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+    <!-- Basal leaves -->
+    <path d="M40,218 C27,205 18,186 22,168 C32,175 39,194 40,210" stroke="white" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M40,218 C53,205 62,186 58,168 C48,175 41,194 40,210" stroke="white" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M40,212 C30,195 22,177 22,169" stroke="white" stroke-width="0.32" fill="none" opacity="0.4"/>
+    <path d="M40,212 C50,195 58,177 58,169" stroke="white" stroke-width="0.32" fill="none" opacity="0.4"/>
+
+    <!-- Stem — bare lower section, flowers start at ~y=110 -->
+    <line x1="40" y1="208" x2="40" y2="14" stroke="white" stroke-width="0.85" stroke-linecap="round"/>
+
+    <!-- Star-like flowers — top half of spike only, y from ~105 down to ~22 -->
+    <!-- Each flower: 2 wide lateral sepals with pointed tips curving out,
+         small arched hood, narrow lip down, thin spur curving down -->
+
+    <!-- FLOWER MACRO: wide lateral sepals that taper to a point (star arms),
+         hood arched above, spur long and thin hanging below -->
+
+    <!-- f1 — y=102 -->
+    <path d="M40,102 L34,97" stroke="white" stroke-width="0.45" stroke-linecap="round" opacity="0.5"/>
+    <!-- left sepal: wide curve tapering to point -->
+    <path d="M40,97 C34,93 24,92 18,96 C20,99 28,97 40,97" stroke="white" stroke-width="0.65" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- right sepal -->
+    <path d="M40,97 C46,93 56,92 62,96 C60,99 52,97 40,97" stroke="white" stroke-width="0.65" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- hood -->
+    <path d="M37.5,97 C36,92 38,88 40,87 C42,88 44,92 42.5,97" stroke="white" stroke-width="0.62" fill="none" stroke-linecap="round"/>
+    <!-- lip -->
+    <line x1="40" y1="97" x2="40" y2="106" stroke="white" stroke-width="0.62" stroke-linecap="round"/>
+    <!-- spur — long thin, curving -->
+    <path d="M40,106 C37,113 35,120 34,128" stroke="white" stroke-width="0.52" fill="none" stroke-linecap="round"/>
+
+    <!-- f2 — y=82 -->
+    <path d="M40,82 L46,77" stroke="white" stroke-width="0.45" stroke-linecap="round" opacity="0.5"/>
+    <path d="M40,77 C34,73 24,72 18,76 C20,79 28,77 40,77" stroke="white" stroke-width="0.62" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M40,77 C46,73 56,72 62,76 C60,79 52,77 40,77" stroke="white" stroke-width="0.62" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M37.5,77 C36,72 38,68 40,67 C42,68 44,72 42.5,77" stroke="white" stroke-width="0.6" fill="none" stroke-linecap="round"/>
+    <line x1="40" y1="77" x2="40" y2="86" stroke="white" stroke-width="0.6" stroke-linecap="round"/>
+    <path d="M40,86 C43,93 45,100 46,107" stroke="white" stroke-width="0.5" fill="none" stroke-linecap="round"/>
+
+    <!-- f3 — y=62 -->
+    <path d="M40,62 L34,57" stroke="white" stroke-width="0.42" stroke-linecap="round" opacity="0.48"/>
+    <path d="M40,57 C34,53 25,52 19,56 C21,59 29,57 40,57" stroke="white" stroke-width="0.58" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M40,57 C46,53 55,52 61,56 C59,59 51,57 40,57" stroke="white" stroke-width="0.58" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M38,57 C36.5,52 38,49 40,48 C42,49 43.5,52 42,57" stroke="white" stroke-width="0.56" fill="none" stroke-linecap="round"/>
+    <line x1="40" y1="57" x2="40" y2="65" stroke="white" stroke-width="0.56" stroke-linecap="round"/>
+    <path d="M40,65 C37,72 35,78 34,85" stroke="white" stroke-width="0.47" fill="none" stroke-linecap="round"/>
+
+    <!-- f4 — y=43 (smaller) -->
+    <path d="M40,43 L46,38" stroke="white" stroke-width="0.4" stroke-linecap="round" opacity="0.46"/>
+    <path d="M40,38 C35,34 27,33 21,37 C23,40 31,38 40,38" stroke="white" stroke-width="0.54" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M40,38 C45,34 53,33 59,37 C57,40 49,38 40,38" stroke="white" stroke-width="0.54" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M38,38 C37,34 38.5,31 40,30 C41.5,31 43,34 42,38" stroke="white" stroke-width="0.52" fill="none" stroke-linecap="round"/>
+    <line x1="40" y1="38" x2="40" y2="46" stroke="white" stroke-width="0.52" stroke-linecap="round"/>
+    <path d="M40,46 C43,52 45,57 46,63" stroke="white" stroke-width="0.43" fill="none" stroke-linecap="round"/>
+
+    <!-- f5 — y=26 (small) -->
+    <path d="M40,26 L34,22" stroke="white" stroke-width="0.37" stroke-linecap="round" opacity="0.44"/>
+    <path d="M40,22 C35,19 29,18 24,21 C26,24 32,22 40,22" stroke="white" stroke-width="0.48" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M40,22 C45,19 51,18 56,21 C54,24 48,22 40,22" stroke="white" stroke-width="0.48" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M38.5,22 C38,18 39,16 40,15 C41,16 42,18 41.5,22" stroke="white" stroke-width="0.46" fill="none" stroke-linecap="round"/>
+    <line x1="40" y1="22" x2="40" y2="29" stroke="white" stroke-width="0.46" stroke-linecap="round"/>
+    <path d="M40,29 C38,34 37,38 36,43" stroke="white" stroke-width="0.38" fill="none" stroke-linecap="round" opacity="0.85"/>
+
+    <!-- bud at top -->
+    <path d="M40,14 C38,11 38,7 40,5 C42,7 42,11 40,14" stroke="white" stroke-width="0.44" fill="none" stroke-linecap="round"/>
+
+    <!-- name -->
+    <text x="40" y="228" text-anchor="middle" font-family="Georgia,serif" font-size="7.5" letter-spacing="2.5" fill="white" opacity="0.9">BOUDA KRISTA</text>
+  </svg>
+  <div class="desc">Flowers on top only, star-like lateral sepals that taper to a fine point</div>
+</div>
+
+<!-- Horizontal layout -->
+<div class="card" style="width:420px">
+  <div class="label">With Text — Horizontal</div>
+  <svg viewBox="0 0 210 200" width="300" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- leaves -->
+    <path d="M38,188 C26,176 18,158 22,141 C31,148 37,167 38,181" stroke="white" stroke-width="0.95" fill="none" stroke-linecap="round"/>
+    <path d="M38,188 C50,176 58,158 54,141 C45,148 39,167 38,181" stroke="white" stroke-width="0.95" fill="none" stroke-linecap="round"/>
+    <path d="M38,183 C29,167 21,150 22,142" stroke="white" stroke-width="0.3" fill="none" opacity="0.38"/>
+    <path d="M38,183 C47,167 55,150 54,142" stroke="white" stroke-width="0.3" fill="none" opacity="0.38"/>
+    <!-- bare stem -->
+    <line x1="38" y1="182" x2="38" y2="12" stroke="white" stroke-width="0.82" stroke-linecap="round"/>
+
+    <!-- Flowers top only -->
+    <path d="M38,100 L32,95" stroke="white" stroke-width="0.44" stroke-linecap="round" opacity="0.5"/>
+    <path d="M38,95 C32,91 22,90 16,94 C18,97 26,95 38,95" stroke="white" stroke-width="0.62" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M38,95 C44,91 54,90 60,94 C58,97 50,95 38,95" stroke="white" stroke-width="0.62" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M35.5,95 C34,90 36,87 38,86 C40,87 42,90 40.5,95" stroke="white" stroke-width="0.6" fill="none" stroke-linecap="round"/>
+    <line x1="38" y1="95" x2="38" y2="104" stroke="white" stroke-width="0.6" stroke-linecap="round"/>
+    <path d="M38,104 C35,111 33,117 32,124" stroke="white" stroke-width="0.5" fill="none" stroke-linecap="round"/>
+
+    <path d="M38,78 L44,73" stroke="white" stroke-width="0.43" stroke-linecap="round" opacity="0.48"/>
+    <path d="M38,73 C32,69 22,68 16,72 C18,75 26,73 38,73" stroke="white" stroke-width="0.58" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M38,73 C44,69 54,68 60,72 C58,75 50,73 38,73" stroke="white" stroke-width="0.58" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M35.5,73 C34,68 36,65 38,64 C40,65 42,68 40.5,73" stroke="white" stroke-width="0.57" fill="none" stroke-linecap="round"/>
+    <line x1="38" y1="73" x2="38" y2="82" stroke="white" stroke-width="0.57" stroke-linecap="round"/>
+    <path d="M38,82 C41,89 43,94 44,100" stroke="white" stroke-width="0.47" fill="none" stroke-linecap="round"/>
+
+    <path d="M38,57 L32,52" stroke="white" stroke-width="0.4" stroke-linecap="round" opacity="0.46"/>
+    <path d="M38,52 C32,48 23,47 18,51 C20,54 28,52 38,52" stroke="white" stroke-width="0.54" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M38,52 C44,48 53,47 58,51 C56,54 48,52 38,52" stroke="white" stroke-width="0.54" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M36,52 C34.5,47 36,44 38,43 C40,44 41.5,47 40,52" stroke="white" stroke-width="0.52" fill="none" stroke-linecap="round"/>
+    <line x1="38" y1="52" x2="38" y2="61" stroke="white" stroke-width="0.53" stroke-linecap="round"/>
+    <path d="M38,61 C35,67 33,73 32,79" stroke="white" stroke-width="0.44" fill="none" stroke-linecap="round"/>
+
+    <path d="M38,37 L44,32" stroke="white" stroke-width="0.38" stroke-linecap="round" opacity="0.44"/>
+    <path d="M38,32 C33,28 25,27 20,31 C22,34 30,32 38,32" stroke="white" stroke-width="0.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M38,32 C43,28 51,27 56,31 C54,34 46,32 38,32" stroke="white" stroke-width="0.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M36,32 C35,28 36.5,25 38,24 C39.5,25 41,28 40,32" stroke="white" stroke-width="0.48" fill="none" stroke-linecap="round"/>
+    <line x1="38" y1="32" x2="38" y2="40" stroke="white" stroke-width="0.49" stroke-linecap="round"/>
+    <path d="M38,40 C41,46 43,51 44,57" stroke="white" stroke-width="0.4" fill="none" stroke-linecap="round"/>
+
+    <path d="M38,20 C35,17 35,12 38,10 C41,12 41,17 38,20" stroke="white" stroke-width="0.44" fill="none" stroke-linecap="round"/>
+    <line x1="38" y1="20" x2="38" y2="25" stroke="white" stroke-width="0.4" opacity="0.55"/>
+
+    <!-- gold divider -->
+    <line x1="70" y1="55" x2="70" y2="165" stroke="#c9a84c" stroke-width="0.4" opacity="0.4"/>
+
+    <!-- text -->
+    <text x="83" y="100" font-family="Georgia,serif" font-size="24" letter-spacing="1" fill="white" font-weight="300">BOUDA</text>
+    <text x="83" y="127" font-family="Georgia,serif" font-size="24" letter-spacing="1" fill="white" font-weight="300">KRISTA</text>
+    <line x1="83" y1="134" x2="207" y2="134" stroke="#c9a84c" stroke-width="0.42" opacity="0.55"/>
+    <text x="83" y="145" font-family="sans-serif" font-size="6" letter-spacing="2.5" fill="rgba(245,240,232,0.4)">ROKYTNICE NAD JIZEROU</text>
+  </svg>
+  <div class="desc">Orchid left, stacked text right — flowers clustered at top of bare stem</div>
+</div>
+
+<!-- Centred above text -->
+<div class="card" style="width:360px">
+  <div class="label">Centred Above Text</div>
+  <svg viewBox="0 0 180 185" width="260" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- leaves -->
+    <path d="M90,158 C78,147 70,130 74,114 C83,120 89,139 90,151" stroke="white" stroke-width="0.95" fill="none" stroke-linecap="round"/>
+    <path d="M90,158 C102,147 110,130 106,114 C97,120 91,139 90,151" stroke="white" stroke-width="0.95" fill="none" stroke-linecap="round"/>
+    <path d="M90,153 C81,137 73,120 74,115" stroke="white" stroke-width="0.3" fill="none" opacity="0.38"/>
+    <path d="M90,153 C99,137 107,120 106,115" stroke="white" stroke-width="0.3" fill="none" opacity="0.38"/>
+    <!-- stem -->
+    <line x1="90" y1="151" x2="90" y2="10" stroke="white" stroke-width="0.82" stroke-linecap="round"/>
+
+    <!-- Flowers — top portion only, from y=100 up -->
+    <!-- f1 y=100 -->
+    <path d="M90,100 L84,95" stroke="white" stroke-width="0.44" stroke-linecap="round" opacity="0.5"/>
+    <path d="M90,95 C84,91 74,90 68,94 C70,97 78,95 90,95" stroke="white" stroke-width="0.62" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M90,95 C96,91 106,90 112,94 C110,97 102,95 90,95" stroke="white" stroke-width="0.62" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M87.5,95 C86,90 88,87 90,86 C92,87 94,90 92.5,95" stroke="white" stroke-width="0.6" fill="none" stroke-linecap="round"/>
+    <line x1="90" y1="95" x2="90" y2="104" stroke="white" stroke-width="0.6" stroke-linecap="round"/>
+    <path d="M90,104 C87,111 85,117 84,124" stroke="white" stroke-width="0.5" fill="none" stroke-linecap="round"/>
+
+    <!-- f2 y=79 -->
+    <path d="M90,79 L96,74" stroke="white" stroke-width="0.43" stroke-linecap="round" opacity="0.48"/>
+    <path d="M90,74 C84,70 74,69 68,73 C70,76 78,74 90,74" stroke="white" stroke-width="0.58" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M90,74 C96,70 106,69 112,73 C110,76 102,74 90,74" stroke="white" stroke-width="0.58" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M87.5,74 C86,69 88,66 90,65 C92,66 94,69 92.5,74" stroke="white" stroke-width="0.56" fill="none" stroke-linecap="round"/>
+    <line x1="90" y1="74" x2="90" y2="83" stroke="white" stroke-width="0.57" stroke-linecap="round"/>
+    <path d="M90,83 C93,90 95,95 96,101" stroke="white" stroke-width="0.47" fill="none" stroke-linecap="round"/>
+
+    <!-- f3 y=58 -->
+    <path d="M90,58 L84,53" stroke="white" stroke-width="0.4" stroke-linecap="round" opacity="0.46"/>
+    <path d="M90,53 C84,49 76,48 70,52 C72,55 80,53 90,53" stroke="white" stroke-width="0.54" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M90,53 C96,49 104,48 110,52 C108,55 100,53 90,53" stroke="white" stroke-width="0.54" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M88,53 C86.5,48 88,45 90,44 C92,45 93.5,48 92,53" stroke="white" stroke-width="0.52" fill="none" stroke-linecap="round"/>
+    <line x1="90" y1="53" x2="90" y2="62" stroke="white" stroke-width="0.53" stroke-linecap="round"/>
+    <path d="M90,62 C87,68 85,74 84,80" stroke="white" stroke-width="0.43" fill="none" stroke-linecap="round"/>
+
+    <!-- f4 y=38 -->
+    <path d="M90,38 L96,33" stroke="white" stroke-width="0.37" stroke-linecap="round" opacity="0.44"/>
+    <path d="M90,33 C85,29 78,28 73,32 C75,35 83,33 90,33" stroke="white" stroke-width="0.49" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M90,33 C95,29 102,28 107,32 C105,35 97,33 90,33" stroke="white" stroke-width="0.49" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M88,33 C87,29 88.5,26 90,25 C91.5,26 93,29 92,33" stroke="white" stroke-width="0.46" fill="none" stroke-linecap="round"/>
+    <line x1="90" y1="33" x2="90" y2="41" stroke="white" stroke-width="0.47" stroke-linecap="round"/>
+    <path d="M90,41 C93,47 95,52 96,58" stroke="white" stroke-width="0.38" fill="none" stroke-linecap="round"/>
+
+    <!-- bud -->
+    <path d="M90,18 C88,15 88,10 90,8 C92,10 92,15 90,18" stroke="white" stroke-width="0.43" fill="none" stroke-linecap="round"/>
+    <line x1="90" y1="18" x2="90" y2="23" stroke="white" stroke-width="0.38" opacity="0.5"/>
+
+    <!-- text -->
+    <text x="90" y="174" text-anchor="middle" font-family="Georgia,serif" font-size="11" letter-spacing="4.5" fill="white" opacity="0.92">BOUDA KRISTA</text>
+    <line x1="20" y1="165" x2="65" y2="165" stroke="#c9a84c" stroke-width="0.42" opacity="0.55"/>
+    <line x1="115" y1="165" x2="160" y2="165" stroke="#c9a84c" stroke-width="0.42" opacity="0.55"/>
+    <text x="90" y="183" text-anchor="middle" font-family="sans-serif" font-size="5.5" letter-spacing="2.5" fill="rgba(245,240,232,0.38)">ROKYTNICE NAD JIZEROU</text>
+  </svg>
+  <div class="desc">Centred, flowers at top, bare stem meeting the leaves — gold rules beside the name</div>
+</div>
+
+</body>
+</html>

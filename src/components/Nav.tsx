@@ -2,17 +2,34 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
+import { useT, type Locale } from "@/i18n/translations";
 
-export default function Nav() {
+type Props = { locale: Locale };
+
+export default function Nav({ locale }: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const tr = useT(locale);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Build opposite-locale URL
+  const otherLocale: Locale = locale === "cs" ? "en" : "cs";
+  const otherPath = pathname.replace(`/${locale}`, `/${otherLocale}`);
+
+  const navLinks = [
+    ["#about",     tr.nav.about],
+    ["#gallery",   tr.nav.gallery],
+    ["#amenities", tr.nav.amenities],
+    ["#location",  tr.nav.location],
+  ];
 
   return (
     <header
@@ -21,16 +38,11 @@ export default function Nav() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-        <Logo />
+        <Logo href={`/${locale}`} />
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-10">
-          {[
-            ["#about",      "About"],
-            ["#gallery",    "Gallery"],
-            ["#amenities",  "Amenities"],
-            ["#location",   "Location"],
-          ].map(([href, label]) => (
+          {navLinks.map(([href, label]) => (
             <a
               key={href}
               href={href}
@@ -39,8 +51,15 @@ export default function Nav() {
               {label}
             </a>
           ))}
-          <Link href="/book" className="btn-primary py-3 px-6 text-xs">
-            Book Now
+          <Link href={`/${locale}/book`} className="btn-primary py-3 px-6 text-xs">
+            {tr.nav.book}
+          </Link>
+          {/* Language switcher */}
+          <Link
+            href={otherPath}
+            className="text-stone-warm/50 hover:text-stone-warm text-xs tracking-widest uppercase transition-colors border border-stone-warm/20 hover:border-stone-warm/50 px-2 py-1"
+          >
+            {otherLocale.toUpperCase()}
           </Link>
         </nav>
 
@@ -63,12 +82,7 @@ export default function Nav() {
       {/* Mobile menu */}
       {menuOpen && (
         <div className="md:hidden bg-forest-950/98 px-6 pb-8 flex flex-col gap-6">
-          {[
-            ["#about",      "About"],
-            ["#gallery",    "Gallery"],
-            ["#amenities",  "Amenities"],
-            ["#location",   "Location"],
-          ].map(([href, label]) => (
+          {navLinks.map(([href, label]) => (
             <a
               key={href}
               href={href}
@@ -78,8 +92,15 @@ export default function Nav() {
               {label}
             </a>
           ))}
-          <Link href="/book" className="btn-primary text-center" onClick={() => setMenuOpen(false)}>
-            Book Now
+          <Link href={`/${locale}/book`} className="btn-primary text-center" onClick={() => setMenuOpen(false)}>
+            {tr.nav.book}
+          </Link>
+          <Link
+            href={otherPath}
+            className="text-stone-warm/50 text-xs tracking-widest uppercase text-center"
+            onClick={() => setMenuOpen(false)}
+          >
+            {otherLocale === "cs" ? "Česky" : "English"}
           </Link>
         </div>
       )}
