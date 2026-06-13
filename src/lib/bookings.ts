@@ -1,8 +1,20 @@
 /**
- * Booking storage using Vercel KV (Redis).
- * Each booking is stored as: bookings:{apartment} → array of Booking objects
+ * Booking storage using Redis (ioredis).
+ * Each apartment has a list key: bookings:{apartment} → array of JSON strings
  */
-import { kv } from "@vercel/kv";
+import Redis from "ioredis";
+
+// Reuse connection across serverless invocations
+let client: Redis | null = null;
+
+function getRedis(): Redis {
+  if (!client) {
+    const url = process.env.REDIS_URL;
+    if (!url) throw new Error("REDIS_URL environment variable is not set");
+    client = new Redis(url, { maxRetriesPerRequest: 3 });
+  }
+  return client;
+}
 
 export type Booking = {
   id: string;
@@ -19,8 +31,10 @@ export type Booking = {
 const KEY = (apartment: string) => `bookings:${apartment}`;
 
 export async function saveBooking(booking: Booking): Promise<void> {
+  const redis = getRedis();
+
   // Save to apartment-specific list
-  await kv.lpush(KEY(booking.apartment), JSON.stringify(booking));
+  await redis.lpush(KEY(booking.apartment), JSON.stringify(booking));
 
   // If it's an apartment (not whole house), also block the whole house calendar
   if (booking.apartment !== "whole") {
@@ -30,7 +44,7 @@ export async function saveBooking(booking: Booking): Promise<void> {
       apartment: "whole",
       apartmentName: `Whole House (${booking.apartmentName} booked)`,
     };
-    await kv.lpush(KEY("whole"), JSON.stringify(wholeBooking));
+    await redis.lpush(KEY("whole"), JSON.stringify(wholeBooking));
   }
 
   // If whole house is booked, block all apartments
@@ -42,15 +56,16 @@ export async function saveBooking(booking: Booking): Promise<void> {
         apartment: apt,
         apartmentName: `${apt} (Whole House booked)`,
       };
-      await kv.lpush(KEY(apt), JSON.stringify(aptBooking));
+      await redis.lpush(KEY(apt), JSON.stringify(aptBooking));
     }
   }
 }
 
 export async function getBookings(apartment: string): Promise<Booking[]> {
   try {
-    const raw = await kv.lrange(KEY(apartment), 0, -1);
-    return raw.map((r) => (typeof r === "string" ? JSON.parse(r) : r) as Booking);
+    const redis = getRedis();
+    const raw = await redis.lrange(KEY(apartment), 0, -1);
+    return raw.map((r) => JSON.parse(r) as Booking);
   } catch {
     return [];
   }
