@@ -26,13 +26,13 @@ export const apartmentDetails: ApartmentDetail[] = [
   {
     id: "tiny",
     name: "Tiny Apartment",
-    nameCs: "Malý apartmán",
+    nameCs: "Malý Apartmán",
     tagline: "The cosiest retreat for two",
-    taglineCs: "Nejútulnější úkryt pro dva",
+    taglineCs: "Útulný úkryt pro zamilovaný pár",
     description:
-      "The Tiny Apartment is a perfectly formed hideaway for two. It comes equipped with a kitchenette and a private bathroom with shower. The highlight is the most wonderful bed nook you will never want to leave — tucked in and snug, with everything you need within reach. Step outside onto your own private terrace and take in the mountain air.",
+      "The Tiny Apartment is a cozy romantic hideaway for two. It comes equipped with a kitchenette and a private bathroom with shower. You will have a wonderful bed nook you will never want to leave — tucked in and snug, with everything you need within reach. And a full wall window looking onto your terrace and the mountains around.",
     descriptionCs:
-      "Tiny je dokonale navržený úkryt pro dva. K dispozici je kuchyňský kout a vlastní koupelna se sprchou. Hlavní lákadlem je postelová nika, ze které nebudete chtít vstávat — útulná a schovaná, s vším po ruce. Vyjděte na vlastní soukromou terasu a vdechněte horský vzduch.",
+      "Malý apartmán je útulný úkryt pro dva hosty. K dispozici je kuchyňský kout a vlastní koupelna se sprchou. Po večerech můžete zalézt do útulného postelového koutku, ze kterého nebudete chtít ráno vstávat. A přes den se můžete skrze veliké sklenéné okno dostat na terasu s výhledem na okolní hory.",
     guests: 2,
     bedrooms: "1 bedroom",
     bedroomsCs: "1 ložnice",
@@ -53,7 +53,7 @@ export const apartmentDetails: ApartmentDetail[] = [
   {
     id: "timber",
     name: "Timber Apartment",
-    nameCs: "Dřevěný apartmán",
+    nameCs: "Roubený Apartmán",
     tagline: "Space for four with a fireplace",
     taglineCs: "Prostor pro čtyři s krbem",
     description:
@@ -78,7 +78,7 @@ export const apartmentDetails: ApartmentDetail[] = [
   {
     id: "topfloor",
     name: "Top Floor Apartment",
-    nameCs: "Apartmán v podkroví",
+    nameCs: "Apartmán v Podkroví",
     tagline: "Sweeping views for up to five",
     taglineCs: "Výhledy do krajiny pro až pět hostů",
     description:
