@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ received: true, state: payment.state });
   }
 
-  const from       = process.env.EMAIL_FROM ?? "rezervace@bouda-krista.cz";
+  const from       = process.env.EMAIL_FROM ?? "Bouda Krista <chaloupka@bouda-krista.cz>";
   const ownerEmail = process.env.OWNER_EMAIL;
   const totalKc    = (payment.amount / 100).toLocaleString("cs-CZ") + " Kč";
   const guestEmail = payment.payer.contact.email;

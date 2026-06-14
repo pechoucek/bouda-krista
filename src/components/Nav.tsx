@@ -29,6 +29,7 @@ export default function Nav({ locale }: Props) {
     ["#gallery",   tr.nav.gallery],
     ["#amenities", tr.nav.amenities],
     ["#location",  tr.nav.location],
+    ["#contact",   tr.nav.contact],
   ];
 
   return (

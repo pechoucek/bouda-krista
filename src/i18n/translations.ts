@@ -10,6 +10,7 @@ const t = {
       gallery:   "Galerie",
       amenities: "Vybavení",
       location:  "Kde jsme",
+      contact:   "Kontakt",
       book:      "Rezervovat",
     },
 
@@ -95,6 +96,7 @@ const t = {
       gallery:   "Galerie",
       amenities: "Vybavení",
       location:  "Kde jsme",
+      contact:   "Kontakt",
       book:      "Rezervace",
     },
 
@@ -123,6 +125,22 @@ const t = {
       selfCheckin: "Samoobslužné ubytování přes schránku na klíče",
     },
 
+    // Contact
+    contact: {
+      subtitle:    "Máte otázky?",
+      title:       "Napište nám",
+      name:        "Jméno",
+      namePlaceholder: "Vaše jméno",
+      email:       "E-mail",
+      emailPlaceholder: "vas@email.cz",
+      message:     "Zpráva",
+      messagePlaceholder: "Co vás zajímá?",
+      submit:      "Odeslat zprávu",
+      submitting:  "Odesílám…",
+      success:     "Zpráva odeslána! Ozveme se vám co nejdříve.",
+      error:       "Něco se pokazilo. Zkuste to prosím znovu.",
+    },
+
     // Success
     success: {
       badge:   "Rezervace potvrzena",
@@ -139,6 +157,7 @@ const t = {
       gallery:   "Gallery",
       amenities: "Amenities",
       location:  "Location",
+      contact:   "Contact",
       book:      "Book Now",
     },
 
@@ -224,6 +243,7 @@ const t = {
       gallery:   "Gallery",
       amenities: "Amenities",
       location:  "Location",
+      contact:   "Contact",
       book:      "Book",
     },
 
@@ -250,6 +270,22 @@ const t = {
       rules:       "House Rules",
       checkin:     "Check-in after 15:00 · Check-out before 11:00",
       selfCheckin: "Self check-in via lockbox",
+    },
+
+    // Contact
+    contact: {
+      subtitle:    "Have questions?",
+      title:       "Get in Touch",
+      name:        "Name",
+      namePlaceholder: "Your name",
+      email:       "Email",
+      emailPlaceholder: "your@email.com",
+      message:     "Message",
+      messagePlaceholder: "What would you like to know?",
+      submit:      "Send Message",
+      submitting:  "Sending…",
+      success:     "Message sent! We'll get back to you as soon as possible.",
+      error:       "Something went wrong. Please try again.",
     },
 
     // Success
