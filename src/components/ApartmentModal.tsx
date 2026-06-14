@@ -84,7 +84,7 @@ export default function ApartmentModal({ apartment, locale, onClose, onBook }: P
         <div className="p-8">
           <div className="flex items-start justify-between mb-2">
             <div>
-              <h2 className="font-serif text-2xl text-forest-900">{apartment.name}</h2>
+              <h2 className="font-serif text-2xl text-forest-900">{isCz ? apartment.nameCs : apartment.name}</h2>
               <p className="font-sans text-sm text-forest-500 mt-1">
                 {isCz ? apartment.taglineCs : apartment.tagline}
               </p>
@@ -125,7 +125,7 @@ export default function ApartmentModal({ apartment, locale, onClose, onBook }: P
             onClick={() => { onBook(apartment.id); onClose(); }}
             className="btn-primary w-full text-center"
           >
-            {isCz ? `Rezervovat ${apartment.name}` : `Book ${apartment.name}`}
+            {isCz ? `Rezervovat — ${apartment.nameCs}` : `Book ${apartment.name}`}
           </button>
         </div>
       </div>

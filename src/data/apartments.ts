@@ -4,6 +4,7 @@ const p = (file: string) => `${BASE}/${file}?im_w=1440`;
 export type ApartmentDetail = {
   id: string;
   name: string;
+  nameCs: string;
   tagline: string;
   taglineCs: string;
   description: string;
@@ -25,6 +26,7 @@ export const apartmentDetails: ApartmentDetail[] = [
   {
     id: "tiny",
     name: "Tiny Apartment",
+    nameCs: "Malý apartmán",
     tagline: "The cosiest retreat for two",
     taglineCs: "Nejútulnější úkryt pro dva",
     description:
@@ -51,6 +53,7 @@ export const apartmentDetails: ApartmentDetail[] = [
   {
     id: "timber",
     name: "Timber Apartment",
+    nameCs: "Dřevěný apartmán",
     tagline: "Space for four with a fireplace",
     taglineCs: "Prostor pro čtyři s krbem",
     description:
@@ -75,6 +78,7 @@ export const apartmentDetails: ApartmentDetail[] = [
   {
     id: "topfloor",
     name: "Top Floor Apartment",
+    nameCs: "Apartmán v podkroví",
     tagline: "Sweeping views for up to five",
     taglineCs: "Výhledy do krajiny pro až pět hostů",
     description:
@@ -106,6 +110,7 @@ export const apartmentDetails: ApartmentDetail[] = [
   {
     id: "whole",
     name: "Whole House",
+    nameCs: "Celý dům",
     tagline: "The entire Bouda Krista for your group",
     taglineCs: "Celá Bouda Krista pro vaši skupinu",
     description:
