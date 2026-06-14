@@ -98,7 +98,7 @@ export default function ApartmentModal({ apartment, locale, onClose, onBook }: P
           </div>
 
           <div className="flex gap-4 py-4 border-y border-forest-100 mb-5 font-sans text-sm text-forest-700 flex-wrap">
-            <span>👤 {isCz ? "Až" : "Up to"} {apartment.guests} {isCz ? "hostů" : "guests"}</span>
+            <span>👤 {apartment.guestsLabel ?? `${isCz ? "Až" : "Up to"} ${apartment.guests}`} {isCz ? "hostů" : "guests"}</span>
             <span>🛏 {isCz ? apartment.bedsCs : apartment.beds}</span>
             <span>🚿 {isCz ? apartment.bathroomsCs : apartment.bathrooms}</span>
           </div>

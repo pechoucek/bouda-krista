@@ -10,6 +10,7 @@ export type ApartmentDetail = {
   description: string;
   descriptionCs: string;
   guests: number;
+  guestsLabel?: string;
   bedrooms: string;
   bedroomsCs: string;
   beds: string;
@@ -61,6 +62,7 @@ export const apartmentDetails: ApartmentDetail[] = [
     descriptionCs:
       "Roubený apartmántvoří dvě místnosti: ložnice s přístupem na terasu a do zahrady, vlastní koupelnou se sprchou a toaletou a světlý obývací pokoj s plně vybaveným kuchyňským koutem, dubovou lavicí a velkým stolem, pohovkou, která se rozloží na dvě samostatná lůžka. Za chladných horských večerů umocní teplo roubené světnice oheň v krbových kamnech.",
     guests: 4,
+    guestsLabel: "2–4",
     bedrooms: "2 rooms",
     bedroomsCs: "2 pokoje",
     beds: "1 king-size bed + extendable sofa bed into two separate beds",
