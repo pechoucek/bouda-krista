@@ -28,11 +28,11 @@ export const apartmentDetails: ApartmentDetail[] = [
     name: "Tiny Apartment",
     nameCs: "Malý Apartmán",
     tagline: "The cosiest retreat for two",
-    taglineCs: "Útulný úkryt pro zamilovaný pár",
+    taglineCs: "Útulný úkryt pro dva",
     description:
       "The Tiny Apartment is a cozy romantic hideaway for two. It comes equipped with a kitchenette and a private bathroom with shower. You will have a wonderful bed nook you will never want to leave — tucked in and snug, with everything you need within reach. And a full wall window looking onto your terrace and the mountains around.",
     descriptionCs:
-      "Malý apartmán je útulný úkryt pro dva hosty. K dispozici je kuchyňský kout a vlastní koupelna se sprchou. Po večerech můžete zalézt do útulného postelového koutku, ze kterého nebudete chtít ráno vstávat. A přes den se můžete skrze veliké sklenéné okno dostat na terasu s výhledem na okolní hory.",
+      "Malý apartmán je útulným úkrytem pro dva hosty. K dispozici je kuchyňský kout a vlastní koupelna se sprchou. Po večerech můžete zalézt do útulného postelového koutku, ze kterého nebudete chtít ráno vstávat. A přes den se můžete skrze veliké sklenéné okno dostat na terasu s výhledem na okolní hory.",
     guests: 2,
     bedrooms: "1 bedroom",
     bedroomsCs: "1 ložnice",
