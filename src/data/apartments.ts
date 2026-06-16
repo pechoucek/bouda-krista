@@ -72,7 +72,7 @@ export const apartmentDetails: ApartmentDetail[] = [
     amenities: ["Fireplace", "Terrace access", "Fully equipped kitchenette", "Dining area", "Sofa bed", "Private bathroom", "Mountain views", "Self check-in"],
     amenitiesCs: ["Krb", "Přístup na terasu", "Plně vybavená kuchyňka", "Jídelní část", "Rozkládací pohovka", "Vlastní koupelna", "Výhledy na hory", "Samoobslužný příjezd"],
     photos: [
-      { url: p("661dc332-b833-43f7-b755-05977b10e7c2.jpeg"), alt: "Dining area" },
+      { url: p("661dc332-b833-43f7-b755-05977b10e7c2.jpeg"), alt: "Bedroom" },
       { url: p("7c002b6b-0732-4dc5-a9db-b9138467ffc8.jpeg"), alt: "Terrace overlooking mountains" },
     ],
     defaultNightlyRate: 6000,
