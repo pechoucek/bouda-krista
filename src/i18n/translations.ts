@@ -117,9 +117,9 @@ const t = {
       nightsPlural:"í",
       total:       "Celkem",
       calculating: "Počítám…",
-      submit:      "Přejít k platbě",
-      submitting:  "Přesměrovávám…",
-      payNote:     "Platba zabezpečena přes GoPay · Karty, bankovní převod, Google Pay",
+      submit:      "Odeslat poptávku",
+      submitting:  "Odesílám…",
+      payNote:     "Ozveme se vám co nejdříve s potvrzením a platebními instrukcemi.",
       rules:       "Pravidla domu",
       checkin:     "Příjezd po 15:00 · Odjezd do 11:00",
       selfCheckin: "Samoobslužné ubytování přes schránku na klíče",
@@ -143,9 +143,9 @@ const t = {
 
     // Success
     success: {
-      badge:   "Rezervace potvrzena",
-      title:   "Těšíme se na vás v Boudě Kristě!",
-      desc:    "Potvrzovací e-mail je na cestě. Přístupové instrukce ke schránce s klíčem obdržíte 24 hodin před příjezdem.",
+      badge:   "Poptávka odeslána",
+      title:   "Brzy se vám ozveme!",
+      desc:    "Obdrželi jsme vaši poptávku a potvrzovací e-mail je na cestě. Ozveme se vám co nejdříve s potvrzením dostupnosti a platebními instrukcemi.",
       backHome:"Zpět na hlavní stránku",
     },
   },
@@ -264,9 +264,9 @@ const t = {
       nightsPlural:"s",
       total:       "Total",
       calculating: "Calculating…",
-      submit:      "Proceed to Payment",
-      submitting:  "Redirecting…",
-      payNote:     "Payment secured via GoPay · Cards, bank transfer, Google Pay",
+      submit:      "Send Reservation Request",
+      submitting:  "Sending…",
+      payNote:     "We will get back to you shortly to confirm availability and arrange payment.",
       rules:       "House Rules",
       checkin:     "Check-in after 15:00 · Check-out before 11:00",
       selfCheckin: "Self check-in via lockbox",
@@ -290,9 +290,9 @@ const t = {
 
     // Success
     success: {
-      badge:   "Booking Confirmed",
-      title:   "See you at Bouda Krista!",
-      desc:    "A confirmation email is on its way. Access instructions for the lockbox will arrive 24 hours before your check-in.",
+      badge:   "Request Sent",
+      title:   "We'll be in touch soon!",
+      desc:    "We received your reservation request and a confirmation email is on its way. We will contact you shortly to confirm availability and arrange payment.",
       backHome:"Back to Home",
     },
   },

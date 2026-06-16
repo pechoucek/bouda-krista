@@ -59,7 +59,7 @@ export default function BookPage({ params }: Props) {
     setError("");
     setLoading(true);
 
-    const res = await fetch("/api/checkout", {
+    const res = await fetch("/api/reservation-request", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -69,13 +69,15 @@ export default function BookPage({ params }: Props) {
         apartmentName: selectedApt.name,
         guestName:    name,
         guestEmail:   email,
+        nights:       priceInfo?.nights ?? "—",
+        total:        priceInfo?.total?.toLocaleString("cs-CZ") ?? "—",
         locale:       l,
       }),
     });
 
     const data = await res.json();
-    if (data.url) {
-      window.location.href = data.url;
+    if (data.ok) {
+      window.location.href = `/${l}/book/success`;
     } else {
       setError(data.error ?? "Something went wrong. Please try again.");
       setLoading(false);
