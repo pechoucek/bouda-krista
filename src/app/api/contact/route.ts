@@ -10,8 +10,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
-  const from       = process.env.EMAIL_FROM ?? "Bouda Krista <chaloupka@bouda-krista.cz>";
-  const ownerEmail = process.env.OWNER_EMAIL;
+  const from       = "Bouda Krista <onboarding@resend.dev>";
+  const ownerEmail = process.env.OWNER_EMAIL ?? "chaloupka.krista@gmail.com";
 
   if (!ownerEmail) {
     return NextResponse.json({ error: "Owner email not configured" }, { status: 500 });

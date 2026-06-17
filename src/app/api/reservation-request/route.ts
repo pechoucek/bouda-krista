@@ -10,8 +10,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
-  const from       = process.env.EMAIL_FROM ?? "Bouda Krista <chaloupka@bouda-krista.cz>";
-  const ownerEmail = process.env.OWNER_EMAIL;
+  const from       = "Bouda Krista <onboarding@resend.dev>";
+  const ownerEmail = process.env.OWNER_EMAIL ?? "chaloupka.krista@gmail.com";
   const isCz       = locale === "cs";
 
   try {
@@ -48,6 +48,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from,
       to: guestEmail,
+      replyTo: ownerEmail,
       subject: isCz
         ? "Přijali jsme vaši poptávku — Bouda Krista"
         : "We received your reservation request — Bouda Krista",
