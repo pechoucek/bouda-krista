@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   }
 
   const from       = "Bouda Krista <rezervace@bouda-krista.cz>";
-  const ownerEmail = process.env.OWNER_EMAIL ?? "chaloupka.krista@gmail.com";
+  const ownerEmail = "chaloupka.krista@gmail.com";
   const isCz       = locale === "cs";
 
   try {
