@@ -22,7 +22,7 @@ export default function BookPage({ params }: Props) {
   const [email, setEmail]           = useState("");
   const [loading, setLoading]       = useState(false);
   const [error, setError]           = useState("");
-  const [priceInfo, setPriceInfo]   = useState<{ total: number; nights: number; nightlyRate: number } | null>(null);
+  const [priceInfo, setPriceInfo]   = useState<{ total: number; nights: number; nightlyRate: number; discountName?: string } | null>(null);
   const [loadingPrice, setLoadingPrice] = useState(false);
 
   const selectedApt = apartments.find((a) => a.id === apartment) ?? apartments[3];
@@ -185,6 +185,14 @@ export default function BookPage({ params }: Props) {
 
                 {checkIn && checkOut && (
                   <div className="border-t border-forest-100 pt-5 space-y-2">
+                    {priceInfo?.discountName && (
+                      <div className="bg-gold/10 border border-gold/40 px-3 py-2 flex items-center gap-2">
+                        <span className="text-gold text-xs">✦</span>
+                        <span className="font-sans text-xs text-forest-700">
+                          {priceInfo.discountName} — {l === "cs" ? "zvýhodněná cena" : "special rate applied"}
+                        </span>
+                      </div>
+                    )}
                     <div className="flex justify-between font-sans text-sm text-forest-700">
                       <span>{selectedApt.name}</span>
                     </div>
