@@ -23,7 +23,8 @@
       "id": "whole",
       "name": "Whole House",
       "guests": "Up to 11 guests",
-      "defaultNightlyRate": 12000
+      "defaultNightlyRate": 12000,
+      "discountFrom": 10000
     }
   ],
   "specialPeriods": [

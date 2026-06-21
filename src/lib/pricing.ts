@@ -22,6 +22,7 @@ type Apartment = {
   name: string;
   guests: string;
   defaultNightlyRate: number;
+  discountFrom?: number;
 };
 
 export const apartments: Apartment[] = pricingData.apartments;

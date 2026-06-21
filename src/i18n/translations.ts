@@ -82,6 +82,14 @@ const t = {
       bookCta: "Rezervovat pobyt",
     },
 
+    // Summer discount
+    summerDeal: {
+      badge:  "Letní nabídka",
+      title:  "Housewarming sleva na celý dům",
+      desc:   "Zarezervujte celý dům na týden nebo déle a získáte speciální cenu 10 000 Kč za noc místo obvyklých 12 000 Kč. Nabídka platí pro pobyty začínající od června do konce srpna 2026.",
+      cta:    "Zobrazit dostupnost",
+    },
+
     // CTA
     cta: {
       subtitle: "Připraveni na útěk?",
@@ -227,6 +235,14 @@ const t = {
         "Free private parking on premises",
       ],
       bookCta: "Book Your Stay",
+    },
+
+    // Summer discount
+    summerDeal: {
+      badge:  "Summer offer",
+      title:  "Housewarming discount for the whole lodge",
+      desc:   "Book the entire lodge for a week or more and get a special rate of 10,000 CZK per night instead of the usual 12,000 CZK. Valid for stays starting June through end of August 2026.",
+      cta:    "Check availability",
     },
 
     // CTA
