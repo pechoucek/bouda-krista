@@ -17,6 +17,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  verification: {
+    google: "571d0a600ef8fdd3",
+  },
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
