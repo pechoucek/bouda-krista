@@ -44,6 +44,20 @@ export default async function Home({ params }: Props) {
         </div>
       </div>
 
+      {/* Summer deal banner */}
+      <section className="bg-gold/10 border-y border-gold/30 py-12 px-6">
+        <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <span className="font-sans text-xs tracking-widest uppercase text-gold">{tr.summerDeal.badge}</span>
+            <h2 className="font-serif text-2xl text-forest-900 mt-1 mb-2">{tr.summerDeal.title}</h2>
+            <p className="font-sans text-sm text-forest-600 leading-relaxed max-w-xl">{tr.summerDeal.desc}</p>
+          </div>
+          <Link href={`/${l}/book`} className="btn-primary whitespace-nowrap flex-shrink-0">
+            {tr.summerDeal.cta}
+          </Link>
+        </div>
+      </section>
+
       {/* About */}
       <section id="about" className="py-28 px-6">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
@@ -91,20 +105,6 @@ export default async function Home({ params }: Props) {
 
       {/* Amenities */}
       <Amenities locale={l} />
-
-      {/* Summer deal banner */}
-      <section className="bg-gold/10 border-y border-gold/30 py-12 px-6">
-        <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div>
-            <span className="font-sans text-xs tracking-widest uppercase text-gold">{tr.summerDeal.badge}</span>
-            <h2 className="font-serif text-2xl text-forest-900 mt-1 mb-2">{tr.summerDeal.title}</h2>
-            <p className="font-sans text-sm text-forest-600 leading-relaxed max-w-xl">{tr.summerDeal.desc}</p>
-          </div>
-          <Link href={`/${l}/book`} className="btn-primary whitespace-nowrap flex-shrink-0">
-            {tr.summerDeal.cta}
-          </Link>
-        </div>
-      </section>
 
       {/* Location */}
       <section id="location" className="py-28 px-6">
