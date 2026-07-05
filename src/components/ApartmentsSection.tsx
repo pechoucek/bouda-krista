@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import ApartmentModal from "@/components/ApartmentModal";
 import { apartmentDetails, ApartmentDetail } from "@/data/apartments";
 import { useT, type Locale } from "@/i18n/translations";
@@ -13,6 +14,7 @@ type Props = { locale: Locale };
 export default function ApartmentsSection({ locale }: Props) {
   const [modalApt, setModalApt] = useState<ApartmentDetail | null>(null);
   const tr = useT(locale);
+  const router = useRouter();
 
   return (
     <section className="py-24 bg-forest-50">
@@ -20,7 +22,7 @@ export default function ApartmentsSection({ locale }: Props) {
         apartment={modalApt}
         locale={locale}
         onClose={() => setModalApt(null)}
-        onBook={() => {}}
+        onBook={(id) => router.push(`/${locale}/book?apt=${id}`)}
       />
 
       <div className="max-w-7xl mx-auto px-6">

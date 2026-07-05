@@ -15,7 +15,13 @@ export default function BookPage({ params }: Props) {
   const l = locale as Locale;
   const tr = useT(l);
 
-  const [apartment, setApartment]   = useState(apartments[3].id);
+  const [apartment, setApartment]   = useState(() => {
+    if (typeof window !== "undefined") {
+      const apt = new URLSearchParams(window.location.search).get("apt");
+      if (apt && apartments.find((a) => a.id === apt)) return apt;
+    }
+    return apartments[3].id;
+  });
   const [checkIn, setCheckIn]       = useState<Date | null>(null);
   const [checkOut, setCheckOut]     = useState<Date | null>(null);
   const [name, setName]             = useState("");
