@@ -92,9 +92,9 @@ const t = {
 
     // CTA
     cta: {
-      subtitle: "Připraveni na útěk?",
-      title:    "Zarezervujte svůj pobyt",
-      desc:     "Vyberte si termín, zaplaťte bezpečně online a okamžitě obdržíte potvrzení.",
+      subtitle: "Místo v horách na vás čeká.",
+      title:    "Rezervujte si svůj pobyt.",
+      desc:     "Stačí vybrat termín, bezpečně zaplatit online a potvrzení vám dorazí během několika minut.",
       button:   "Ověřit dostupnost",
     },
 
@@ -137,6 +137,8 @@ const t = {
     contact: {
       subtitle:    "Máte otázky?",
       title:       "Napište nám",
+      desc1:       "Máte dotaz ohledně ubytování, vybavení, dostupnosti nebo čehokoli dalšího? Rádi vám pomůžeme.",
+      desc2:       "Ozvěte se nám prostřednictvím kontaktního formuláře nebo nám napište zprávu na Instagramu.",
       name:        "Jméno",
       namePlaceholder: "Vaše jméno",
       email:       "E-mail",
@@ -247,9 +249,9 @@ const t = {
 
     // CTA
     cta: {
-      subtitle: "Ready to Escape?",
-      title:    "Book Your Stay",
-      desc:     "Select your dates, complete payment securely online, and receive instant confirmation.",
+      subtitle: "Mountains are waiting for you.",
+      title:    "Book your stay.",
+      desc:     "Just select your dates, pay securely online, and receive your confirmation within a few minutes.",
       button:   "Check Availability",
     },
 
@@ -292,6 +294,8 @@ const t = {
     contact: {
       subtitle:    "Have questions?",
       title:       "Get in Touch",
+      desc1:       "Do you have a question about the accommodation, amenities, availability, or anything else? We are happy to help.",
+      desc2:       "Get in touch using the contact form or send us a message on Instagram.",
       name:        "Name",
       namePlaceholder: "Your name",
       email:       "Email",

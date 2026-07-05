@@ -42,11 +42,8 @@ export default function Contact({ locale }: Props) {
         <div>
           <p className="section-subtitle mb-5">{c.subtitle}</p>
           <h2 className="section-title mb-8">{c.title}</h2>
-          <p className="font-sans text-forest-700 leading-relaxed mb-10">
-            {locale === "cs"
-              ? "Máte dotaz ohledně vybavení, dostupnosti nebo okolí? Napište nám a rádi vám pomůžeme."
-              : "Questions about the property, availability, or the area? Drop us a message and we'll be happy to help."}
-          </p>
+          <p className="font-sans text-forest-700 leading-relaxed mb-4">{c.desc1}</p>
+          <p className="font-sans text-forest-700 leading-relaxed mb-10">{c.desc2}</p>
 
           {/* Instagram */}
           <a
