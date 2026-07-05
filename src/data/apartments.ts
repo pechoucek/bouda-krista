@@ -33,7 +33,7 @@ export const apartmentDetails: ApartmentDetail[] = [
     description:
       "The Tiny apartment is a cozy romantic hideaway for two. It comes equipped with a kitchenette and a private bathroom with shower. You will have a wonderful bed nook you will never want to leave — tucked in and snug, with everything you need within reach. And a full wall window looking onto your terrace and the mountains around.",
     descriptionCs:
-      "Malý apartmán je útulným úkrytem pro dva hosty. K dispozici je kuchyňský kout a vlastní koupelna se sprchou a toaletou. Spát budete ve velké posteli s úložnými prostory, kde se vám bude hezky odpočívat s knihou nebo výhledem do luk a na obrysy kopců. Kochat se výhledem na hory můžete i z kryté terasy, na kterou vede velké prosklené okno.",
+      "Malý apartmán je útulným útočištěm pro dva hosty. K dispozici je kuchyňský kout a vlastní koupelna se sprchou a toaletou. Ve velké pohodlné posteli s úložným prostorem si můžete vychutnat pomalá rána, večery s knihou nebo jen ticho a výhled do okolních luk a na horské hřebeny. Přes velké prosklené okno se dostanete na krytou terasu, opět s výhledem na hory.",
     guests: 2,
     bedrooms: "1 bedroom",
     bedroomsCs: "1 ložnice",
@@ -41,8 +41,8 @@ export const apartmentDetails: ApartmentDetail[] = [
     bedsCs: "1 manželská postel",
     bathrooms: "1 bathroom (shower)",
     bathroomsCs: "1 koupelna (sprcha)",
-    amenities: ["Private terrace", "Kitchenette", "Private bathroom", "Shower", "Mountain views", "Self check-in"],
-    amenitiesCs: ["Soukromá terasa", "Kuchyňský kout", "Vlastní koupelna", "Sprcha", "Výhledy na hory", "Samoobslužný příjezd"],
+    amenities: ["Shared terrace", "Kitchenette", "Private bathroom", "Shower", "Mountain views", "Self check-in"],
+    amenitiesCs: ["Terasa (sdílená)", "Kuchyňský kout", "Vlastní koupelna", "Sprcha", "Výhledy na hory", "Samoobslužný příjezd"],
     photos: [
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/829fb174-5292-49e0-b7fa-c081b3ac7f84.jpeg?im_w=1440", alt: "Tiny apartment" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/c4790a5a-16e6-4207-9b2a-0c6015a02d65.jpeg?im_w=1440", alt: "Tiny apartment interior" },
@@ -62,17 +62,17 @@ export const apartmentDetails: ApartmentDetail[] = [
     description:
       "The Timber apartment spans two rooms: a bedroom with terrace and garden access and a private bathroom with shower, plus a bright living area with a fully equipped kitchenette, dining area, and a sofa that converts into two separate beds. Gather around the fireplace on cool mountain evenings — this apartment has warmth in every sense.",
     descriptionCs:
-      "Roubený apartmántvoří dvě místnosti: ložnice s přístupem na terasu a do zahrady, vlastní koupelnou se sprchou a toaletou a světlý obývací pokoj s plně vybaveným kuchyňským koutem, dubovou lavicí a velkým stolem, pohovkou, která se rozloží na dvě samostatná lůžka. Za chladných horských večerů umocní teplo roubené světnice oheň v krbových kamnech.",
+      "Roubený apartmán tvoří dvě místnosti – světlý obývací pokoj s plně vybaveným kuchyňským koutem a ložnice s vlastní koupelnou se sprchou a toaletou a přímým vstupem na terasu i do zahrady. Nechybí velký jídelní stůl s dubovou lavicí ani pohodlná pohovka, kterou lze rozložit na dvě samostatná lůžka. Atmosféru roubené světnice během chladných horských večerů dotváří praskající oheň v krbových kamnech.",
     guests: 4,
     guestsLabel: "2–4",
     bedrooms: "2 rooms",
     bedroomsCs: "2 pokoje",
     beds: "1 king-size bed + extendable sofa bed into two separate beds",
-    bedsCs: "1 manželská postel + rozkládací pohovka - dvě samostatná lůžka",
+    bedsCs: "1 manželská postel + rozkládací pohovka (dvě samostatná lůžka)",
     bathrooms: "1 bathroom (shower)",
     bathroomsCs: "1 koupelna (sprcha)",
-    amenities: ["Fireplace", "Terrace access", "Fully equipped kitchenette", "Dining area", "Sofa bed", "Private bathroom", "Mountain views", "Self check-in"],
-    amenitiesCs: ["Krb", "Přístup na terasu", "Plně vybavená kuchyňka", "Jídelní část", "Rozkládací pohovka", "Vlastní koupelna", "Výhledy na hory", "Samoobslužný příjezd"],
+    amenities: ["Fireplace", "Terrace access", "Fully equipped kitchen", "Dining area", "Sofa bed", "Private bathroom", "Mountain views", "Self check-in"],
+    amenitiesCs: ["Krb", "Přístup na terasu", "Plně vybavená kuchyň", "Jídelní část", "Rozkládací pohovka", "Vlastní koupelna", "Výhledy na hory", "Samoobslužný příjezd"],
     photos: [
       { url: p("7c002b6b-0732-4dc5-a9db-b9138467ffc8.jpeg"), alt: "Terrace overlooking mountains" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1677566795867113387/original/6476fdbd-3791-48f8-bc0d-049af9a7d6e1.jpeg?im_w=1440", alt: "Timber apartment interior" },
