@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, use } from "react";
+import { useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 import BookingCalendar from "@/components/BookingCalendar";
 import Link from "next/link";
@@ -15,13 +16,10 @@ export default function BookPage({ params }: Props) {
   const l = locale as Locale;
   const tr = useT(l);
 
-  const [apartment, setApartment]   = useState(() => {
-    if (typeof window !== "undefined") {
-      const apt = new URLSearchParams(window.location.search).get("apt");
-      if (apt && apartments.find((a) => a.id === apt)) return apt;
-    }
-    return apartments[3].id;
-  });
+  const searchParams = useSearchParams();
+  const aptParam = searchParams.get("apt");
+  const initialApt = aptParam && apartments.find((a) => a.id === aptParam) ? aptParam : apartments[3].id;
+  const [apartment, setApartment] = useState(initialApt);
   const [checkIn, setCheckIn]       = useState<Date | null>(null);
   const [checkOut, setCheckOut]     = useState<Date | null>(null);
   const [name, setName]             = useState("");
