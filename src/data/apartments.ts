@@ -32,7 +32,7 @@ export const apartmentDetails: ApartmentDetail[] = [
     tagline: "The cosiest retreat for two",
     taglineCs: "Útulný úkryt pro dva",
     description:
-      "The Tiny apartment is a cozy romantic hideaway for two. It comes equipped with a kitchenette and a private bathroom with shower. You will have a wonderful bed nook you will never want to leave — tucked in and snug, with everything you need within reach. And a full wall window looking onto your terrace and the mountains around.",
+      "This small apartment is a cozy retreat for two guests. It features a kitchenette and a private bathroom with a shower and toilet. In the large, comfortable bed with storage space, you can enjoy leisurely mornings, evenings with a book, or simply the quiet and the view of the surrounding meadows and mountain ridges. Through the large glass window, you can step out onto the covered terrace, which also offers a view of the mountains.",
     descriptionCs:
       "Malý apartmán je útulným útočištěm pro dva hosty. K dispozici je kuchyňský kout a vlastní koupelna se sprchou a toaletou. Ve velké pohodlné posteli s úložným prostorem si můžete vychutnat pomalá rána, večery s knihou nebo jen ticho a výhled do okolních luk a na horské hřebeny. Přes velké prosklené okno se dostanete na krytou terasu, opět s výhledem na hory.",
     guests: 2,
@@ -62,7 +62,7 @@ export const apartmentDetails: ApartmentDetail[] = [
     tagline: "Space for two to four with a fireplace",
     taglineCs: "Prostor pro dva až čtyři s krbovými kamny",
     description:
-      "The Timber apartment spans two rooms: a bedroom with terrace and garden access and a private bathroom with shower, plus a bright living area with a fully equipped kitchenette, dining area, and a sofa that converts into two separate beds. Gather around the fireplace on cool mountain evenings — this apartment has warmth in every sense.",
+      "The log cabin apartment consists of two rooms—a bright living room with a fully equipped kitchenette and a bedroom with a private bathroom featuring a shower and toilet, as well as direct access to the terrace and garden. It also features a large dining table with an oak bench and a comfortable sofa that can be converted into two separate beds. On chilly mountain evenings, a crackling fire in the wood-burning stove adds to the atmosphere of the log cabin.",
     descriptionCs:
       "Roubený apartmán tvoří dvě místnosti – světlý obývací pokoj s plně vybaveným kuchyňským koutem a ložnice s vlastní koupelnou se sprchou a toaletou a přímým vstupem na terasu i do zahrady. Nechybí velký jídelní stůl s dubovou lavicí ani pohodlná pohovka, kterou lze rozložit na dvě samostatná lůžka. Atmosféru roubené světnice během chladných horských večerů dotváří praskající oheň v krbových kamnech.",
     guests: 4,
@@ -92,9 +92,9 @@ export const apartmentDetails: ApartmentDetail[] = [
     tagline: "Sweeping views for up to five",
     taglineCs: "Výhledy do krajiny až pro pět hostů",
     description:
-      "The Top Floor apartment is the most spacious of the three. Two bedrooms — one with a king-size bed, one with a long bed sleeping three — are joined by a huge living room with a fully equipped kitchen, dining table, and a beautiful oak bench. A relaxation sofa sits by a French window that opens directly onto the meadows. The bathroom offers mountain views, and there is another separate toilet for added convenience.",
+      "The attic apartment is the most spacious of the three. It features two bedrooms—one with a double bed and the other with a large wooden platform bed that sleeps three. The bedrooms open onto a large living room with a fully equipped kitchen, a dining table, and an oak bench. Through the French window, you look directly out onto the meadows; the bathroom offers a view of the mountains, and a second separate restroom adds to the comfort of your stay.",
     descriptionCs:
-      "Apartmán V podkroví je největší ze tří. Dvě ložnice — jedna s manželskou postelí, druhá s dlouhým podiem pro tři osoby — jsou propojeny velkou obývací místností s plně vybavenou kuchyní, velkým jídelním stolem a krásnou dubovou lavicí. Obývací kout u francouzského okna nabízí výhled přímo do luk. Z koupelny se otevírá výhled na hory a pro větší pohodlí je k dispozici druhé samostatné WC.",
+      "Podkrovní apartmán je nejprostornější ze všech tří. Nabízí dvě ložnice – jednu s manželskou postelí a druhou s velkým dřevěným podiem pro tři osoby. Ložnice navazují na velký obývací pokoj s plně vybavenou kuchyní, jídelním stolem a dubovou lavicí. Francouzským oknem hledíme přímo do luk, z koupelny se otevírá výhled na hory a komfort pobytu doplňuje druhé samostatné WC.",
     guests: 5,
     bedrooms: "2 bedrooms",
     bedroomsCs: "2 ložnice",
