@@ -43,8 +43,8 @@ export const apartmentDetails: ApartmentDetail[] = [
     bedsCs: "1 manželská postel",
     bathrooms: "1 bathroom (shower)",
     bathroomsCs: "1 koupelna (sprcha)",
-    amenities: ["Shared terrace", "Kitchenette", "Private bathroom", "Shower", "Mountain views", "Self check-in"],
-    amenitiesCs: ["Terasa (sdílená)", "Kuchyňský kout", "Vlastní koupelna", "Sprcha", "Výhledy na hory", "Samoobslužný příjezd"],
+    amenities: ["Shared sauna", "Terrace with view", "Garden", "Kitchenette", "Private bathroom", "Mountain views", "Self check-in"],
+    amenitiesCs: ["Sdílená sauna", "Terasa s výhledem", "Zahrada", "Kuchyňský kout", "Vlastní koupelna", "Výhledy na hory", "Samoobslužný příjezd"],
     photos: [
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/829fb174-5292-49e0-b7fa-c081b3ac7f84.jpeg?im_w=1440", alt: "Tiny apartment" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/c4790a5a-16e6-4207-9b2a-0c6015a02d65.jpeg?im_w=1440", alt: "Tiny apartment interior" },
@@ -73,8 +73,8 @@ export const apartmentDetails: ApartmentDetail[] = [
     bedsCs: "1 manželská postel + rozkládací pohovka (dvě samostatná lůžka)",
     bathrooms: "1 bathroom (shower)",
     bathroomsCs: "1 koupelna (sprcha)",
-    amenities: ["Fireplace", "Terrace access", "Fully equipped kitchen", "Dining area", "Sofa bed", "Private bathroom", "Mountain views", "Self check-in"],
-    amenitiesCs: ["Krb", "Přístup na terasu", "Plně vybavená kuchyň", "Jídelní část", "Rozkládací pohovka", "Vlastní koupelna", "Výhledy na hory", "Samoobslužný příjezd"],
+    amenities: ["Shared sauna", "Terrace with view", "Garden", "Fireplace", "Fully equipped kitchen", "Dining area", "Sofa bed", "Private bathroom", "Mountain views", "Self check-in"],
+    amenitiesCs: ["Sdílená sauna", "Terasa s výhledem", "Zahrada", "Krb", "Plně vybavená kuchyň", "Jídelní část", "Rozkládací pohovka", "Vlastní koupelna", "Výhledy na hory", "Samoobslužný příjezd"],
     photos: [
       { url: p("7c002b6b-0732-4dc5-a9db-b9138467ffc8.jpeg"), alt: "Terrace overlooking mountains" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1677566795867113387/original/6476fdbd-3791-48f8-bc0d-049af9a7d6e1.jpeg?im_w=1440", alt: "Timber apartment interior" },
@@ -102,8 +102,8 @@ export const apartmentDetails: ApartmentDetail[] = [
     bedsCs: "1 manželská postel + 1 dlouhé lůžko (3 osoby)",
     bathrooms: "1 bathroom with mountain view + another separate toilet",
     bathroomsCs: "1 koupelna s výhledem na hory + druhé samostatné WC",
-    amenities: ["French window to meadows", "Mountain view bathroom", "Fully equipped kitchen", "Dining table", "Oak bench", "Relaxation sofa", "Separate toilet", "Self check-in"],
-    amenitiesCs: ["Francouzské okno do luk", "Koupelna s výhledem na hory", "Plně vybavená kuchyně", "Jídelní stůl", "Dubová lavice", "Relaxační pohovka", "Samostatné WC", "Samoobslužný příjezd"],
+    amenities: ["Shared sauna", "Terrace with view", "Garden", "French window to meadows", "Mountain view bathroom", "Fully equipped kitchen", "Dining table", "Oak bench", "Washer", "Separate toilet", "Self check-in"],
+    amenitiesCs: ["Sdílená sauna", "Terasa s výhledem", "Zahrada", "Francouzské okno do luk", "Koupelna s výhledem na hory", "Plně vybavená kuchyně", "Jídelní stůl", "Dubová lavice", "Pračka", "Samostatné WC", "Samoobslužný příjezd"],
     photos: [
       { url: p("81364994-282d-4e04-8b8a-7969c942ff54.jpeg"), alt: "Exterior evening view" },
       { url: p("a5864f8c-be58-48b3-9114-5e44ccdc0e89.jpeg"), alt: "Bathroom" },
