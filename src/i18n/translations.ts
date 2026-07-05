@@ -34,8 +34,8 @@ const t = {
     about: {
       subtitle: "O ubytování",
       title:    "Horský úkryt v srdci Krkonoš",
-      p1:       "Na krkonošském kopci stojí nově zrekonstruovaná Bouda Krista — objekt s bohatou historií a třemi designovými apartmány chytře propojenými: apartmán Tiny pro dva, apartmán Timber pro 2–4 hosty a apartmán Top Floor pro až pět hostů.",
-      p2:       "Bouda je ideální pro velké rodiny nebo skupiny, které hledají klidný pobyt na horských loukách — se sdílenou saunou, terasou s výhledem na kostel a hory a klidem přírody kolem.",
+      p1:       "Na krkonošském kopci stojí nově zrekonstruovaná Bouda Krista — objekt s bohatou historií a třemi designovými, chytře propojenými apartmány. Nabízíme malý apartmán pro 2 hosty, roubený apartmán pro 2–4 hosty a podkrovní apartmán pro 5 hostů.",
+      p2:       "Bouda je ideální pro páry, rodiny nebo skupiny přátel, které hledají klidný pobyt na horských loukách plných srnek, zajíců a ptáčků. Odpočinkovou atmosféru podpoří sdílená sauna, dřevěný chalupářský design nebo terasa s výhledem na hory a zvukem zurčícího potůčku.",
       reserve:  "Rezervovat pobyt",
       airbnb:   "Zobrazit na Airbnb",
     },
@@ -189,8 +189,8 @@ const t = {
     about: {
       subtitle: "About the Lodge",
       title:    "A Hilltop Retreat in the Heart of Krkonoše",
-      p1:       "On a Krkonoše hilltop stands the newly renovated Bouda Krista — a property with an impressive history and three designer apartments intelligently interconnected: the Tiny apartment for two, the Timber apartment for 2–4 guests, and the Top Floor apartment for up to five.",
-      p2:       "The Lodge is perfect for extended families or groups seeking a peaceful time in mountain meadows, with a shared sauna, a terrace overlooking the church and mountains, and quiet nature all around.",
+      p1:       "On a hill in the Krkonoše Mountains stands the newly renovated Bouda Krista — a hut with a rich history and three stylish, cleverly interconnected apartments. We offer a small apartment for 2 guests, a timber apartment for 2–4 guests, and an attic apartment for 5 guests.",
+      p2:       "The hut is ideal for couples, families, or groups of friends looking for a peaceful stay in mountain meadows teeming with roe deer, hares, and birds. The relaxing atmosphere is enhanced by a shared sauna, rustic wooden cottage design, and a terrace with mountain views and the sound of a babbling brook.",
       reserve:  "Reserve Your Stay",
       airbnb:   "View on Airbnb",
     },
