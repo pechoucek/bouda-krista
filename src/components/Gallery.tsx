@@ -15,7 +15,7 @@ const photos = [
   { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1681755602554370759/original/e1a7808e-7fd2-4d1e-bd22-d78a8aef1e7b.jpeg?im_w=1440", alt: "Bouda Krista" },
 ];
 
-export default function Gallery() {
+export default function Gallery({ locale = "cs" }: { locale?: string }) {
   const [lightbox, setLightbox] = useState<number | null>(null);
 
   const closeLightbox = () => setLightbox(null);
@@ -25,8 +25,8 @@ export default function Gallery() {
   return (
     <section id="gallery" className="py-24 px-6 max-w-7xl mx-auto">
       <div className="text-center mb-14">
-        <p className="section-subtitle mb-4">Photo Tour</p>
-        <h2 className="section-title">Inside Bouda Krista</h2>
+        <p className="section-subtitle mb-4">{locale === "cs" ? "Fotogalerie" : "Photo Tour"}</p>
+        <h2 className="section-title">{locale === "cs" ? "Jak vypadá Bouda Krista?" : "Inside Bouda Krista"}</h2>
       </div>
 
       <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">

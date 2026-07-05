@@ -101,7 +101,7 @@ export default async function Home({ params }: Props) {
       <ApartmentsSection locale={l} />
 
       {/* Gallery */}
-      <Gallery />
+      <Gallery locale={l} />
 
       {/* Amenities */}
       <Amenities locale={l} />
