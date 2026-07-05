@@ -105,9 +105,9 @@ export const apartmentDetails: ApartmentDetail[] = [
     amenities: ["Shared sauna", "Terrace with view", "Garden", "French window to meadows", "Mountain view bathroom", "Fully equipped kitchen", "Dining table", "Oak bench", "Washer", "Separate toilet", "Self check-in"],
     amenitiesCs: ["Sdílená sauna", "Terasa s výhledem", "Zahrada", "Francouzské okno do luk", "Koupelna s výhledem na hory", "Plně vybavená kuchyně", "Jídelní stůl", "Dubová lavice", "Pračka", "Samostatné WC", "Samoobslužný příjezd"],
     photos: [
+      { url: p("e7c44742-2a8c-48be-8715-855bb4f8c178.jpeg"), alt: "Bathroom 2" },
       { url: p("81364994-282d-4e04-8b8a-7969c942ff54.jpeg"), alt: "Exterior evening view" },
       { url: p("a5864f8c-be58-48b3-9114-5e44ccdc0e89.jpeg"), alt: "Bathroom" },
-      { url: p("e7c44742-2a8c-48be-8715-855bb4f8c178.jpeg"), alt: "Bathroom 2" },
       { url: p("889c16d1-13fd-4c3d-a964-cda51d08885e.jpeg"), alt: "Interior" },
       { url: p("8f9b5271-273c-416d-b92c-eeb3fbf30e85.jpeg"), alt: "Interior detail" },
       { url: p("32f5a38f-efa5-49e8-8de3-e04699c41cf2.jpeg"), alt: "Bedroom 1" },
