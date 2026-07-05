@@ -50,7 +50,7 @@
       "name": "Summer Peak",
       "from": "2026-07-01",
       "to": "2026-08-31",
-      "multiplier": 1.2
+      "multiplier": 1
     }
   ],
   "stayDiscounts": [
