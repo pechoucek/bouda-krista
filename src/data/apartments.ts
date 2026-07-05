@@ -46,8 +46,8 @@ export const apartmentDetails: ApartmentDetail[] = [
     amenities: ["Shared sauna", "Terrace with view", "Garden", "Kitchenette", "Private bathroom", "Mountain views", "Self check-in"],
     amenitiesCs: ["Sdílená sauna", "Terasa s výhledem", "Zahrada", "Kuchyňský kout", "Vlastní koupelna", "Výhledy na hory", "Samoobslužný příjezd"],
     photos: [
-      { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/829fb174-5292-49e0-b7fa-c081b3ac7f84.jpeg?im_w=1440", alt: "Tiny apartment" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/c4790a5a-16e6-4207-9b2a-0c6015a02d65.jpeg?im_w=1440", alt: "Tiny apartment interior" },
+      { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/829fb174-5292-49e0-b7fa-c081b3ac7f84.jpeg?im_w=1440", alt: "Tiny apartment" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/6c8f1d25-9730-40d9-bf23-fad247f3a39c.jpeg?im_w=1440", alt: "Tiny apartment detail" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/256845f4-e08f-41f7-97d3-dc90722bc519.jpeg?im_w=1440", alt: "Tiny apartment kitchen" },
       { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/015d988d-f0dd-4bd4-9817-979ba919a7b6.jpeg?im_w=1440", alt: "Tiny apartment bathroom" },
