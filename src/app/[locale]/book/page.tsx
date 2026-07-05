@@ -17,9 +17,14 @@ export default function BookPage({ params }: Props) {
   const tr = useT(l);
 
   const searchParams = useSearchParams();
-  const aptParam = searchParams.get("apt");
-  const initialApt = aptParam && apartments.find((a) => a.id === aptParam) ? aptParam : apartments[3].id;
-  const [apartment, setApartment] = useState(initialApt);
+  const [apartment, setApartment] = useState(apartments[3].id);
+
+  useEffect(() => {
+    const aptParam = searchParams.get("apt");
+    if (aptParam && apartments.find((a) => a.id === aptParam)) {
+      setApartment(aptParam);
+    }
+  }, [searchParams]);
   const [checkIn, setCheckIn]       = useState<Date | null>(null);
   const [checkOut, setCheckOut]     = useState<Date | null>(null);
   const [name, setName]             = useState("");
