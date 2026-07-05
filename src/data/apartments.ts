@@ -36,7 +36,7 @@ export const apartmentDetails: ApartmentDetail[] = [
     descriptionCs:
       "Malý apartmán je útulným útočištěm pro dva hosty. K dispozici je kuchyňský kout a vlastní koupelna se sprchou a toaletou. Ve velké pohodlné posteli s úložným prostorem si můžete vychutnat pomalá rána, večery s knihou nebo jen ticho a výhled do okolních luk a na horské hřebeny. Přes velké prosklené okno se dostanete na krytou terasu, opět s výhledem na hory.",
     guests: 2,
-    guestsLabelCs: "až 2",
+    guestsLabelCs: "Až 2 hosté",
     bedrooms: "1 bedroom",
     bedroomsCs: "1 ložnice",
     beds: "1 king-size bed",

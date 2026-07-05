@@ -47,7 +47,7 @@ export default function ApartmentsSection({ locale }: Props) {
                 <div className="absolute bottom-4 left-5 right-5 flex items-end justify-between">
                   <span className="font-serif text-xl text-stone-warm">{locale === "cs" ? apt.nameCs : apt.name}</span>
                   <span className="font-sans text-xs text-stone-warm/70 tracking-wide">
-                    {(locale === "cs" ? apt.guestsLabelCs : apt.guestsLabel) ?? `${tr.apartments.upTo} ${apt.guests}`} {tr.apartments.guests}
+                    {locale === "cs" && apt.guestsLabelCs ? apt.guestsLabelCs : `${apt.guestsLabel ?? `${tr.apartments.upTo} ${apt.guests}`} ${tr.apartments.guests}`}
                   </span>
                 </div>
               </div>
