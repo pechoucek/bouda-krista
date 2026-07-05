@@ -37,7 +37,7 @@ export default async function Home({ params }: Props) {
             ["3.5",tr.stats.bathrooms],
           ].map(([val, lbl]) => (
             <div key={lbl}>
-              <div className="font-serif text-4xl text-gold">{val}</div>
+              <div className={`${val === "11" ? "font-sans font-light tracking-widest" : "font-serif"} text-4xl text-gold`}>{val}</div>
               <div className="font-sans text-xs tracking-widest uppercase text-stone-warm/60 mt-1">{lbl}</div>
             </div>
           ))}
