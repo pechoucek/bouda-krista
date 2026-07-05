@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, use, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 import BookingCalendar from "@/components/BookingCalendar";
@@ -14,6 +14,14 @@ type Props = { params: Promise<{ locale: string }> };
 export default function BookPage({ params }: Props) {
   const { locale } = use(params);
   const l = locale as Locale;
+  return (
+    <Suspense fallback={null}>
+      <BookPageInner locale={l} />
+    </Suspense>
+  );
+}
+
+function BookPageInner({ locale: l }: { locale: Locale }) {
   const tr = useT(l);
 
   const searchParams = useSearchParams();
