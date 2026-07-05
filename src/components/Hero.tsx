@@ -9,7 +9,7 @@ export default function Hero({ locale }: Props) {
   const tr = useT(locale);
 
   return (
-    <section className="relative h-[78vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
       <Image
         src={heroPhoto.url}
         alt={heroPhoto.alt}
