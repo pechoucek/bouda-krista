@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
   // Recalculate price from source of truth
   const { total, nights } = calculateTotal(new Date(res.checkIn), new Date(res.checkOut), res.apartment);
 
-  console.log("GoPay env check — GO_ID:", process.env.GOPAY_GO_ID, "CLIENT_ID:", process.env.GOPAY_CLIENT_ID, "SANDBOX:", process.env.GOPAY_SANDBOX);
+  console.error("GoPay env check — GO_ID:", process.env.GOPAY_GO_ID, "CLIENT_ID:", process.env.GOPAY_CLIENT_ID, "SANDBOX:", process.env.GOPAY_SANDBOX);
 
   let payment: { id: number; gw_url: string };
   try {
