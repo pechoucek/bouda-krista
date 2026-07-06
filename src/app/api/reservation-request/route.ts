@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { getRedis } from "@/lib/bookings";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -13,6 +14,25 @@ export async function POST(req: NextRequest) {
   const from       = "Bouda Krista <rezervace@bouda-krista.cz>";
   const ownerEmail = "chaloupka.krista@gmail.com";
   const isCz       = locale === "cs";
+
+  // ── Save pending reservation to Redis ─────────────────────────────────
+  const reservationId = crypto.randomUUID();
+  const approveToken  = crypto.randomUUID();
+  const baseUrl       = process.env.NEXT_PUBLIC_URL ?? "https://www.bouda-krista.cz";
+
+  try {
+    const redis = getRedis();
+    await redis.set(
+      `reservation:${reservationId}`,
+      JSON.stringify({ id: reservationId, token: approveToken, status: "pending", checkIn, checkOut, apartment, apartmentName, guestName, guestEmail, nights, total, locale, createdAt: new Date().toISOString() }),
+      "EX", 30 * 24 * 60 * 60, // 30 days
+    );
+  } catch (err) {
+    console.error("Failed to save pending reservation:", err);
+  }
+
+  const approveUrl = `${baseUrl}/api/approve-reservation?id=${reservationId}&token=${approveToken}`;
+  const declineUrl = `${baseUrl}/api/approve-reservation?id=${reservationId}&token=${approveToken}&decline=1`;
 
   // ── Owner notification ─────────────────────────────────────────────────
   const ownerResult = await resend.emails.send({
@@ -33,9 +53,24 @@ export async function POST(req: NextRequest) {
           <tr><td style="color:#5e975e;padding:6px 0">Počet nocí</td><td>${nights}</td></tr>
           <tr><td style="color:#5e975e;padding:6px 0">Odhadovaná cena</td><td><strong>${total} Kč</strong></td></tr>
         </table>
+        <hr style="border:none;border-top:1px solid #c2dbc2;margin:1.5rem 0"/>
+        <table style="width:100%;border-collapse:collapse">
+          <tr>
+            <td style="padding-right:12px">
+              <a href="${approveUrl}" style="display:inline-block;background:#1a311a;color:#fff;font-family:sans-serif;font-size:0.95rem;padding:12px 28px;text-decoration:none;font-weight:600">
+                ✓ Schválit a odeslat platební odkaz
+              </a>
+            </td>
+            <td>
+              <a href="${declineUrl}" style="display:inline-block;background:#f5f5f5;color:#666;font-family:sans-serif;font-size:0.9rem;padding:12px 20px;text-decoration:none;border:1px solid #ddd">
+                ✗ Odmítnout
+              </a>
+            </td>
+          </tr>
+        </table>
         <hr style="border:none;border-top:1px solid #c2dbc2;margin:1rem 0"/>
         <p style="font-family:sans-serif;font-size:0.85rem;color:#5e975e">
-          Odpovězte přímo na tento e-mail — odpověď půjde hostovi.
+          Kliknutím na Schválit se hostovi automaticky odešle platební odkaz přes GoPay.
         </p>
       </div>
     `,
