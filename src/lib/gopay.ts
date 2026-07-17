@@ -71,7 +71,7 @@ export async function createPayment(params: CreatePaymentParams) {
     },
     target: {
       type: "ACCOUNT",
-      go_id: Number(process.env.GOPAY_GO_ID),
+      goid: Number(process.env.GOPAY_GO_ID),
     },
     amount:            params.amountCzk * 100, // GoPay uses haléře (hundredths)
     currency:          "CZK",
