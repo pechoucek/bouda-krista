@@ -90,8 +90,6 @@ export async function createPayment(params: CreatePaymentParams) {
     },
   };
 
-  console.error("GoPay createPayment body:", JSON.stringify(body));
-
   const res = await fetch(`${baseUrl()}/payments/payment`, {
     method: "POST",
     headers: {
