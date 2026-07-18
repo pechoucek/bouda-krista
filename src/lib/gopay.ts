@@ -83,8 +83,7 @@ export async function createPayment(params: CreatePaymentParams) {
       amount: i.amount * 100,
       count:  i.count,
     })),
-    payment_instrument: "PAYMENT_CARD", // default; guest can change on GoPay page
-    lang:               "CS",
+    lang: "CS",
     callback: {
       return_url:       params.returnUrl,
       notification_url: params.notifyUrl,
