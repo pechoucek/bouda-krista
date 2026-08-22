@@ -23,44 +23,54 @@
       "id": "whole",
       "name": "Whole House",
       "guests": "Up to 11 guests",
-      "defaultNightlyRate": 12000,
+      "defaultNightlyRate": 10000,
       "discountFrom": 10000
     }
   ],
   "specialPeriods": [
     {
-      "name": "Christmas",
-      "from": "2026-12-23",
-      "to": "2026-12-27",
-      "multiplier": 1.5
+      "name": "Podzim / Jaro",
+      "apartmentId": "whole",
+      "from": "2026-09-01",
+      "to": "2026-12-07",
+      "absoluteRate": 10000
     },
     {
-      "name": "New Year",
-      "from": "2026-12-30",
-      "to": "2027-01-03",
-      "multiplier": 1.7
+      "name": "Předvánoce",
+      "apartmentId": "whole",
+      "from": "2026-12-08",
+      "to": "2026-12-20",
+      "absoluteRate": 12000
     },
     {
-      "name": "Easter 2026",
-      "from": "2027-04-02",
-      "to": "2027-04-06",
-      "multiplier": 1.25
+      "name": "Vánoce",
+      "apartmentId": "whole",
+      "from": "2026-12-21",
+      "to": "2026-12-28",
+      "absoluteRate": 15000,
+      "minNights": 5
     },
     {
-      "name": "Summer Peak",
-      "from": "2026-07-01",
-      "to": "2026-08-31",
-      "multiplier": 1
+      "name": "Zima",
+      "apartmentId": "whole",
+      "from": "2027-01-01",
+      "to": "2027-03-31",
+      "absoluteRate": 12000
+    },
+    {
+      "name": "Jaro",
+      "apartmentId": "whole",
+      "from": "2027-04-01",
+      "to": "2027-06-07",
+      "absoluteRate": 10000
+    },
+    {
+      "name": "Léto",
+      "apartmentId": "whole",
+      "from": "2027-06-08",
+      "to": "2027-08-31",
+      "absoluteRate": 12000
     }
   ],
-  "stayDiscounts": [
-    {
-      "name": "Summer Housewarming",
-      "apartmentId": "whole",
-      "from": "2026-06-01",
-      "to": "2026-08-31",
-      "minNights": 7,
-      "fixedNightlyRate": 10000
-    }
-  ]
+  "stayDiscounts": []
 }

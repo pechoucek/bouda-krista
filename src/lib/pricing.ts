@@ -5,7 +5,10 @@ type SpecialPeriod = {
   name: string;
   from: string;
   to: string;
-  multiplier: number;
+  multiplier?: number;
+  absoluteRate?: number;
+  apartmentId?: string;
+  minNights?: number;
 };
 
 type StayDiscount = {
@@ -33,15 +36,22 @@ export function getApartment(id: string): Apartment {
 
 export function getNightlyRate(date: Date, apartmentId: string): number {
   const apt = getApartment(apartmentId);
-  const special = pricingData.specialPeriods.find((period: SpecialPeriod) =>
-    isWithinInterval(date, {
-      start: parseISO(period.from),
-      end:   parseISO(period.to),
-    })
-  );
-  return special
-    ? Math.round(apt.defaultNightlyRate * special.multiplier)
-    : apt.defaultNightlyRate;
+  const special = (pricingData.specialPeriods as SpecialPeriod[]).find((period) => {
+    if (period.apartmentId && period.apartmentId !== apartmentId) return false;
+    return isWithinInterval(date, { start: parseISO(period.from), end: parseISO(period.to) });
+  });
+  if (!special) return apt.defaultNightlyRate;
+  if (special.absoluteRate !== undefined) return special.absoluteRate;
+  return Math.round(apt.defaultNightlyRate * (special.multiplier ?? 1));
+}
+
+export function getPeriodMinNights(checkIn: Date, apartmentId: string): number {
+  const period = (pricingData.specialPeriods as SpecialPeriod[]).find((p) => {
+    if (p.apartmentId && p.apartmentId !== apartmentId) return false;
+    if (!p.minNights) return false;
+    return isWithinInterval(checkIn, { start: parseISO(p.from), end: parseISO(p.to) });
+  });
+  return period?.minNights ?? 2;
 }
 
 export function calculateTotal(

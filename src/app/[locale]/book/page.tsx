@@ -41,7 +41,7 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
   const [about, setAbout]           = useState("");
   const [loading, setLoading]       = useState(false);
   const [error, setError]           = useState("");
-  const [priceInfo, setPriceInfo]   = useState<{ total: number; nights: number; nightlyRate: number; discountName?: string } | null>(null);
+  const [priceInfo, setPriceInfo]   = useState<{ total: number; nights: number; nightlyRate: number; discountName?: string; minNights?: number } | null>(null);
   const [loadingPrice, setLoadingPrice] = useState(false);
 
   const selectedApt = apartments.find((a) => a.id === apartment) ?? apartments[3];
@@ -75,8 +75,9 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
       setError(tr.book.errorFill);
       return;
     }
-    if (priceInfo && priceInfo.nights < 2) {
-      setError(l === "cs" ? "Minimální délka pobytu jsou 2 noci." : "Minimum stay is 2 nights.");
+    const minNights = priceInfo?.minNights ?? 2;
+    if (priceInfo && priceInfo.nights < minNights) {
+      setError(l === "cs" ? `Minimální délka pobytu je ${minNights} noci.` : `Minimum stay is ${minNights} nights.`);
       return;
     }
     setError("");
@@ -173,7 +174,9 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
                 {tr.book.step2label} · <span className="text-forest-700">{selectedApt.name}</span>
               </p>
               <p className="text-xs font-sans text-forest-400">
-                {l === "cs" ? "Min. 2 noci" : "Min. 2 nights"}
+                {l === "cs"
+                  ? `Min. ${priceInfo?.minNights ?? 2} noci`
+                  : `Min. ${priceInfo?.minNights ?? 2} nights`}
               </p>
             </div>
             <BookingCalendar
