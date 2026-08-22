@@ -25,11 +25,11 @@ export default function Nav({ locale, alwaysDark }: Props) {
   const otherPath = pathname.replace(`/${locale}`, `/${otherLocale}`);
 
   const navLinks = [
-    ["#about",     tr.nav.about],
-    ["#gallery",   tr.nav.gallery],
-    ["#amenities", tr.nav.amenities],
-    ["#location",  tr.nav.location],
-    ["#contact",   tr.nav.contact],
+    [`/${locale}#about`,     tr.nav.about],
+    [`/${locale}#gallery`,   tr.nav.gallery],
+    [`/${locale}#amenities`, tr.nav.amenities],
+    [`/${locale}#location`,  tr.nav.location],
+    [`/${locale}#contact`,   tr.nav.contact],
   ];
 
   return (
