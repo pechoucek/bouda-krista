@@ -18,36 +18,40 @@ export type GuestRecord = {
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const {
-    apartment, checkIn, checkOut,
-    firstName, lastName, birthDate, nationality, documentNumber, address,
-  } = body;
+  const { apartment, checkIn, checkOut, guests } = body;
 
-  if (!firstName || !lastName || !birthDate || !nationality || !documentNumber || !address || !checkIn || !checkOut) {
+  if (!checkIn || !checkOut || !Array.isArray(guests) || guests.length === 0) {
     return NextResponse.json({ error: "Vyplňte prosím všechna povinná pole." }, { status: 400 });
   }
 
-  const ci = new Date(checkIn);
-  const co = new Date(checkOut);
-  const nights = Math.round((co.getTime() - ci.getTime()) / 86400000);
-
-  const record: GuestRecord = {
-    id: crypto.randomUUID(),
-    submittedAt: new Date().toISOString(),
-    apartment: apartment ?? "",
-    checkIn,
-    checkOut,
-    firstName,
-    lastName,
-    birthDate,
-    nationality,
-    documentNumber,
-    address,
-    nights,
-  };
+  const nights = Math.round(
+    (new Date(checkOut).getTime() - new Date(checkIn).getTime()) / 86400000
+  );
 
   const redis = await getRedis();
-  await redis.lpush("guests", JSON.stringify(record));
+  const submittedAt = new Date().toISOString();
+
+  for (const g of guests) {
+    const { firstName, lastName, birthDate, nationality, documentNumber, address } = g;
+    if (!firstName || !lastName || !birthDate || !documentNumber || !address) continue;
+
+    const record: GuestRecord = {
+      id: crypto.randomUUID(),
+      submittedAt,
+      apartment: apartment ?? "",
+      checkIn,
+      checkOut,
+      nights,
+      firstName,
+      lastName,
+      birthDate,
+      nationality: nationality ?? "",
+      documentNumber,
+      address,
+    };
+
+    await redis.lpush("guests", JSON.stringify(record));
+  }
 
   return NextResponse.json({ ok: true });
 }
