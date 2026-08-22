@@ -5,7 +5,7 @@ import { getRedis } from "@/lib/bookings";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
-  const { checkIn, checkOut, apartment, apartmentName, guestName, guestEmail, nights, total, locale } = await req.json();
+  const { checkIn, checkOut, apartment, apartmentName, guestName, guestEmail, guests, about, nights, total, locale } = await req.json();
 
   if (!checkIn || !checkOut || !guestName || !guestEmail) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -47,11 +47,13 @@ export async function POST(req: NextRequest) {
         <table style="width:100%;font-family:sans-serif;font-size:0.9rem;border-collapse:collapse">
           <tr><td style="color:#5e975e;padding:6px 0;width:160px">Host</td><td>${guestName}</td></tr>
           <tr><td style="color:#5e975e;padding:6px 0">E-mail</td><td><a href="mailto:${guestEmail}">${guestEmail}</a></td></tr>
+          <tr><td style="color:#5e975e;padding:6px 0">Počet hostů</td><td>${guests ?? "—"}</td></tr>
           <tr><td style="color:#5e975e;padding:6px 0">Apartmán</td><td>${apartmentName}</td></tr>
           <tr><td style="color:#5e975e;padding:6px 0">Příjezd</td><td>${checkIn}</td></tr>
           <tr><td style="color:#5e975e;padding:6px 0">Odjezd</td><td>${checkOut}</td></tr>
           <tr><td style="color:#5e975e;padding:6px 0">Počet nocí</td><td>${nights}</td></tr>
           <tr><td style="color:#5e975e;padding:6px 0">Odhadovaná cena</td><td><strong>${total} Kč</strong></td></tr>
+          ${about ? `<tr><td style="color:#5e975e;padding:6px 0;vertical-align:top">O sobě</td><td style="font-style:italic">${about}</td></tr>` : ""}
         </table>
         <hr style="border:none;border-top:1px solid #c2dbc2;margin:1.5rem 0"/>
         <table style="width:100%;border-collapse:collapse">

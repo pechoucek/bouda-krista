@@ -37,6 +37,8 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
   const [checkOut, setCheckOut]     = useState<Date | null>(null);
   const [name, setName]             = useState("");
   const [email, setEmail]           = useState("");
+  const [guests, setGuests]         = useState(2);
+  const [about, setAbout]           = useState("");
   const [loading, setLoading]       = useState(false);
   const [error, setError]           = useState("");
   const [priceInfo, setPriceInfo]   = useState<{ total: number; nights: number; nightlyRate: number; discountName?: string } | null>(null);
@@ -69,7 +71,7 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!checkIn || !checkOut || !name || !email) {
+    if (!checkIn || !checkOut || !name || !email || !about) {
       setError(tr.book.errorFill);
       return;
     }
@@ -86,6 +88,8 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
         apartmentName: selectedApt.name,
         guestName:    name,
         guestEmail:   email,
+        guests,
+        about,
         nights:       priceInfo?.nights ?? "—",
         total:        priceInfo?.total?.toLocaleString("cs-CZ") ?? "—",
         locale:       l,
@@ -202,6 +206,33 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
                     required
                     className="w-full border border-forest-200 px-4 py-3 font-sans text-sm focus:outline-none focus:border-forest-700 bg-transparent"
                     placeholder={tr.book.emailPlaceholder}
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-sans tracking-widest uppercase text-forest-500 mb-2">
+                    {tr.book.guestsLabel}
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={11}
+                    value={guests}
+                    onChange={(e) => setGuests(Number(e.target.value))}
+                    required
+                    className="w-full border border-forest-200 px-4 py-3 font-sans text-sm focus:outline-none focus:border-forest-700 bg-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-sans tracking-widest uppercase text-forest-500 mb-2">
+                    {tr.book.aboutLabel}
+                  </label>
+                  <textarea
+                    value={about}
+                    onChange={(e) => setAbout(e.target.value)}
+                    required
+                    rows={4}
+                    className="w-full border border-forest-200 px-4 py-3 font-sans text-sm focus:outline-none focus:border-forest-700 bg-transparent resize-none"
+                    placeholder={tr.book.aboutPlaceholder}
                   />
                 </div>
 
