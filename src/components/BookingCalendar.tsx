@@ -79,7 +79,8 @@ export default function BookingCalendar({ checkIn, checkOut, onRangeChange, apar
       } else {
         const days = eachDayOfInterval({ start: checkIn, end: date });
         const hasBlocked = days.some((d) => isBlocked(d));
-        if (hasBlocked) {
+        const nights = days.length - 1;
+        if (hasBlocked || nights < 2) {
           onRangeChange(date, null);
         } else {
           onRangeChange(checkIn, date);

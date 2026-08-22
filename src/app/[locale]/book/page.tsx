@@ -75,6 +75,10 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
       setError(tr.book.errorFill);
       return;
     }
+    if (priceInfo && priceInfo.nights < 2) {
+      setError(l === "cs" ? "Minimální délka pobytu jsou 2 noci." : "Minimum stay is 2 nights.");
+      return;
+    }
     setError("");
     setLoading(true);
 
