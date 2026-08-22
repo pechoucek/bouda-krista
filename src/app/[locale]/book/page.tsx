@@ -193,6 +193,13 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
               locale={l}
               maxDate={new Date(2027, 7, 31)}
             />
+            {apartment !== "whole" && (
+              <p className="mt-4 text-xs font-sans text-forest-400 italic">
+                {l === "cs"
+                  ? "Samostatné apartmány je možno rezervovat pouze 3 týdny dopředu."
+                  : "Individual apartments can be booked up to 3 weeks in advance."}
+              </p>
+            )}
           </div>
 
           {/* Step 3 */}
@@ -269,7 +276,7 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
                       </div>
                     )}
                     <div className="flex justify-between font-sans text-sm text-forest-700">
-                      <span>{selectedApt.name}</span>
+                      <span>{l === "cs" ? (selectedApt.nameCz ?? selectedApt.name) : selectedApt.name}</span>
                     </div>
                     <div className="flex justify-between font-sans text-sm text-forest-700">
                       <span>{format(checkIn, "d. M.")} – {format(checkOut, "d. M. yyyy")}</span>
