@@ -19,9 +19,14 @@ type Props = {
   checkOut: Date | null;
   onRangeChange: (checkIn: Date | null, checkOut: Date | null) => void;
   apartment: string;
+  locale?: string;
 };
 
-export default function BookingCalendar({ checkIn, checkOut, onRangeChange, apartment }: Props) {
+const CS_MONTHS = ["ledna","února","března","dubna","května","června","července","srpna","září","října","listopadu","prosince"];
+const CS_DAYS   = ["Po","Út","St","Čt","Pá","So","Ne"];
+
+export default function BookingCalendar({ checkIn, checkOut, onRangeChange, apartment, locale }: Props) {
+  const isCz = locale === "cs";
   const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
   const [blockedRanges, setBlockedRanges] = useState<{ start: Date; end: Date }[]>([]);
   const [hoverDate, setHoverDate] = useState<Date | null>(null);
@@ -96,10 +101,10 @@ export default function BookingCalendar({ checkIn, checkOut, onRangeChange, apar
     return (
       <div className="flex-1">
         <div className="text-center font-serif text-lg text-forest-900 mb-4">
-          {format(monthStart, "MMMM yyyy")}
+          {isCz ? `${CS_MONTHS[monthStart.getMonth()]} ${format(monthStart, "yyyy")}` : format(monthStart, "MMMM yyyy")}
         </div>
         <div className="grid grid-cols-7 mb-2">
-          {["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d) => (
+          {(isCz ? CS_DAYS : ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]).map((d) => (
             <div key={d} className="text-center text-xs font-sans text-forest-400 py-1 tracking-wider">{d}</div>
           ))}
         </div>
@@ -140,7 +145,7 @@ export default function BookingCalendar({ checkIn, checkOut, onRangeChange, apar
   if (loading) {
     return (
       <div className="flex items-center justify-center h-48 text-forest-400 font-sans text-sm">
-        Loading availability…
+        {isCz ? "Načítám dostupnost…" : "Loading availability…"}
       </div>
     );
   }
@@ -176,9 +181,9 @@ export default function BookingCalendar({ checkIn, checkOut, onRangeChange, apar
       </div>
 
       <div className="flex gap-6 mt-4 text-xs font-sans text-forest-500">
-        <span className="flex items-center gap-2"><span className="w-3 h-3 bg-forest-700 inline-block" /> Selected</span>
-        <span className="flex items-center gap-2"><span className="w-3 h-3 bg-forest-100 inline-block" /> Your stay</span>
-        <span className="flex items-center gap-2"><span className="w-3 h-3 bg-forest-50 border border-forest-200 inline-block" /><span className="line-through">Unavailable</span></span>
+        <span className="flex items-center gap-2"><span className="w-3 h-3 bg-forest-700 inline-block" /> {isCz ? "Vybraný den" : "Selected"}</span>
+        <span className="flex items-center gap-2"><span className="w-3 h-3 bg-forest-100 inline-block" /> {isCz ? "Váš pobyt" : "Your stay"}</span>
+        <span className="flex items-center gap-2"><span className="w-3 h-3 bg-forest-50 border border-forest-200 inline-block" /><span className="line-through">{isCz ? "Obsazeno" : "Unavailable"}</span></span>
       </div>
     </div>
   );

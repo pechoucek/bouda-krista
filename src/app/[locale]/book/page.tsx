@@ -146,10 +146,10 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
                 }`}
               >
                 <div className={`font-serif text-lg mb-1 ${apartment === apt.id ? "text-stone-warm" : "text-forest-900"}`}>
-                  {apt.name}
+                  {l === "cs" ? (apt.nameCz ?? apt.name) : apt.name}
                 </div>
                 <div className={`font-sans text-xs mb-3 ${apartment === apt.id ? "text-stone-warm/70" : "text-forest-500"}`}>
-                  {apt.guests}
+                  {l === "cs" ? (apt.guestsCz ?? apt.guests) : apt.guests}
                 </div>
                 <div className={`font-sans text-sm font-medium ${apartment === apt.id ? "text-gold" : "text-forest-700"}`}>
                   {apt.discountFrom ? (
@@ -171,7 +171,7 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
           <div className="lg:col-span-3 bg-white p-8 shadow-sm">
             <div className="flex items-center justify-between mb-6">
               <p className="text-xs font-sans tracking-widest uppercase text-forest-500">
-                {tr.book.step2label} · <span className="text-forest-700">{selectedApt.name}</span>
+                {tr.book.step2label} · <span className="text-forest-700">{l === "cs" ? (selectedApt.nameCz ?? selectedApt.name) : selectedApt.name}</span>
               </p>
               <p className="text-xs font-sans text-forest-400">
                 {l === "cs"
@@ -184,6 +184,7 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
               checkOut={checkOut}
               onRangeChange={handleRangeChange}
               apartment={apartment}
+              locale={l}
             />
           </div>
 

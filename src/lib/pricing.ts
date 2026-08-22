@@ -23,7 +23,9 @@ type StayDiscount = {
 type Apartment = {
   id: string;
   name: string;
+  nameCz?: string;
   guests: string;
+  guestsCz?: string;
   defaultNightlyRate: number;
   discountFrom?: number;
 };

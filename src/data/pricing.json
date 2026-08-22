@@ -4,25 +4,33 @@
     {
       "id": "tiny",
       "name": "Tiny Apartment",
+      "nameCz": "Malý apartmán",
       "guests": "Up to 2 guests",
+      "guestsCz": "Až 2 hosté",
       "defaultNightlyRate": 4000
     },
     {
       "id": "timber",
       "name": "Timber Apartment",
+      "nameCz": "Dřevěný apartmán",
       "guests": "Up to 4 guests",
+      "guestsCz": "Až 4 hosté",
       "defaultNightlyRate": 6000
     },
     {
       "id": "topfloor",
       "name": "Top Floor Apartment",
+      "nameCz": "Podkrovní apartmán",
       "guests": "Up to 5 guests",
+      "guestsCz": "Až 5 hostů",
       "defaultNightlyRate": 8000
     },
     {
       "id": "whole",
       "name": "Whole House",
+      "nameCz": "Celá bouda",
       "guests": "Up to 11 guests",
+      "guestsCz": "Až 11 hostů",
       "defaultNightlyRate": 10000,
       "discountFrom": 10000
     }
