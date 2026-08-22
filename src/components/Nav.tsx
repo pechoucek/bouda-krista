@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 import { useT, type Locale } from "@/i18n/translations";
 
-type Props = { locale: Locale };
+type Props = { locale: Locale; alwaysDark?: boolean };
 
-export default function Nav({ locale }: Props) {
+export default function Nav({ locale, alwaysDark }: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
@@ -35,7 +35,7 @@ export default function Nav({ locale }: Props) {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-forest-950/95 backdrop-blur-sm shadow-lg" : "bg-transparent"
+        scrolled || alwaysDark ? "bg-forest-950/95 backdrop-blur-sm shadow-lg" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">

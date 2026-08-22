@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { format, eachDayOfInterval, isWithinInterval } from "date-fns";
 import BookingCalendar from "@/components/BookingCalendar";
 import Link from "next/link";
-import Logo from "@/components/Logo";
+import Nav from "@/components/Nav";
 import { apartments } from "@/lib/pricing";
 import { useT, type Locale } from "@/i18n/translations";
 
@@ -126,13 +126,9 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
   return (
     <div className="min-h-screen bg-stone-warm">
       {/* Header */}
-      <div className="bg-forest-950 px-6 py-5">
-        <div className="max-w-7xl mx-auto">
-          <Logo href={`/${l}`} />
-        </div>
-      </div>
+      <Nav locale={l} alwaysDark />
 
-      <div className="max-w-6xl mx-auto px-6 py-16">
+      <div className="max-w-6xl mx-auto px-6 pt-32 pb-16">
         <div className="mb-12">
           <p className="section-subtitle mb-3">{tr.book.subtitle}</p>
           <h1 className="section-title">{tr.book.title}</h1>
