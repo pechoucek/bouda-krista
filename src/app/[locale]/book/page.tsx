@@ -168,9 +168,14 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
         <div className="grid lg:grid-cols-5 gap-12">
           {/* Step 2 — Calendar */}
           <div className="lg:col-span-3 bg-white p-8 shadow-sm">
-            <p className="text-xs font-sans tracking-widest uppercase text-forest-500 mb-6">
-              {tr.book.step2label} · <span className="text-forest-700">{selectedApt.name}</span>
-            </p>
+            <div className="flex items-center justify-between mb-6">
+              <p className="text-xs font-sans tracking-widest uppercase text-forest-500">
+                {tr.book.step2label} · <span className="text-forest-700">{selectedApt.name}</span>
+              </p>
+              <p className="text-xs font-sans text-forest-400">
+                {l === "cs" ? "Min. 2 noci" : "Min. 2 nights"}
+              </p>
+            </div>
             <BookingCalendar
               checkIn={checkIn}
               checkOut={checkOut}
