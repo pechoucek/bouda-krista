@@ -1,0 +1,53 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getRedis } from "@/lib/bookings";
+
+export type GuestRecord = {
+  id: string;
+  submittedAt: string;
+  apartment: string;
+  checkIn: string;
+  checkOut: string;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  nationality: string;
+  documentNumber: string;
+  address: string;
+  nights: number;
+};
+
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+  const {
+    apartment, checkIn, checkOut,
+    firstName, lastName, birthDate, nationality, documentNumber, address,
+  } = body;
+
+  if (!firstName || !lastName || !birthDate || !nationality || !documentNumber || !address || !checkIn || !checkOut) {
+    return NextResponse.json({ error: "Vyplňte prosím všechna povinná pole." }, { status: 400 });
+  }
+
+  const ci = new Date(checkIn);
+  const co = new Date(checkOut);
+  const nights = Math.round((co.getTime() - ci.getTime()) / 86400000);
+
+  const record: GuestRecord = {
+    id: crypto.randomUUID(),
+    submittedAt: new Date().toISOString(),
+    apartment: apartment ?? "",
+    checkIn,
+    checkOut,
+    firstName,
+    lastName,
+    birthDate,
+    nationality,
+    documentNumber,
+    address,
+    nights,
+  };
+
+  const redis = await getRedis();
+  await redis.lpush("guests", JSON.stringify(record));
+
+  return NextResponse.json({ ok: true });
+}
