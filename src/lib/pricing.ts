@@ -56,11 +56,13 @@ export function getPeriodMinNights(checkIn: Date, apartmentId: string): number {
   return period?.minNights ?? 2;
 }
 
+export type RateSegment = { rate: number; nights: number };
+
 export function calculateTotal(
   checkIn: Date,
   checkOut: Date,
   apartmentId: string
-): { total: number; nights: number; nightlyRate: number; discountName?: string } {
+): { total: number; nights: number; nightlyRate: number; discountName?: string; rateBreakdown?: RateSegment[] } {
   const days = eachDayOfInterval({
     start: checkIn,
     end:   new Date(checkOut.getTime() - 86400000),
@@ -72,7 +74,6 @@ export function calculateTotal(
   const stayDiscount = (pricingData.stayDiscounts as StayDiscount[]).find((d) => {
     if (d.apartmentId !== apartmentId) return false;
     if (nights < d.minNights) return false;
-    // Check-in must fall within the discount window
     return isWithinInterval(checkIn, {
       start: parseISO(d.from),
       end:   parseISO(d.to),
@@ -88,5 +89,16 @@ export function calculateTotal(
   const total = rates.reduce((sum, r) => sum + r, 0);
   const nightlyRate = rates[0] ?? getApartment(apartmentId).defaultNightlyRate;
 
-  return { total, nights, nightlyRate };
+  // Build breakdown segments for mixed-rate stays
+  const rateBreakdown: RateSegment[] = [];
+  for (const rate of rates) {
+    const last = rateBreakdown[rateBreakdown.length - 1];
+    if (last && last.rate === rate) {
+      last.nights++;
+    } else {
+      rateBreakdown.push({ rate, nights: 1 });
+    }
+  }
+
+  return { total, nights, nightlyRate, rateBreakdown: rateBreakdown.length > 1 ? rateBreakdown : undefined };
 }

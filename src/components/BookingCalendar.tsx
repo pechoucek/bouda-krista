@@ -20,12 +20,13 @@ type Props = {
   onRangeChange: (checkIn: Date | null, checkOut: Date | null) => void;
   apartment: string;
   locale?: string;
+  maxDate?: Date;
 };
 
-const CS_MONTHS = ["ledna","února","března","dubna","května","června","července","srpna","září","října","listopadu","prosince"];
+const CS_MONTHS = ["Leden","Únor","Březen","Duben","Květen","Červen","Červenec","Srpen","Září","Říjen","Listopad","Prosinec"];
 const CS_DAYS   = ["Po","Út","St","Čt","Pá","So","Ne"];
 
-export default function BookingCalendar({ checkIn, checkOut, onRangeChange, apartment, locale }: Props) {
+export default function BookingCalendar({ checkIn, checkOut, onRangeChange, apartment, locale, maxDate }: Props) {
   const isCz = locale === "cs";
   const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
   const [blockedRanges, setBlockedRanges] = useState<{ start: Date; end: Date }[]>([]);
@@ -57,6 +58,15 @@ export default function BookingCalendar({ checkIn, checkOut, onRangeChange, apar
   );
 
   const isPast = (date: Date) => isBefore(startOfDay(date), startOfDay(new Date()));
+  const isBeyondMax = (date: Date) => {
+    if (maxDate && isAfter(startOfDay(date), startOfDay(maxDate))) return true;
+    if (apartment !== "whole") {
+      const limit = startOfDay(new Date());
+      limit.setDate(limit.getDate() + 21);
+      if (isAfter(startOfDay(date), limit)) return true;
+    }
+    return false;
+  };
 
   const isSelected = (date: Date) => {
     if (checkIn && isSameDay(date, checkIn)) return true;
@@ -75,7 +85,7 @@ export default function BookingCalendar({ checkIn, checkOut, onRangeChange, apar
   };
 
   const handleClick = (date: Date) => {
-    if (isPast(date) || isBlocked(date)) return;
+    if (isPast(date) || isBlocked(date) || isBeyondMax(date)) return;
     if (!checkIn || (checkIn && checkOut)) {
       onRangeChange(date, null);
     } else {
@@ -113,9 +123,10 @@ export default function BookingCalendar({ checkIn, checkOut, onRangeChange, apar
           {days.map((day) => {
             const past     = isPast(day);
             const blocked  = isBlocked(day);
+            const beyondMax = isBeyondMax(day);
             const selected = isSelected(day);
             const inRange  = isInRange(day);
-            const disabled = past || blocked;
+            const disabled = past || blocked || beyondMax;
 
             return (
               <button
@@ -166,7 +177,13 @@ export default function BookingCalendar({ checkIn, checkOut, onRangeChange, apar
         <button
           type="button"
           onClick={() => setCurrentMonth((m) => addMonths(m, 1))}
-          className="p-2 text-forest-700 hover:text-forest-900 transition-colors"
+          disabled={(() => {
+            const effectiveMax = apartment !== "whole"
+              ? (() => { const d = new Date(); d.setDate(d.getDate() + 21); return d; })()
+              : maxDate;
+            return effectiveMax ? !isBefore(addMonths(currentMonth, 1), startOfMonth(addMonths(effectiveMax, 1))) : false;
+          })()}
+          className="p-2 text-forest-700 hover:text-forest-900 disabled:text-forest-300 transition-colors"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5l7 7-7 7" />

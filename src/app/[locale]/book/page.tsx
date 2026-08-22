@@ -2,7 +2,7 @@
 
 import { useState, useEffect, use, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { format } from "date-fns";
+import { format, eachDayOfInterval, isWithinInterval } from "date-fns";
 import BookingCalendar from "@/components/BookingCalendar";
 import Link from "next/link";
 import Logo from "@/components/Logo";
@@ -41,7 +41,8 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
   const [about, setAbout]           = useState("");
   const [loading, setLoading]       = useState(false);
   const [error, setError]           = useState("");
-  const [priceInfo, setPriceInfo]   = useState<{ total: number; nights: number; nightlyRate: number; discountName?: string; minNights?: number } | null>(null);
+  const [christmasPopup, setChristmasPopup] = useState(false);
+  const [priceInfo, setPriceInfo]   = useState<{ total: number; nights: number; nightlyRate: number; discountName?: string; minNights?: number; rateBreakdown?: { rate: number; nights: number }[] } | null>(null);
   const [loadingPrice, setLoadingPrice] = useState(false);
 
   const selectedApt = apartments.find((a) => a.id === apartment) ?? apartments[3];
@@ -65,6 +66,18 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
   }, [checkIn, checkOut, apartment]);
 
   const handleRangeChange = (ci: Date | null, co: Date | null) => {
+    if (ci && co) {
+      const days = eachDayOfInterval({ start: ci, end: new Date(co.getTime() - 86400000) });
+      const nights = days.length;
+      const overlapsChristmas = days.some((d) => {
+        const yr = d.getFullYear();
+        return isWithinInterval(d, { start: new Date(yr, 11, 21), end: new Date(yr, 11, 27) });
+      });
+      if (overlapsChristmas && nights < 5) {
+        setChristmasPopup(true);
+        return;
+      }
+    }
     setCheckIn(ci);
     setCheckOut(co);
   };
@@ -114,11 +127,8 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
     <div className="min-h-screen bg-stone-warm">
       {/* Header */}
       <div className="bg-forest-950 px-6 py-5">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="max-w-7xl mx-auto">
           <Logo href={`/${l}`} />
-          <Link href={`/${l}`} className="text-stone-warm/60 hover:text-stone-warm text-sm font-sans tracking-wider">
-            {tr.book.headerBack}
-          </Link>
         </div>
       </div>
 
@@ -185,6 +195,7 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
               onRangeChange={handleRangeChange}
               apartment={apartment}
               locale={l}
+              maxDate={new Date(2027, 7, 31)}
             />
           </div>
 
@@ -269,15 +280,24 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
                       <span>
                         {priceInfo?.nights ?? "—"}{" "}
                         {l === "cs"
-                          ? `noc${priceInfo && priceInfo.nights > 1 ? "í" : ""}`
+                          ? (priceInfo && priceInfo.nights >= 5 ? "nocí" : priceInfo && priceInfo.nights >= 2 ? "noci" : "noc")
                           : `night${priceInfo && priceInfo.nights !== 1 ? "s" : ""}`}
                       </span>
                     </div>
                     {priceInfo && !loadingPrice && (
-                      <div className="flex justify-between font-sans text-sm text-forest-500">
-                        <span>{priceInfo.nightlyRate.toLocaleString("cs-CZ")} Kč × {priceInfo.nights}</span>
-                        <span>{priceInfo.total.toLocaleString("cs-CZ")} Kč</span>
-                      </div>
+                      priceInfo.rateBreakdown ? (
+                        priceInfo.rateBreakdown.map((seg, i) => (
+                          <div key={i} className="flex justify-between font-sans text-sm text-forest-500">
+                            <span>{seg.rate.toLocaleString("cs-CZ")} Kč × {seg.nights}</span>
+                            <span>{(seg.rate * seg.nights).toLocaleString("cs-CZ")} Kč</span>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="flex justify-between font-sans text-sm text-forest-500">
+                          <span>{priceInfo.nightlyRate.toLocaleString("cs-CZ")} Kč × {priceInfo.nights}</span>
+                          <span>{priceInfo.total.toLocaleString("cs-CZ")} Kč</span>
+                        </div>
+                      )
                     )}
                     <div className="flex justify-between font-serif text-lg text-forest-900 pt-2 border-t border-forest-100">
                       <span>{tr.book.total}</span>
@@ -314,6 +334,29 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
           </div>
         </div>
       </div>
+
+      {/* Christmas minimum-stay popup */}
+      {christmasPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-forest-950/60 px-4">
+          <div className="bg-white max-w-sm w-full p-8 shadow-xl text-center">
+            <p className="font-serif text-2xl text-forest-900 mb-3">
+              {l === "cs" ? "Vánoční pobyt" : "Christmas Stay"}
+            </p>
+            <p className="font-sans text-sm text-forest-700 mb-6 leading-relaxed">
+              {l === "cs"
+                ? "Pro pobyty zahrnující období 21.–27. 12. je minimální délka pobytu 5 nocí."
+                : "Stays that include the period 21–27 December require a minimum of 5 nights."}
+            </p>
+            <button
+              type="button"
+              onClick={() => setChristmasPopup(false)}
+              className="btn-primary w-full"
+            >
+              {l === "cs" ? "Rozumím" : "Got it"}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
