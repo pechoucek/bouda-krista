@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     payment = await getPaymentStatus(paymentId);
   } catch (err) {
     console.error("GoPay status check failed:", err);
-    return NextResponse.json({ error: "Status check failed" }, { status: 500 });
+    return NextResponse.json({ received: true, error: "Status check failed" }, { status: 200 });
   }
 
   if (payment.state !== "PAID") {
@@ -130,7 +130,8 @@ export async function GET(req: NextRequest) {
     payment = await getPaymentStatus(paymentId);
   } catch (err) {
     console.error("GoPay GET status check failed:", err);
-    return NextResponse.json({ error: "Status check failed" }, { status: 500 });
+    // Always return 200 to GoPay — they retry on anything else
+    return NextResponse.json({ received: true, error: "Status check failed" }, { status: 200 });
   }
 
   if (payment.state !== "PAID") {
