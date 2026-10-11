@@ -89,3 +89,26 @@ export async function clearBookings(apartment: string): Promise<void> {
   const redis = getRedis();
   await redis.del(KEY(apartment));
 }
+
+export async function deleteBookingById(apartment: string, id: string): Promise<boolean> {
+  const redis = getRedis();
+  const raw = await redis.lrange(KEY(apartment), 0, -1);
+  const match = raw.find((r) => {
+    try { return (JSON.parse(r) as Booking).id === id; } catch { return false; }
+  });
+  if (!match) return false;
+  await redis.lrem(KEY(apartment), 1, match);
+  return true;
+}
+
+export async function getAllBookings(): Promise<Booking[]> {
+  const redis = getRedis();
+  const all = await Promise.all(
+    ALL_APARTMENTS.map((apt) =>
+      redis.lrange(KEY(apt), 0, -1).then((rows) =>
+        rows.map((r) => JSON.parse(r) as Booking)
+      )
+    )
+  );
+  return all.flat().sort((a, b) => a.checkIn.localeCompare(b.checkIn));
+}
