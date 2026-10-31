@@ -80,6 +80,21 @@ function getDynamicMinNights(checkIn: Date, config: PriceConfig): number {
   return config.offseason.minNights;
 }
 
+function getSeason(checkIn: Date, config: PriceConfig): "christmas" | "newyear" | "easter" | "winter" | "summer" | "offseason" {
+  const m = checkIn.getMonth();
+  const d = checkIn.getDate();
+  const yr = checkIn.getFullYear();
+  if (m === 11 && d >= 21 && d <= 27) return "christmas";
+  if ((m === 11 && d >= 28) || (m === 0 && d <= 1)) return "newyear";
+  const easter = getEasterSunday(yr);
+  const goodFriday = new Date(easter); goodFriday.setDate(easter.getDate() - 2);
+  const easterMon  = new Date(easter); easterMon.setDate(easter.getDate() + 1);
+  if (checkIn >= goodFriday && checkIn <= easterMon) return "easter";
+  if ((m === 11 && d >= 1) || m <= 2) return "winter";
+  if (m === 6 || m === 7) return "summer";
+  return "offseason";
+}
+
 export async function POST(req: NextRequest) {
   const { checkIn, checkOut, apartment } = await req.json();
 
@@ -94,5 +109,19 @@ export async function POST(req: NextRequest) {
   ]);
 
   const minNights = getDynamicMinNights(new Date(checkIn), config);
-  return NextResponse.json({ ...result, minNights });
+  const season = getSeason(new Date(checkIn), config);
+
+  // Apply weekly pricing from admin config when exactly 7 nights and season has a weekly rate
+  let finalResult = result;
+  if (result.nights === 7 && (season === "winter" || season === "summer" || season === "offseason")) {
+    const weekTotal = config[season].week;
+    finalResult = {
+      ...result,
+      total: weekTotal,
+      nightlyRate: Math.round(weekTotal / 7),
+      rateBreakdown: undefined,
+    };
+  }
+
+  return NextResponse.json({ ...finalResult, minNights });
 }

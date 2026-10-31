@@ -44,8 +44,13 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
   const [christmasPopup, setChristmasPopup] = useState(false);
   const [priceInfo, setPriceInfo]   = useState<{ total: number; nights: number; nightlyRate: number; discountName?: string; minNights?: number; rateBreakdown?: { rate: number; nights: number }[] } | null>(null);
   const [loadingPrice, setLoadingPrice] = useState(false);
+  const [priceConfig, setPriceConfig] = useState<{ christmas: { minNights: number }; offseason: { minNights: number } } | null>(null);
 
   const selectedApt = apartments.find((a) => a.id === apartment) ?? apartments[3];
+
+  useEffect(() => {
+    fetch("/api/admin/prices").then((r) => r.json()).then(setPriceConfig).catch(() => null);
+  }, []);
 
   useEffect(() => {
     if (!checkIn || !checkOut) { setPriceInfo(null); return; }
@@ -73,7 +78,8 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
         const yr = d.getFullYear();
         return isWithinInterval(d, { start: new Date(yr, 11, 21), end: new Date(yr, 11, 27) });
       });
-      if (overlapsChristmas && nights < 5) {
+      const christmasMin = priceConfig?.christmas?.minNights ?? 5;
+      if (overlapsChristmas && nights < christmasMin) {
         setChristmasPopup(true);
         return;
       }
@@ -184,9 +190,10 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
                 {tr.book.step2label} · <span className="text-forest-700">{l === "cs" ? (selectedApt.nameCz ?? selectedApt.name) : selectedApt.name}</span>
               </p>
               <p className="text-xs font-sans text-forest-400">
-                {l === "cs"
-                  ? `Min. ${priceInfo?.minNights ?? 2} noci`
-                  : `Min. ${priceInfo?.minNights ?? 2} nights`}
+                {(() => {
+                  const mn = priceInfo?.minNights ?? priceConfig?.offseason?.minNights ?? 2;
+                  return l === "cs" ? `Min. ${mn} noci` : `Min. ${mn} nights`;
+                })()}
               </p>
             </div>
             <BookingCalendar
