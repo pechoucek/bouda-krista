@@ -38,6 +38,7 @@ export default function ApartmentModal({ apartment, locale, onClose, onBook }: P
         {/* Photo gallery */}
         <div className="relative aspect-[16/9] bg-forest-100 overflow-hidden">
           <img
+            key={photos[photoIndex]?.url}
             src={photos[photoIndex]?.url}
             alt={photos[photoIndex]?.alt}
             className="w-full h-full object-cover"
