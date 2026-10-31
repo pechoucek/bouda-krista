@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { getRedis, saveBooking } from "@/lib/bookings";
+import { SITE_URL, signToken } from "@/lib/payment-email";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -24,6 +25,22 @@ function nightsLabel(n: number): string {
   if (n === 1) return "1 noc";
   if (n >= 2 && n <= 4) return `${n} noci`;
   return `${n} nocí`;
+}
+
+// "Celá bouda" -> "celou boudu" (accusative, for "Přejete si ...")
+function apartmentAccCz(name: unknown): string {
+  const n = String(name ?? "").trim();
+  if (!n || /cel[áaýy]\s+boud|whole\s+house/i.test(n)) return "celou boudu";
+  if (/^apartm[aá]n/i.test(n)) return n.charAt(0).toLowerCase() + n.slice(1);
+  return `apartmán ${n}`;
+}
+
+// "Whole house" -> "the whole house", "Top Floor" -> "the Top Floor apartment"
+function apartmentAccEn(name: unknown): string {
+  const n = String(name ?? "").trim();
+  if (!n || /whole\s+house|cel[áaýy]\s+boud/i.test(n)) return "the whole house";
+  if (/^apartment/i.test(n)) return "the " + n.charAt(0).toLowerCase() + n.slice(1);
+  return `the ${n} apartment`;
 }
 
 export async function POST(req: NextRequest) {
@@ -85,6 +102,22 @@ export async function POST(req: NextRequest) {
     `<div style="font-family:sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:${TEXT}">${label}</div>` +
     `<div style="font-family:sans-serif;font-size:16px;color:${TEXT};margin:2px 0 14px 0">${value}</div>`;
 
+  // ── Formatting used by the guest email ──────────────────────────────────
+  const totalNum = Number(String(total).replace(/\s/g, ""));
+  const priceOk = Number.isFinite(totalNum) && totalNum > 0;
+  const priceCz = priceOk ? `${totalNum.toLocaleString("cs-CZ")} Kč` : `${total} Kč`;
+  const priceEn = priceOk ? `${totalNum.toLocaleString("en-GB")} CZK` : `${total} CZK`;
+  const nightsEn = nightsNum === 1 ? "1 night" : `${Number.isFinite(nightsNum) ? nightsNum : nights} nights`;
+  const stayRange = `${fmtDate(checkIn)} – ${fmtDate(checkOut)}`;
+
+  // ── Link behind the button: opens a preview page where you press "Odeslat" ──
+  let buttonHref = `mailto:${guestEmail}`; // fallback if the private link can't be made
+  try {
+    buttonHref = `${SITE_URL}/api/reservation/send-payment?id=${reservationId}&token=${signToken(reservationId)}`;
+  } catch (err) {
+    console.error("Could not create payment link:", err);
+  }
+
   const ownerResult = await resend.emails.send({
     from,
     to: ownerEmail,
@@ -133,8 +166,8 @@ export async function POST(req: NextRequest) {
         </div>` : ""}
 
         <p style="text-align:center;margin:24px 0 16px 0">
-          <a href="mailto:${esc(guestEmail)}" style="display:inline-block;background:${BUTTON};color:#FFFFFF;padding:10px 22px;text-decoration:none;font-family:sans-serif;font-size:14px">
-            Odpovědět hostovi
+          <a href="${esc(buttonHref)}" style="display:inline-block;background:${BUTTON};color:#FFFFFF;padding:10px 22px;text-decoration:none;font-family:sans-serif;font-size:14px">
+            Odeslat platební údaje hostovi
           </a>
         </p>
 
@@ -150,35 +183,53 @@ export async function POST(req: NextRequest) {
   }
 
   // ── Guest confirmation ─────────────────────────────────────────────────
+  // Greeting depends on the time in the Czech Republic (Vercel servers run in UTC)
+  const hourCz =
+    Number(
+      new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Prague", hour: "2-digit", hour12: false }).format(new Date())
+    ) % 24;
+  const greetingCz =
+    hourCz < 11 ? "Dobré ráno" :
+    hourCz < 12 ? "Dobré dopoledne" :
+    hourCz < 17 ? "Dobré odpoledne" :
+    "Dobrý večer";
+  const greetingEn =
+    hourCz < 12 ? "Good morning" :
+    hourCz < 17 ? "Good afternoon" :
+    "Good evening";
+
+
+  // TODO: check that the Instagram handle in the signature (@bouda_krista) is correct
   const guestResult = await resend.emails.send({
     from,
     to: guestEmail,
     replyTo: ownerEmail,
     subject: isCz
-      ? "Přijali jsme vaši poptávku — Bouda Krista"
-      : "We received your reservation request — Bouda Krista",
+      ? "Prý byste rádi na Boudu Kristu..."
+      : "I hear you’d like to come to Bouda Krista...",
     html: `
       <div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#1a311a">
-        <h1 style="font-size:1.8rem;margin-bottom:0.5rem">
-          ${isCz ? "Vaše poptávka byla přijata" : "Your request has been received"}
+        <h1 style="font-size:1.8rem;line-height:1.25;margin-bottom:0.5rem">
+          ${isCz ? `Přijali jsme Vaši poptávku na termín ${esc(stayRange)}` : `We have received your request for the dates ${esc(stayRange)}`}
         </h1>
         <p style="color:#5e975e;font-family:sans-serif;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase">
           Bouda Krista · Rokytnice nad Jizerou
         </p>
         <hr style="border:none;border-top:1px solid #c2dbc2;margin:1.5rem 0"/>
-        <table style="width:100%;font-family:sans-serif;font-size:0.9rem;border-collapse:collapse">
-          <tr><td style="color:#5e975e;padding:6px 0;width:160px">${isCz ? "Apartmán" : "Apartment"}</td><td>${esc(apartmentName)}</td></tr>
-          <tr><td style="color:#5e975e;padding:6px 0">${isCz ? "Příjezd" : "Check-in"}</td><td>${esc(checkIn)}</td></tr>
-          <tr><td style="color:#5e975e;padding:6px 0">${isCz ? "Odjezd" : "Check-out"}</td><td>${esc(checkOut)}</td></tr>
-          <tr><td style="color:#5e975e;padding:6px 0">${isCz ? "Počet nocí" : "Nights"}</td><td>${esc(nights)}</td></tr>
-          <tr><td style="color:#5e975e;padding:6px 0">${isCz ? "Odhadovaná cena" : "Estimated price"}</td><td><strong>${esc(total)} Kč</strong></td></tr>
-        </table>
-        <hr style="border:none;border-top:1px solid #c2dbc2;margin:1.5rem 0"/>
         <p style="font-family:sans-serif;font-size:0.9rem;line-height:1.7;color:#1a311a">
           ${isCz
-            ? `Dobrý den ${esc(guestName)},<br/><br/>vaše rezervace byla přijata a termín je pro vás rezervován. Ozveme se vám do 24 hodin s platebními instrukcemi.`
-            : `Dear ${esc(guestName)},<br/><br/>your reservation has been accepted and the dates are held for you. We will contact you within 24 hours with payment instructions.`
+            ? `${greetingCz},<br/><br/>Přejete si ${esc(apartmentAccCz(apartmentName))} na ${esc(stayLabel)} v ceně ${esc(priceCz)}. Vaši poptávku jsme přijali a co nevidět se Vám ozveme.`
+            : `${greetingEn},<br/><br/>You would like ${esc(apartmentAccEn(apartmentName))} for ${esc(nightsEn)} at a price of ${esc(priceEn)}. We have received your request and will be in touch very soon.`
           }
+        </p>
+        <p style="font-family:sans-serif;font-size:0.9rem;line-height:1.7;color:#1a311a;margin-top:1.5rem">
+          ${isCz ? "S pozdravem" : "Kind regards"}<br/>Emma
+        </p>
+        <p style="font-family:sans-serif;font-size:0.85rem;line-height:1.7;color:#1a311a">
+          <strong>Bouda Krista</strong><br/>
+          <a href="https://www.bouda-krista.cz" style="color:#1a311a">www.bouda-krista.cz</a><br/>
+          Tel.: <a href="tel:+420722425275" style="color:#1a311a">+420 722 425 275</a><br/>
+          IG: <a href="https://www.instagram.com/bouda_krista" style="color:#1a311a">@bouda_krista</a>
         </p>
         <hr style="border:none;border-top:1px solid #c2dbc2;margin:1.5rem 0"/>
         <p style="font-family:sans-serif;font-size:0.8rem;color:#5e975e">
