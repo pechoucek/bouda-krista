@@ -29,20 +29,18 @@ export default function Gallery({ locale = "cs" }: { locale?: string }) {
         <h2 className="section-title">{locale === "cs" ? "Jak vypadá Bouda Krista?" : "Inside Bouda Krista"}</h2>
       </div>
 
-      <div className="columns-2 md:columns-3 lg:columns-4 gap-3 space-y-3">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         {photos.map((photo, idx) => (
           <div
             key={photo.url}
-            className="relative overflow-hidden cursor-pointer group break-inside-avoid"
+            className="relative overflow-hidden cursor-pointer group aspect-[4/3]"
             onClick={() => setLightbox(idx)}
           >
             <Image
               src={photo.url}
               alt={photo.alt}
-              width={600}
-              height={400}
-              className="w-full object-cover transition-transform duration-500 group-hover:scale-105"
-              style={{ height: "auto" }}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-forest-950/0 group-hover:bg-forest-950/20 transition-all duration-300 flex items-center justify-center">
               <svg className="w-10 h-10 text-stone-warm opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
