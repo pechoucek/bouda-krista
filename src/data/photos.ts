@@ -5,6 +5,7 @@ export type Photo = {
 };
 
 export const photos: Photo[] = [
+  { url: "/photos/DJI_0666.jpg",                              category: "exterior",  alt: "Bouda Krista exterior with cherry blossom tree" },
   { url: "/photos/81364994-282d-4e04-8b8a-7969c942ff54.jpeg", category: "exterior",  alt: "Lodge exterior evening view" },
   { url: "/photos/7c002b6b-0732-4dc5-a9db-b9138467ffc8.jpeg", category: "exterior",  alt: "Lodge terrace overlooking mountains" },
   { url: "/photos/44b4b68c-4979-43e8-9d6c-70b37aa20b56.png",  category: "exterior",  alt: "Lodge grounds and garden" },
