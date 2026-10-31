@@ -69,7 +69,12 @@ export default async function Home({ params }: Props) {
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            {exteriorPhotos.slice(0, 4).map((photo) => (
+            {[
+              { url: "/photos/DJI_0666.jpg",   alt: "Bouda Krista aerial view" },
+              { url: "/photos/FAR06549.jpg",   alt: "Bouda Krista surroundings" },
+              { url: "/photos/DSCF8812.JPG",  alt: "Bouda Krista exterior" },
+              { url: "/photos/IMG_2620.jpg",   alt: "Bouda Krista" },
+            ].map((photo) => (
               <div key={photo.url} className="relative overflow-hidden aspect-square">
                 <Image
                   src={photo.url}
