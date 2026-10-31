@@ -4,15 +4,15 @@ import { useState } from "react";
 import Image from "next/image";
 
 const photos = [
-  { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/0f78d46d-636a-441c-8882-5ea6d80e3e9a.jpeg?im_w=1440", alt: "Bouda Krista" },
-  { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/88c132ff-5c79-40b7-a094-959a05128f2f.jpeg?im_w=1440", alt: "Bouda Krista" },
-  { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/ef77d4b4-452f-4b93-a3d0-c366c3205906.jpeg?im_w=1440", alt: "Bouda Krista" },
-  { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/3cabd249-e82b-417e-9d8d-85f8fdcea26c.jpeg?im_w=1440", alt: "Bouda Krista" },
-  { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1646250768905855726/original/30db18dc-c695-4ea5-873d-2a9d3abbc227.jpeg?im_w=1440", alt: "Bouda Krista" },
-  { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1677566795867113387/original/a0052c7c-9e4e-4b02-8031-77beaf51ff5b.jpeg?im_w=1440", alt: "Bouda Krista" },
-  { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1681755602554370759/original/daa6a02b-06de-4b6d-8abb-cfbd6ab77c33.jpeg?im_w=1440", alt: "Bouda Krista exterior" },
-  { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1677566795867113387/original/bb5d30ad-61d3-4945-9c08-5b3f5e3feed1.jpeg?im_w=1440", alt: "Bouda Krista" },
-  { url: "https://a0.muscache.com/im/pictures/hosting/Hosting-1681755602554370759/original/e1a7808e-7fd2-4d1e-bd22-d78a8aef1e7b.jpeg?im_w=1440", alt: "Bouda Krista" },
+  { url: "/photos/IMG_2620.jpg",       alt: "Bouda Krista" },
+  { url: "/photos/zentelFAR06286.jpg", alt: "Bouda Krista" },
+  { url: "/photos/IMG_2770.jpg",       alt: "Bouda Krista" },
+  { url: "/photos/DSCF8865.JPG",      alt: "Bouda Krista" },
+  { url: "/photos/DSCF8782.JPG",      alt: "Bouda Krista" },
+  { url: "/photos/DSCF8790.JPG",      alt: "Bouda Krista" },
+  { url: "/photos/bb5d30ad.webp",     alt: "Bouda Krista" },
+  { url: "/photos/e1a7808e.webp",     alt: "Bouda Krista" },
+  { url: "/photos/0f78d46d.webp",     alt: "Bouda Krista" },
 ];
 
 export default function Gallery({ locale = "cs" }: { locale?: string }) {
