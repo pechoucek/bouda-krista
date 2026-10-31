@@ -40,6 +40,10 @@ export default function Hero({ locale }: Props) {
         </div>
       </div>
 
+      <p className="absolute bottom-4 right-4 z-10 text-stone-warm/40 text-[11px] font-sans tracking-wide">
+        photo Lukáš Žentel
+      </p>
+
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-bounce">
         <svg className="w-6 h-6 text-stone-warm/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
