@@ -158,13 +158,17 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
                   {l === "cs" ? (apt.guestsCz ?? apt.guests) : apt.guests}
                 </div>
                 <div className={`font-sans text-sm font-medium ${apartment === apt.id ? "text-gold" : "text-forest-700"}`}>
-                  {apt.discountFrom ? (
-                    <>
-                      <span className="line-through opacity-50 mr-1">{apt.defaultNightlyRate.toLocaleString("cs-CZ")}</span>
-                      {l === "cs" ? "od " : "from "}{apt.discountFrom.toLocaleString("cs-CZ")} Kč / {l === "cs" ? "noc" : "night"}
-                    </>
+                  {apt.id === "whole" ? (
+                    apt.discountFrom ? (
+                      <>
+                        <span className="line-through opacity-50 mr-1">{apt.defaultNightlyRate.toLocaleString("cs-CZ")}</span>
+                        {l === "cs" ? "od " : "from "}{apt.discountFrom.toLocaleString("cs-CZ")} Kč / {l === "cs" ? "noc" : "night"}
+                      </>
+                    ) : (
+                      <>{apt.defaultNightlyRate.toLocaleString("cs-CZ")} Kč / {l === "cs" ? "noc" : "night"}</>
+                    )
                   ) : (
-                    <>{apt.defaultNightlyRate.toLocaleString("cs-CZ")} Kč / {l === "cs" ? "noc" : "night"}</>
+                    <>{l === "cs" ? "na vyžádání" : "on request"}</>
                   )}
                 </div>
               </button>
