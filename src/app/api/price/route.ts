@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { calculateTotal } from "@/lib/pricing";
 import { getRedis } from "@/lib/bookings";
+import { eachDayOfInterval } from "date-fns";
 
 type SeasonPrices = { base: number; weekend: number; week: number; minNights: number };
 type SpecialPeriod = { price: number; minNights: number };
 type PriceConfig = {
-  winter: SeasonPrices;
-  summer: SeasonPrices;
+  winter:    SeasonPrices;
+  summer:    SeasonPrices;
   offseason: SeasonPrices;
   christmas: SpecialPeriod;
-  newyear: SpecialPeriod;
-  easter: SpecialPeriod;
+  newyear:   SpecialPeriod;
+  easter:    SpecialPeriod;
 };
 
 const DEFAULT: PriceConfig = {
@@ -28,14 +28,20 @@ async function getPriceConfig(): Promise<PriceConfig> {
     const raw = await redis.get("config:prices");
     if (!raw) return DEFAULT;
     const stored = JSON.parse(raw);
-    return { ...DEFAULT, ...stored };
+    return {
+      winter:    { ...DEFAULT.winter,    ...stored.winter },
+      summer:    { ...DEFAULT.summer,    ...stored.summer },
+      offseason: { ...DEFAULT.offseason, ...stored.offseason },
+      christmas: { ...DEFAULT.christmas, ...stored.christmas },
+      newyear:   { ...DEFAULT.newyear,   ...stored.newyear },
+      easter:    { ...DEFAULT.easter,    ...stored.easter },
+    };
   } catch {
     return DEFAULT;
   }
 }
 
 function getEasterSunday(year: number): Date {
-  // Anonymous Gregorian algorithm
   const a = year % 19;
   const b = Math.floor(year / 100);
   const c = year % 100;
@@ -53,75 +59,85 @@ function getEasterSunday(year: number): Date {
   return new Date(year, month, day);
 }
 
-function getDynamicMinNights(checkIn: Date, config: PriceConfig): number {
-  const m = checkIn.getMonth(); // 0-indexed
-  const d = checkIn.getDate();
-  const yr = checkIn.getFullYear();
+type Season = "christmas" | "newyear" | "easter" | "winter" | "summer" | "offseason";
 
-  // Christmas: Dec 21–27
-  if (m === 11 && d >= 21 && d <= 27) return config.christmas.minNights;
+function getSeason(date: Date): Season {
+  const m = date.getMonth(); // 0-indexed
+  const d = date.getDate();
+  const yr = date.getFullYear();
 
-  // New Year: Dec 28 – Jan 1
-  if ((m === 11 && d >= 28) || (m === 0 && d <= 1)) return config.newyear.minNights;
-
-  // Easter: Good Friday (Easter Sunday - 2) through Easter Monday (Easter Sunday + 1)
-  const easter = getEasterSunday(yr);
-  const goodFriday = new Date(easter); goodFriday.setDate(easter.getDate() - 2);
-  const easterMon  = new Date(easter); easterMon.setDate(easter.getDate() + 1);
-  if (checkIn >= goodFriday && checkIn <= easterMon) return config.easter.minNights;
-
-  // Winter: Dec 1 – Mar 31
-  if ((m === 11 && d >= 1) || m <= 2) return config.winter.minNights;
-
-  // Summer: Jul 1 – Aug 31
-  if (m === 6 || m === 7) return config.summer.minNights;
-
-  // Off-season
-  return config.offseason.minNights;
-}
-
-function getSeason(checkIn: Date, config: PriceConfig): "christmas" | "newyear" | "easter" | "winter" | "summer" | "offseason" {
-  const m = checkIn.getMonth();
-  const d = checkIn.getDate();
-  const yr = checkIn.getFullYear();
   if (m === 11 && d >= 21 && d <= 27) return "christmas";
   if ((m === 11 && d >= 28) || (m === 0 && d <= 1)) return "newyear";
+
   const easter = getEasterSunday(yr);
   const goodFriday = new Date(easter); goodFriday.setDate(easter.getDate() - 2);
   const easterMon  = new Date(easter); easterMon.setDate(easter.getDate() + 1);
-  if (checkIn >= goodFriday && checkIn <= easterMon) return "easter";
+  if (date >= goodFriday && date <= easterMon) return "easter";
+
+  // Winter: Dec 1 – Mar 31
   if ((m === 11 && d >= 1) || m <= 2) return "winter";
+  // Summer: Jul 1 – Aug 31
   if (m === 6 || m === 7) return "summer";
+
   return "offseason";
 }
 
+function isWeekend(date: Date): boolean {
+  const dow = date.getDay(); // 0=Sun, 5=Fri, 6=Sat
+  return dow === 5 || dow === 6;
+}
+
+function getNightlyRate(date: Date, config: PriceConfig): number {
+  const season = getSeason(date);
+  if (season === "christmas") return config.christmas.price;
+  if (season === "newyear")   return config.newyear.price;
+  if (season === "easter")    return config.easter.price;
+  const s = config[season];
+  return isWeekend(date) ? s.weekend : s.base;
+}
+
+function getMinNights(checkIn: Date, config: PriceConfig): number {
+  const season = getSeason(checkIn);
+  if (season === "christmas") return config.christmas.minNights;
+  if (season === "newyear")   return config.newyear.minNights;
+  if (season === "easter")    return config.easter.minNights;
+  return config[season].minNights;
+}
+
 export async function POST(req: NextRequest) {
-  const { checkIn, checkOut, apartment } = await req.json();
+  const { checkIn, checkOut } = await req.json();
 
   if (!checkIn || !checkOut) {
     return NextResponse.json({ error: "Missing dates" }, { status: 400 });
   }
 
-  const aptId = apartment ?? "whole";
-  const [result, config] = await Promise.all([
-    Promise.resolve(calculateTotal(new Date(checkIn), new Date(checkOut), aptId)),
-    getPriceConfig(),
-  ]);
+  const checkInDate  = new Date(checkIn);
+  const checkOutDate = new Date(checkOut);
 
-  const minNights = getDynamicMinNights(new Date(checkIn), config);
-  const season = getSeason(new Date(checkIn), config);
+  const config = await getPriceConfig();
+  const minNights = getMinNights(checkInDate, config);
 
-  // Apply weekly pricing from admin config when exactly 7 nights and season has a weekly rate
-  let finalResult = result;
-  if (result.nights === 7 && (season === "winter" || season === "summer" || season === "offseason")) {
-    const weekTotal = config[season].week;
-    finalResult = {
-      ...result,
-      total: weekTotal,
+  const days = eachDayOfInterval({
+    start: checkInDate,
+    end:   new Date(checkOutDate.getTime() - 86400000),
+  });
+  const nights = days.length;
+
+  // Weekly rate: exactly 7 nights in a regular season
+  const checkInSeason = getSeason(checkInDate);
+  if (nights === 7 && (checkInSeason === "winter" || checkInSeason === "summer" || checkInSeason === "offseason")) {
+    const weekTotal = config[checkInSeason].week;
+    return NextResponse.json({
+      total:      weekTotal,
+      nights:     7,
       nightlyRate: Math.round(weekTotal / 7),
-      rateBreakdown: undefined,
-    };
+      minNights,
+    });
   }
 
-  return NextResponse.json({ ...finalResult, minNights });
+  const rates = days.map((day) => getNightlyRate(day, config));
+  const total = rates.reduce((sum, r) => sum + r, 0);
+  const nightlyRate = rates[0] ?? config.offseason.base;
+
+  return NextResponse.json({ total, nights, nightlyRate, minNights });
 }
