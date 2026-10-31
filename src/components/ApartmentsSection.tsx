@@ -58,10 +58,7 @@ export default function ApartmentsSection({ locale }: Props) {
                 <p className="font-sans text-sm text-forest-600 leading-relaxed mb-4 line-clamp-3">
                   {locale === "cs" ? apt.descriptionCs : apt.description}
                 </p>
-                <div className="flex items-center justify-between">
-                  <span className="font-sans text-sm font-medium text-forest-700">
-                    {apt.defaultNightlyRate.toLocaleString("cs-CZ")} {tr.apartments.perNight}
-                  </span>
+                <div className="flex items-center justify-end">
                   <span className="font-sans text-xs text-gold tracking-widest uppercase group-hover:underline">
                     {tr.apartments.details}
                   </span>
@@ -71,10 +68,7 @@ export default function ApartmentsSection({ locale }: Props) {
           ))}
         </div>
 
-        <div className="text-center mt-12 space-y-4">
-          <p className="font-sans text-sm text-forest-500">
-            {tr.apartments.wholeNote}
-          </p>
+        <div className="text-center mt-12">
           <Link href={`/${locale}/book`} className="btn-primary inline-block">
             {tr.apartments.bookCta}
           </Link>
