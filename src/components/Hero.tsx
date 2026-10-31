@@ -7,7 +7,7 @@ import { useT, type Locale } from "@/i18n/translations";
 
 const HERO_PHOTOS = [
   { url: "/photos/DJI_0666.jpg",   alt: "Bouda Krista aerial view",  credit: "photo Lukáš Žentel" },
-  { url: "/photos/DSCF8812.JPG",  alt: "Bouda Krista exterior",     credit: "photo Lukáš Žentel" },
+  { url: "/photos/DSCF8812.JPG",  alt: "Bouda Krista exterior",     credit: null },
   { url: "/photos/FAR06549.jpg",  alt: "Bouda Krista surroundings", credit: "photo Lukáš Žentel" },
 ];
 
