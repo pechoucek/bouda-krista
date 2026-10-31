@@ -255,7 +255,7 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
               </p>
               <p className="text-xs font-sans text-forest-400">
                 {(() => {
-                  const mn = priceInfo?.minNights ?? priceConfig?.offseason?.minNights ?? 2;
+                  const mn = priceInfo?.minNights ?? getMinNightsForDate(checkIn ?? new Date());
                   return l === "cs" ? `Min. ${mn} noci` : `Min. ${mn} nights`;
                 })()}
               </p>
