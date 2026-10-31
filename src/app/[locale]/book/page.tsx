@@ -78,6 +78,18 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
       .finally(() => setLoadingPrice(false));
   }, [checkIn, checkOut, apartment]);
 
+  const getMinNightsForDate = (date: Date): number => {
+    if (!priceConfig) return 2;
+    const m = date.getMonth();
+    const d = date.getDate();
+    if (m === 11 && d >= 21 && d <= 27) return priceConfig.christmas.minNights;
+    if ((m === 11 && d >= 28) || (m === 0 && d <= 1)) return priceConfig.newyear.minNights;
+    // Easter approximation skipped client-side; handled at submit
+    if ((m === 11 && d >= 1) || m <= 2) return priceConfig.winter.minNights;
+    if (m === 6 || m === 7) return priceConfig.summer.minNights;
+    return priceConfig.offseason.minNights;
+  };
+
   const handleRangeChange = (ci: Date | null, co: Date | null) => {
     if (ci && co) {
       const days = eachDayOfInterval({ start: ci, end: new Date(co.getTime() - 86400000) });
@@ -91,7 +103,13 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
         setChristmasPopup(true);
         return;
       }
+      const minNights = getMinNightsForDate(ci);
+      if (nights < minNights) {
+        setError(l === "cs" ? `Minimální délka pobytu je ${minNights} noci.` : `Minimum stay is ${minNights} nights.`);
+        return;
+      }
     }
+    setError("");
     setCheckIn(ci);
     setCheckOut(co);
   };
