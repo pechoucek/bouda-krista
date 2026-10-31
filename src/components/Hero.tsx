@@ -6,9 +6,9 @@ import { useState, useEffect, useCallback } from "react";
 import { useT, type Locale } from "@/i18n/translations";
 
 const HERO_PHOTOS = [
-  { url: "/photos/DJI_0666.jpg",                              alt: "Bouda Krista exterior with cherry blossom tree", credit: "photo Lukáš Žentel" },
-  { url: "/photos/7c002b6b-0732-4dc5-a9db-b9138467ffc8.jpeg", alt: "Lodge terrace overlooking mountains",            credit: null },
-  { url: "/photos/18961a5f-670e-4ace-9bad-468d1d6c3fba.jpeg", alt: "Garden and surroundings",                        credit: null },
+  { url: "/photos/DJI_0666.jpg",   alt: "Bouda Krista aerial view", credit: "photo Lukáš Žentel" },
+  { url: "/photos/DSCF8812.JPG",  alt: "Bouda Krista exterior",    credit: null },
+  { url: "/photos/FAR06549.jpg",  alt: "Bouda Krista surroundings", credit: null },
 ];
 
 type Props = { locale: Locale };
