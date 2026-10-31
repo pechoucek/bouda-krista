@@ -74,6 +74,12 @@ export default function ApartmentModal({ apartment, locale, onClose, onBook }: P
             </div>
           )}
 
+          {photos[photoIndex]?.credit && (
+            <p className="absolute bottom-4 left-4 text-white/50 text-[11px] font-sans tracking-wide z-10">
+              {photos[photoIndex].credit}
+            </p>
+          )}
+
           <button
             onClick={onClose}
             className="absolute top-3 right-3 bg-black/40 hover:bg-black/60 text-white w-8 h-8 flex items-center justify-center transition-colors text-lg"
