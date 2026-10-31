@@ -89,12 +89,14 @@ export default function ApartmentModal({ apartment, locale, onClose, onBook }: P
                 {isCz ? apartment.taglineCs : apartment.tagline}
               </p>
             </div>
-            <div className="text-right">
-              <div className="font-serif text-xl text-forest-900">
-                {apartment.defaultNightlyRate.toLocaleString("cs-CZ")} Kč
+            {apartment.id === "whole" && (
+              <div className="text-right">
+                <div className="font-serif text-xl text-forest-900">
+                  {apartment.defaultNightlyRate.toLocaleString("cs-CZ")} Kč
+                </div>
+                <div className="font-sans text-xs text-forest-500">{isCz ? "za noc" : "per night"}</div>
               </div>
-              <div className="font-sans text-xs text-forest-500">{isCz ? "za noc" : "per night"}</div>
-            </div>
+            )}
           </div>
 
           <div className="flex gap-4 py-4 border-y border-forest-100 mb-5 font-sans text-sm text-forest-700 flex-wrap">
@@ -125,7 +127,7 @@ export default function ApartmentModal({ apartment, locale, onClose, onBook }: P
             onClick={() => { onBook(apartment.id); onClose(); }}
             className="btn-primary w-full text-center"
           >
-            {isCz ? `Rezervovat — ${apartment.nameCs}` : `Book ${apartment.name}`}
+            {isCz ? "Rezervovat" : "Book your stay"}
           </button>
         </div>
       </div>
