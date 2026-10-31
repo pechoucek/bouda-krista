@@ -18,7 +18,7 @@ export type PriceConfig = {
   easter:    number;       // Velký pátek – Pondělí velikonoční (za noc)
 };
 
-export const DEFAULT_PRICES: PriceConfig = {
+const DEFAULT_PRICES: PriceConfig = {
   winter:    { base: 10000, weekend: 12000, week: 65000 },
   summer:    { base: 10000, weekend: 12000, week: 65000 },
   offseason: { base: 10000, weekend: 11000, week: 60000 },
