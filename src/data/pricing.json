@@ -31,8 +31,7 @@
       "nameCz": "Celá chalupa",
       "guests": "Up to 11 guests",
       "guestsCz": "Až 11 hostů",
-      "defaultNightlyRate": 10000,
-      "discountFrom": 10000
+      "defaultNightlyRate": 10000
     }
   ],
   "specialPeriods": [
