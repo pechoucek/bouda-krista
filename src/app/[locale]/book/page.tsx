@@ -61,7 +61,7 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
   }, []);
 
   useEffect(() => {
-    if (!checkIn || !checkOut) { setPriceInfo(null); return; }
+    if (!checkIn || !checkOut || apartment !== "whole") { setPriceInfo(null); return; }
     setLoadingPrice(true);
     fetch("/api/price", {
       method: "POST",
@@ -120,10 +120,13 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
       setError(tr.book.errorFill);
       return;
     }
-    const minNights = priceInfo?.minNights ?? 2;
-    if (priceInfo && priceInfo.nights < minNights) {
-      setError(l === "cs" ? `Minimální délka pobytu je ${minNights} noci.` : `Minimum stay is ${minNights} nights.`);
-      return;
+    if (apartment === "whole") {
+      const minNights = priceInfo?.minNights ?? getMinNightsForDate(checkIn);
+      const nights = priceInfo?.nights ?? Math.round((checkOut.getTime() - checkIn.getTime()) / 86400000);
+      if (nights < minNights) {
+        setError(l === "cs" ? `Minimální délka pobytu je ${minNights} noci.` : `Minimum stay is ${minNights} nights.`);
+        return;
+      }
     }
     setError("");
     setLoading(true);
@@ -228,18 +231,9 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
                   {l === "cs" ? (apt.guestsCz ?? apt.guests) : apt.guests}
                 </div>
                 <div className={`font-sans text-sm font-medium ${apartment === apt.id ? "text-gold" : "text-forest-700"}`}>
-                  {apt.id === "whole" ? (
-                    apt.discountFrom ? (
-                      <>
-                        <span className="line-through opacity-50 mr-1">{apt.defaultNightlyRate.toLocaleString("cs-CZ")}</span>
-                        {l === "cs" ? "od " : "from "}{apt.discountFrom.toLocaleString("cs-CZ")} Kč / {l === "cs" ? "noc" : "night"}
-                      </>
-                    ) : (
-                      <>{apt.defaultNightlyRate.toLocaleString("cs-CZ")} Kč / {l === "cs" ? "noc" : "night"}</>
-                    )
-                  ) : (
-                    <>{l === "cs" ? "na vyžádání" : "on request"}</>
-                  )}
+                  {apt.id === "whole"
+                    ? (l === "cs" ? "Vyberte termín" : "Select dates")
+                    : (l === "cs" ? "na vyžádání" : "on request")}
                 </div>
               </button>
             ))}
@@ -342,57 +336,52 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
 
                 {checkIn && checkOut && (
                   <div className="border-t border-forest-100 pt-5 space-y-2">
-                    {priceInfo?.discountName && (
-                      <div className="bg-gold/10 border border-gold/40 px-3 py-2 flex items-center gap-2">
-                        <span className="text-gold text-xs">✦</span>
-                        <span className="font-sans text-xs text-forest-700">
-                          {priceInfo.discountName} — {l === "cs" ? "zvýhodněná cena" : "special rate applied"}
-                        </span>
-                      </div>
-                    )}
                     <div className="flex justify-between font-sans text-sm text-forest-700">
                       <span>{l === "cs" ? (selectedApt.nameCz ?? selectedApt.name) : selectedApt.name}</span>
                     </div>
                     <div className="flex justify-between font-sans text-sm text-forest-700">
                       <span>{format(checkIn, "d. M.")} – {format(checkOut, "d. M. yyyy")}</span>
-                      <span>
-                        {priceInfo?.nights ?? "—"}{" "}
-                        {l === "cs"
-                          ? (priceInfo && priceInfo.nights >= 5 ? "nocí" : priceInfo && priceInfo.nights >= 2 ? "noci" : "noc")
-                          : `night${priceInfo && priceInfo.nights !== 1 ? "s" : ""}`}
-                      </span>
                     </div>
-                    {priceInfo && !loadingPrice && (
-                      priceInfo.rateBreakdown ? (
-                        priceInfo.rateBreakdown.map((seg, i) => (
-                          <div key={i} className="flex justify-between font-sans text-sm text-forest-500">
-                            <span>{seg.rate.toLocaleString("cs-CZ")} Kč × {seg.nights}</span>
-                            <span>{(seg.rate * seg.nights).toLocaleString("cs-CZ")} Kč</span>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="flex justify-between font-sans text-sm text-forest-500">
-                          <span>{priceInfo.nightlyRate.toLocaleString("cs-CZ")} Kč × {priceInfo.nights}</span>
-                          <span>{priceInfo.total.toLocaleString("cs-CZ")} Kč</span>
+                    {apartment === "whole" ? (
+                      <>
+                        {priceInfo && !loadingPrice && (
+                          priceInfo.rateBreakdown ? (
+                            priceInfo.rateBreakdown.map((seg, i) => (
+                              <div key={i} className="flex justify-between font-sans text-sm text-forest-500">
+                                <span>{seg.rate.toLocaleString("cs-CZ")} Kč × {seg.nights}</span>
+                                <span>{(seg.rate * seg.nights).toLocaleString("cs-CZ")} Kč</span>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="flex justify-between font-sans text-sm text-forest-500">
+                              <span>{priceInfo?.nightlyRate.toLocaleString("cs-CZ")} Kč × {priceInfo?.nights}</span>
+                              <span>{priceInfo?.total.toLocaleString("cs-CZ")} Kč</span>
+                            </div>
+                          )
+                        )}
+                        <div className="flex justify-between font-serif text-lg text-forest-900 pt-2 border-t border-forest-100">
+                          <span>{tr.book.total}</span>
+                          <span>
+                            {loadingPrice ? (
+                              <span className="text-forest-400 text-sm">{tr.book.calculating}</span>
+                            ) : priceInfo ? (
+                              `${priceInfo.total.toLocaleString("cs-CZ")} Kč`
+                            ) : "—"}
+                          </span>
                         </div>
-                      )
+                      </>
+                    ) : (
+                      <div className="flex justify-between font-serif text-lg text-forest-900 pt-2 border-t border-forest-100">
+                        <span>{tr.book.total}</span>
+                        <span className="font-sans text-sm text-forest-500">{l === "cs" ? "Cena na vyžádání" : "Price on request"}</span>
+                      </div>
                     )}
-                    <div className="flex justify-between font-serif text-lg text-forest-900 pt-2 border-t border-forest-100">
-                      <span>{tr.book.total}</span>
-                      <span>
-                        {loadingPrice ? (
-                          <span className="text-forest-400 text-sm">{tr.book.calculating}</span>
-                        ) : priceInfo ? (
-                          `${priceInfo.total.toLocaleString("cs-CZ")} Kč`
-                        ) : "—"}
-                      </span>
-                    </div>
                   </div>
                 )}
 
                 <button
                   type="submit"
-                  disabled={loading || !checkIn || !checkOut || loadingPrice}
+                  disabled={loading || !checkIn || !checkOut || (apartment === "whole" && loadingPrice)}
                   className="btn-primary text-center disabled:opacity-50 disabled:cursor-not-allowed mt-2"
                 >
                   {loading ? tr.book.submitting : tr.book.submit}
