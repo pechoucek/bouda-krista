@@ -134,6 +134,7 @@ const t = {
       rules:       "Pravidla domu",
       checkin:     "Příjezd po 15:00 · Odjezd do 11:00",
       selfCheckin: "Samoobslužné ubytování přes schránku na klíče",
+      noPets:      "Domácí mazlíčci nejsou povoleni",
     },
 
     // Contact
@@ -294,6 +295,7 @@ const t = {
       rules:       "House Rules",
       checkin:     "Check-in after 15:00 · Check-out before 11:00",
       selfCheckin: "Self check-in via lockbox",
+      noPets:      "No pets allowed",
     },
 
     // Contact

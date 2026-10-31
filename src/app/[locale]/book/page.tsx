@@ -333,6 +333,7 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
               <p className="font-semibold text-forest-900">{tr.book.rules}</p>
               <p>{tr.book.checkin}</p>
               <p>{tr.book.selfCheckin}</p>
+              <p>{tr.book.noPets}</p>
             </div>
           </div>
         </div>
