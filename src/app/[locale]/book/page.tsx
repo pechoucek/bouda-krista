@@ -150,29 +150,39 @@ function BookPageInner({ locale: l }: { locale: Locale }) {
 
         {/* Price list */}
         {priceConfig && (
-          <div className="mb-10 border border-forest-200 bg-white p-6 font-sans text-sm text-forest-700">
-            <p className="text-xs tracking-widest uppercase text-forest-400 mb-4">
+          <div className="mb-10 font-sans text-sm text-forest-600">
+            <p className="text-xs tracking-widest uppercase text-forest-400 mb-3">
               {l === "cs" ? "Ceník — Celá chalupa" : "Pricing — Whole House"}
             </p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-1">
+            <div className="space-y-1">
               {([
-                { label: l === "cs" ? "❄️ Zima (1. 12. – 1. 4.)" : "❄️ Winter (Dec 1 – Apr 1)", s: priceConfig.winter },
-                { label: l === "cs" ? "☀️ Léto (1. 7. – 1. 9.)"  : "☀️ Summer (Jul 1 – Sep 1)", s: priceConfig.summer },
-                { label: l === "cs" ? "🍂 Mimo sezonu"            : "🍂 Off-season",             s: priceConfig.offseason },
+                { label: l === "cs" ? "Zima (1. 12. – 1. 4.)" : "Winter (Dec 1 – Apr 1)", s: priceConfig.winter },
+                { label: l === "cs" ? "Léto (1. 7. – 1. 9.)"  : "Summer (Jul 1 – Sep 1)", s: priceConfig.summer },
+                { label: l === "cs" ? "Mimo sezonu"            : "Off-season",             s: priceConfig.offseason },
               ] as const).map(({ label, s }) => (
-                <div key={label} className="space-y-0.5">
-                  <p className="font-medium text-forest-900 mb-1">{label}</p>
-                  <p>{s.base.toLocaleString("cs-CZ")} Kč / {l === "cs" ? "noc" : "night"}</p>
-                  <p>{s.weekend.toLocaleString("cs-CZ")} Kč / {l === "cs" ? "noc víkend (pá–so)" : "night weekend (Fri–Sat)"}</p>
-                  <p>{s.week.toLocaleString("cs-CZ")} Kč / {l === "cs" ? "týden (7 nocí)" : "week (7 nights)"}</p>
-                  <p className="text-forest-400 text-xs">{l === "cs" ? `Min. ${s.minNights} noci` : `Min. ${s.minNights} nights`}</p>
-                </div>
+                <p key={label}>
+                  <span className="text-forest-800">{label}:</span>{" "}
+                  {s.base.toLocaleString("cs-CZ")} Kč/{l === "cs" ? "noc" : "night"},{" "}
+                  {s.weekend.toLocaleString("cs-CZ")} Kč/{l === "cs" ? "noc víkend" : "night weekend"},{" "}
+                  {s.week.toLocaleString("cs-CZ")} Kč/{l === "cs" ? "týden" : "week"},{" "}
+                  {l === "cs" ? `min. ${s.minNights} noci` : `min. ${s.minNights} nights`}
+                </p>
               ))}
-            </div>
-            <div className="mt-4 pt-4 border-t border-forest-100 grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-1 text-xs text-forest-500">
-              <p>🎄 {l === "cs" ? `Vánoce: ${priceConfig.christmas.price.toLocaleString("cs-CZ")} Kč/noc · min. ${priceConfig.christmas.minNights} noci` : `Christmas: ${priceConfig.christmas.price.toLocaleString("cs-CZ")} CZK/night · min. ${priceConfig.christmas.minNights} nights`}</p>
-              <p>🥂 {l === "cs" ? `Silvestr: ${priceConfig.newyear.price.toLocaleString("cs-CZ")} Kč/noc · min. ${priceConfig.newyear.minNights} noci` : `New Year: ${priceConfig.newyear.price.toLocaleString("cs-CZ")} CZK/night · min. ${priceConfig.newyear.minNights} nights`}</p>
-              <p>🐣 {l === "cs" ? `Velikonoce: ${priceConfig.easter.price.toLocaleString("cs-CZ")} Kč/noc · min. ${priceConfig.easter.minNights} noci` : `Easter: ${priceConfig.easter.price.toLocaleString("cs-CZ")} CZK/night · min. ${priceConfig.easter.minNights} nights`}</p>
+              <p>
+                <span className="text-forest-800">{l === "cs" ? "Vánoce (21. 12. – 28. 12.)" : "Christmas (Dec 21–28)"}:</span>{" "}
+                {priceConfig.christmas.price.toLocaleString("cs-CZ")} Kč/{l === "cs" ? "noc" : "night"},{" "}
+                {l === "cs" ? `min. ${priceConfig.christmas.minNights} noci` : `min. ${priceConfig.christmas.minNights} nights`}
+              </p>
+              <p>
+                <span className="text-forest-800">{l === "cs" ? "Silvestr (28. 12. – 2. 1.)" : "New Year's (Dec 28 – Jan 2)"}:</span>{" "}
+                {priceConfig.newyear.price.toLocaleString("cs-CZ")} Kč/{l === "cs" ? "noc" : "night"},{" "}
+                {l === "cs" ? `min. ${priceConfig.newyear.minNights} noci` : `min. ${priceConfig.newyear.minNights} nights`}
+              </p>
+              <p>
+                <span className="text-forest-800">{l === "cs" ? "Velikonoce" : "Easter"}:</span>{" "}
+                {priceConfig.easter.price.toLocaleString("cs-CZ")} Kč/{l === "cs" ? "noc" : "night"},{" "}
+                {l === "cs" ? `min. ${priceConfig.easter.minNights} noci` : `min. ${priceConfig.easter.minNights} nights`}
+              </p>
             </div>
           </div>
         )}
