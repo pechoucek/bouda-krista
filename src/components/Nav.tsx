@@ -24,14 +24,19 @@ export default function Nav({ locale, alwaysDark }: Props) {
   const otherLocale: Locale = locale === "cs" ? "en" : "cs";
   const otherPath = pathname.replace(`/${locale}`, `/${otherLocale}`);
 
-  const navLinks = [
+  const navLinks: [string, string][] = [
     [`/${locale}#about`,     tr.nav.about],
     [`/${locale}#gallery`,   tr.nav.gallery],
     [`/${locale}#amenities`, tr.nav.amenities],
     [`/${locale}#location`,  tr.nav.location],
     [`/${locale}#contact`,   tr.nav.contact],
   ];
-
+ 
+  // "Domovní kniha" appears in the menu only while you are on the secret page
+  if (pathname.includes("/domovni-kniha/")) {
+    navLinks.push([pathname, locale === "cs" ? "Domovní kniha" : "Guest book"]);
+  }
+  
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
