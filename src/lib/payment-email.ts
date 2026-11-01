@@ -5,7 +5,8 @@ export const MAIL_FROM   = "Bouda Krista <rezervace@bouda-krista.cz>";
 export const OWNER_EMAIL = "chaloupka.krista@gmail.com";
 
 // TODO: put your real bank account number here (only once, used in the payment email)
-export const BANK_ACCOUNT = "166642003/5500";
+
+export const BANK_ACCOUNT = "131-655810207/0100";
 
 // What reservation-request/route.ts stores in Redis under `reservation:<id>`
 export type StoredReservation = {
@@ -72,6 +73,8 @@ export function czechAccountToIban(account: string): string | null {
 function plain(s: string): string {
   return s
     .normalize("NFD")
+
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^A-Za-z0-9 .,:/-]/g, " ")
     .replace(/\s+/g, " ")
