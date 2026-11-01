@@ -27,21 +27,6 @@ function nightsLabel(n: number): string {
   return `${n} nocí`;
 }
 
-// "Celá bouda" -> "celou boudu" (accusative, for "Přejete si ...")
-function apartmentAccCz(name: unknown): string {
-  const n = String(name ?? "").trim();
-  if (!n || /cel[áaýy]\s+boud|whole\s+house/i.test(n)) return "celou boudu";
-  if (/^apartm[aá]n/i.test(n)) return n.charAt(0).toLowerCase() + n.slice(1);
-  return `apartmán ${n}`;
-}
-
-// "Whole house" -> "the whole house", "Top Floor" -> "the Top Floor apartment"
-function apartmentAccEn(name: unknown): string {
-  const n = String(name ?? "").trim();
-  if (!n || /whole\s+house|cel[áaýy]\s+boud/i.test(n)) return "the whole house";
-  if (/^apartment/i.test(n)) return "the " + n.charAt(0).toLowerCase() + n.slice(1);
-  return `the ${n} apartment`;
-}
 
 export async function POST(req: NextRequest) {
   const { checkIn, checkOut, apartment, apartmentName, guestName, guestEmail, guests, about, nights, total, locale } = await req.json();
@@ -101,14 +86,6 @@ export async function POST(req: NextRequest) {
   const item = (label: string, value: string) =>
     `<div style="font-family:sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:${TEXT}">${label}</div>` +
     `<div style="font-family:sans-serif;font-size:16px;color:${TEXT};margin:2px 0 14px 0">${value}</div>`;
-
-  // ── Formatting used by the guest email ──────────────────────────────────
-  const totalNum = Number(String(total).replace(/\s/g, ""));
-  const priceOk = Number.isFinite(totalNum) && totalNum > 0;
-  const priceCz = priceOk ? `${totalNum.toLocaleString("cs-CZ")} Kč` : `${total} Kč`;
-  const priceEn = priceOk ? `${totalNum.toLocaleString("en-GB")} CZK` : `${total} CZK`;
-  const nightsEn = nightsNum === 1 ? "1 night" : `${Number.isFinite(nightsNum) ? nightsNum : nights} nights`;
-  const stayRange = `${fmtDate(checkIn)} – ${fmtDate(checkOut)}`;
 
   // ── Link behind the button: opens a preview page where you press "Odeslat" ──
   let buttonHref = `mailto:${guestEmail}`; // fallback if the private link can't be made
@@ -180,67 +157,6 @@ export async function POST(req: NextRequest) {
 
   if (ownerResult.error) {
     console.error("Owner email failed:", JSON.stringify(ownerResult.error));
-  }
-
-  // ── Guest confirmation ─────────────────────────────────────────────────
-  // Greeting depends on the time in the Czech Republic (Vercel servers run in UTC)
-  const hourCz =
-    Number(
-      new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Prague", hour: "2-digit", hour12: false }).format(new Date())
-    ) % 24;
-  const greetingCz =
-    hourCz < 11 ? "Dobré ráno" :
-    hourCz < 12 ? "Dobré dopoledne" :
-    hourCz < 17 ? "Dobré odpoledne" :
-    "Dobrý večer";
-  const greetingEn =
-    hourCz < 12 ? "Good morning" :
-    hourCz < 17 ? "Good afternoon" :
-    "Good evening";
-
-
-  // TODO: check that the Instagram handle in the signature (@bouda_krista) is correct
-  const guestResult = await resend.emails.send({
-    from,
-    to: guestEmail,
-    replyTo: ownerEmail,
-    subject: isCz
-      ? "Prý byste rádi na Boudu Kristu..."
-      : "I hear you’d like to come to Bouda Krista...",
-    html: `
-      <div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:#1a311a">
-        <h1 style="font-size:1.8rem;line-height:1.25;margin-bottom:0.5rem">
-          ${isCz ? `Přijali jsme Vaši poptávku na termín ${esc(stayRange)}` : `We have received your request for the dates ${esc(stayRange)}`}
-        </h1>
-        <p style="color:#5e975e;font-family:sans-serif;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase">
-          Bouda Krista · Rokytnice nad Jizerou
-        </p>
-        <hr style="border:none;border-top:1px solid #c2dbc2;margin:1.5rem 0"/>
-        <p style="font-family:sans-serif;font-size:0.9rem;line-height:1.7;color:#1a311a">
-          ${isCz
-            ? `${greetingCz},<br/><br/>Přejete si ${esc(apartmentAccCz(apartmentName))} na ${esc(stayLabel)} v ceně ${esc(priceCz)}. Vaši poptávku jsme přijali a co nevidět se Vám ozveme.`
-            : `${greetingEn},<br/><br/>You would like ${esc(apartmentAccEn(apartmentName))} for ${esc(nightsEn)} at a price of ${esc(priceEn)}. We have received your request and will be in touch very soon.`
-          }
-        </p>
-        <p style="font-family:sans-serif;font-size:0.9rem;line-height:1.7;color:#1a311a;margin-top:1.5rem">
-          ${isCz ? "S pozdravem" : "Kind regards"}<br/>Emma
-        </p>
-        <p style="font-family:sans-serif;font-size:0.85rem;line-height:1.7;color:#1a311a">
-          <strong>Bouda Krista</strong><br/>
-          <a href="https://www.bouda-krista.cz" style="color:#1a311a">www.bouda-krista.cz</a><br/>
-          Tel.: <a href="tel:+420722425275" style="color:#1a311a">+420 722 425 275</a><br/>
-          IG: <a href="https://www.instagram.com/bouda_krista" style="color:#1a311a">@bouda_krista</a>
-        </p>
-        <hr style="border:none;border-top:1px solid #c2dbc2;margin:1.5rem 0"/>
-        <p style="font-family:sans-serif;font-size:0.8rem;color:#5e975e">
-          Bouda Krista · Rokytnice nad Jizerou · Krkonoše
-        </p>
-      </div>
-    `,
-  });
-
-  if (guestResult.error) {
-    console.error("Guest email failed:", JSON.stringify(guestResult.error));
   }
 
   return NextResponse.json({ ok: true });
