@@ -11,8 +11,12 @@ const ICAL_URLS: Record<string, string | undefined> = {
   whole:    process.env.AIRBNB_ICAL_WHOLE,
 };
 
-// Kouzelnéchaloupky.cz feed — always applies to the whole house
-const KOUZELNECHALOUPKY_ICAL = "https://www.kouzelnechaloupky.cz/angie/ical?uuid=92f6c722-2a15-416b-a984-742c9c05352c";
+// External iCal feeds — always apply to the whole house
+const EXTERNAL_ICALS = [
+  "https://www.kouzelnechaloupky.cz/angie/ical?uuid=92f6c722-2a15-416b-a984-742c9c05352c",
+  "https://ical.better-hotel.com/eda39f2d7309679f9a5703fa885bef38ed915da1",
+  "https://ical.booking.com/v1/export?t=471244b5-03db-4e3a-ab58-39cac971c825",
+];
 
 export async function GET(req: NextRequest) {
   const apartment = req.nextUrl.searchParams.get("apartment") ?? "whole";
@@ -42,20 +46,24 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  // ── 2. Kouzelnéchaloupky.cz iCal ─────────────────────────────────────
-  try {
-    const data = await ical.fromURL(KOUZELNECHALOUPKY_ICAL);
-    for (const event of Object.values(data)) {
-      if (event.type !== "VEVENT") continue;
-      if (!event.start || !event.end) continue;
-      blocked.push({
-        start: new Date(event.start).toISOString(),
-        end:   new Date(event.end).toISOString(),
-      });
-    }
-  } catch {
-    // Kouzelnéchaloupky unreachable — continue with local bookings
-  }
+  // ── 2. External iCal feeds (Kouzelnéchaloupky, Better Hotel, Booking.com) ──
+  await Promise.all(
+    EXTERNAL_ICALS.map(async (url) => {
+      try {
+        const data = await ical.fromURL(url);
+        for (const event of Object.values(data)) {
+          if (event.type !== "VEVENT") continue;
+          if (!event.start || !event.end) continue;
+          blocked.push({
+            start: new Date(event.start).toISOString(),
+            end:   new Date(event.end).toISOString(),
+          });
+        }
+      } catch {
+        // feed unreachable — skip and continue
+      }
+    })
+  );
 
   // ── 3. Direct website bookings from Redis ─────────────────────────────
   try {
