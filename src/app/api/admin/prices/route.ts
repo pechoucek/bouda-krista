@@ -32,7 +32,8 @@ function auth(req: NextRequest) {
   return req.nextUrl.searchParams.get("secret") === process.env.ADMIN_SECRET;
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  if (!auth(req)) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const redis = getRedis();
     const raw = await redis.get(REDIS_KEY);
