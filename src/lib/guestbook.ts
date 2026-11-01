@@ -6,7 +6,7 @@ export const RATE_CZK = 25;            // stay fee per person per night
 export const VARIABLE_SYMBOL = "1215225";
 
 // TODO: enter the account that receives the stay fee, e.g. "123456789/0800" or "19-2000145399/0800"
-export const TAX_ACCOUNT = "DOPLŇTE ČÍSLO ÚČTU";
+export const TAX_ACCOUNT = "166642003/5500";
 
 // The secret link is /cs/domovni-kniha/<GUESTBOOK_KEY>
 export function isValidKey(key: unknown): boolean {
