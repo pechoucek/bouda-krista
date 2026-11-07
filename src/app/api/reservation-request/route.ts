@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { getRedis, saveBooking } from "@/lib/bookings";
-import { SITE_URL, signToken } from "@/lib/payment-email";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -40,8 +39,11 @@ export async function POST(req: NextRequest) {
   const helenaEmail = "helena.pechouckova@gmail.com";
   const isCz        = locale === "cs";
 
-  // ── Save booking immediately to block the calendar ─────────────────────
+  // ── Save pending reservation to block the calendar + store for approval ──
   const reservationId = crypto.randomUUID();
+  const approveToken  = crypto.randomUUID();
+  const baseUrl       = "https://www.bouda-krista.cz";
+
   try {
     await saveBooking({
       id:            reservationId,
@@ -58,24 +60,25 @@ export async function POST(req: NextRequest) {
     console.error("Failed to save booking:", err);
   }
 
-  // Also keep a Redis record for reference
   try {
     const redis = getRedis();
     await redis.set(
       `reservation:${reservationId}`,
-      JSON.stringify({ id: reservationId, status: "confirmed-manual", checkIn, checkOut, apartment, apartmentName, guestName, guestEmail, nights, total, locale, createdAt: new Date().toISOString() }),
+      JSON.stringify({ id: reservationId, token: approveToken, status: "pending", checkIn, checkOut, apartment, apartmentName, guestName, guestEmail, nights, total, locale, createdAt: new Date().toISOString() }),
       "EX", 30 * 24 * 60 * 60,
     );
   } catch (err) {
     console.error("Failed to save reservation record:", err);
   }
 
-  // ── Owner notification (CC Helena for manual payment handling) ─────────
+  const approveUrl = `${baseUrl}/api/approve-reservation?id=${reservationId}&token=${approveToken}`;
+  const declineUrl = `${baseUrl}/api/approve-reservation?id=${reservationId}&token=${approveToken}&decline=1`;
+
+  // ── Owner notification ─────────────────────────────────────────────────
   const TEXT   = "#46653B";
   const LINE   = "#46653B";
   const BOX    = "#FFFFFF";
   const ACCENT = "#CEA1BC";
-  const BUTTON = "#CEA1BC";
   const SCRIPT = "'Allura','Great Vibes','Snell Roundhand','Brush Script MT',cursive";
 
   const nightsNum = Number(nights);
@@ -87,20 +90,12 @@ export async function POST(req: NextRequest) {
     `<div style="font-family:sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:${TEXT}">${label}</div>` +
     `<div style="font-family:sans-serif;font-size:16px;color:${TEXT};margin:2px 0 14px 0">${value}</div>`;
 
-  // ── Link behind the button: opens a preview page where you press "Odeslat" ──
-  let buttonHref = `mailto:${guestEmail}`; // fallback if the private link can't be made
-  try {
-    buttonHref = `${SITE_URL}/api/reservation/send-payment?id=${reservationId}&token=${signToken(reservationId)}`;
-  } catch (err) {
-    console.error("Could not create payment link:", err);
-  }
-
   const ownerResult = await resend.emails.send({
     from,
     to: ownerEmail,
     cc: [helenaEmail],
     replyTo: guestEmail,
-    subject: `Nová rezervace: ${guestName} · ${fmtDate(checkIn)} – ${fmtDate(checkOut)} · ${stayLabel}`,
+    subject: `Nová poptávka: ${guestName} · ${fmtDate(checkIn)} – ${fmtDate(checkOut)} · ${stayLabel}`,
     html: `
       <link href="https://fonts.googleapis.com/css2?family=Allura&display=swap" rel="stylesheet">
       <div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;color:${TEXT}">
@@ -142,11 +137,20 @@ export async function POST(req: NextRequest) {
           <div style="font-family:Georgia,serif;font-size:15px;font-style:italic;line-height:1.6;color:${TEXT};margin-top:4px">${esc(about)}</div>
         </div>` : ""}
 
-        <p style="text-align:center;margin:24px 0 16px 0">
-          <a href="${esc(buttonHref)}" style="display:inline-block;background:${BUTTON};color:#FFFFFF;padding:10px 22px;text-decoration:none;font-family:sans-serif;font-size:14px">
-            Odeslat platební údaje hostovi
-          </a>
-        </p>
+        <table role="presentation" cellpadding="0" cellspacing="0" style="margin:24px auto 16px auto">
+          <tr>
+            <td style="padding-right:12px">
+              <a href="${esc(approveUrl)}" style="display:inline-block;background:#1a311a;color:#fff;padding:12px 24px;text-decoration:none;font-family:sans-serif;font-size:14px;font-weight:600">
+                ✓ Schválit a odeslat platební odkaz
+              </a>
+            </td>
+            <td>
+              <a href="${esc(declineUrl)}" style="display:inline-block;background:#f5f5f5;color:#666;padding:12px 18px;text-decoration:none;font-family:sans-serif;font-size:13px;border:1px solid #ddd">
+                ✗ Odmítnout
+              </a>
+            </td>
+          </tr>
+        </table>
 
         <p style="font-family:sans-serif;font-size:11px;color:${TEXT};text-align:center">
           Jazyk hosta: ${guestLang} · Rezervace ID: ${esc(reservationId)}

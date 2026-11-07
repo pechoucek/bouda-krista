@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createPayment } from "@/lib/gopay";
-import { calculateTotal } from "@/lib/pricing";
 import { getRedis } from "@/lib/bookings";
 import { Resend } from "resend";
 
@@ -73,8 +72,13 @@ export async function GET(req: NextRequest) {
   const baseUrl     = process.env.NEXT_PUBLIC_URL ?? "https://www.bouda-krista.cz";
   const orderNumber = `BK-${id}`;
 
-  // Recalculate price from source of truth
-  const { total, nights } = calculateTotal(new Date(res.checkIn), new Date(res.checkOut), res.apartment);
+  // Use the price calculated at booking time (from Redis dynamic config)
+  const total  = Number(String(res.total).replace(/\s/g, ""));
+  const nights = Number(res.nights);
+
+  if (!Number.isFinite(total) || total <= 0 || !Number.isFinite(nights) || nights <= 0) {
+    return new NextResponse(html("Chyba", "Rezervace nemá platnou cenu nebo počet nocí.", "#a00"), { status: 500, headers: { "Content-Type": "text/html" } });
+  }
 
   let payment: { id: number; gw_url: string };
   try {
@@ -100,6 +104,7 @@ export async function GET(req: NextRequest) {
   ]);
 
   const totalFormatted = total.toLocaleString("cs-CZ");
+
   const isCz           = res.locale === "cs";
 
   // Email guest with payment link
